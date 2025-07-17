@@ -1,0 +1,202 @@
+<div #contentToCapture *ngIf="showComponent" class="container">
+    <div class="main-content-area">
+        <div class="left-content">
+            <h1 *ngIf="!isEditingTeamName" class="title editable-title " (click)="startEditingTeamName()">
+                {{currentTeamName}}
+            </h1>
+            <input *ngIf="isEditingTeamName" [(ngModel)]="currentTeamName" (blur)="stopEditingTeamName()"
+                (keyup.enter)="stopEditingTeamName()" class="title-input" #teamNameInput>
+
+            <div #pitchBoundaryForExport class="pitch-horizontal" id="pitchBoundary">
+                <div class="field-lines"></div>
+                <div class="goal-area-left"></div>
+                <div class="goal-area-right"></div>
+                <div class="center-circle"></div>
+                <div class="center-spot"></div>
+                <div class="goal-left"></div>
+                <div class="goal-right"></div>
+
+                @for (player of players; track player.id) { <div class="player-slot" [ngStyle]="player.style"
+                    [ngClass]="{'has-player-in-slot': player.playerInfo && !isJerseyMode}" cdkDrag [id]="player.id"
+                    [attr.data-id]="player.id" [class.is-dragging]="player.isDragging"
+                    [cdkDragDisabled]="!isDragEnabled" [class.drag-disabled]="!isDragEnabled"
+                    (click)="onPlayerSearchClick(player)" (cdkDragStarted)="onPlayerDragStarted(player)"
+                    (cdkDragMoved)="onPlayerDragMoved($event, player)" (cdkDragEnded)="onPlayerDragEnded(player,$event)"
+                    [class.drag-disabled]="!isDragEnabled" [class.is-jersey-mode]="isJerseyMode">
+
+                    <!-- Jersey Mode -->
+                    <ng-container *ngIf="isJerseyMode; else circleMode">
+                        <div class="player-jersey" [style.background-color]="selectedTeamJerseyTemplate.secondaryColor"
+                            [style.border]="selectedTeamJerseyTemplate.border">
+                            <div class="neck"></div>
+                            <div class="sleeve left-sleeve"
+                                [style.background-color]="selectedTeamJerseyTemplate.secondaryColor"
+                                [style.border]="selectedTeamJerseyTemplate.sleeveBorder"></div>
+                            <div class="sleeve right-sleeve"
+                                [style.background-color]="selectedTeamJerseyTemplate.secondaryColor"
+                                [style.border]="selectedTeamJerseyTemplate.sleeveBorder"></div>
+                            <div class="stripes-container">
+                                <div class="stripe stripe-1"
+                                    [style.background-color]="selectedTeamJerseyTemplate.primaryColor">
+                                </div>
+                                <div class="stripe stripe-2"
+                                    [style.background-color]="selectedTeamJerseyTemplate.secondaryColor">
+                                </div>
+                                <div class="stripe stripe-3"
+                                    [style.background-color]="selectedTeamJerseyTemplate.primaryColor">
+                                </div>
+                                <div class="stripe stripe-4"
+                                    [style.background-color]="selectedTeamJerseyTemplate.secondaryColor">
+                                </div>
+                                <div class="stripe stripe-5"
+                                    [style.background-color]="selectedTeamJerseyTemplate.primaryColor">
+                                </div>
+                                <div class="stripe stripe-6"
+                                    [style.background-color]="selectedTeamJerseyTemplate.secondaryColor">
+                                </div>
+                                <div class="stripe stripe-7"
+                                    [style.background-color]="selectedTeamJerseyTemplate.primaryColor">
+                                </div>
+                                <div class="stripe stripe-8"
+                                    [style.background-color]="selectedTeamJerseyTemplate.secondaryColor">
+                                </div>
+                                <div class="stripe stripe-9"
+                                    [style.background-color]="selectedTeamJerseyTemplate.primaryColor">
+                                </div>
+                            </div>
+                            <!-- <div class="badge"></div> -->
+                        </div>
+                        <!-- <i n class="fas fa-plus player-icon"></i> -->
+                        <div class="jersey-number">{{player.id + 1}}</div>
+                        <div *ngIf="player.playerInfo && isJerseyMode" class="circle-player-info with-jersey">
+                            {{player.playerInfo.shortName}}
+                        </div>
+                    </ng-container>
+
+                    <!-- Circle Mode -->
+                    <ng-template #circleMode>
+                        <i *ngIf="!player.playerInfo && !isJerseyMode" class="fas fa-plus"></i>
+                        <img *ngIf="player.playerInfo && !isJerseyMode" class="circle-player-img"
+                            [src]="player.playerInfo?.imgSrc">
+                        <div *ngIf="player.playerInfo && !isJerseyMode" class="circle-player-info">
+                            {{player.playerInfo.shortName}}
+                        </div>
+                    </ng-template>
+
+                </div>
+                }
+
+                <div class="static-box">
+                    <p>Maç Bilgileri</p>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="center-content">
+            <h1 class="title">Formasyonlar</h1>
+
+            <div class="formation-buttons">
+                <button *ngFor="let formation of formationLabels" (click)="setFormation(formation.value)"
+                    [class.active]="selectedFormationName === formation.value">
+                    {{formation.label}}
+                </button>
+            </div>
+
+            <div class="operation-btns">
+                <div class="toggle_box" (click)="isDragEnabled = !isDragEnabled">
+                    <input type="checkbox" [(ngModel)]="isDragEnabled" (click)="$event.stopPropagation()" id="toggle" />
+                    <!-- <label for="toggle" (click)="$event.stopPropagation()" id="label_toggle"
+                        [ngClass]="{'toggle-active': isDragEnabled}"></label> -->
+
+                    <i *ngIf="isDragEnabled" class="fa fa-unlock active-icon"></i>
+                    <i *ngIf="!isDragEnabled" class="fa fa-lock passive-icon"></i>
+
+                    <!-- Serbest -->
+                    <p class="toggle-on-text" *ngIf="isDragEnabled">Sürüklenebilir</p>
+                    <p class="toggle-off-text" *ngIf="!isDragEnabled">Taktiksel (Kilitli)</p>
+                </div>
+
+                <div class="operation-btn" (click)="setFormation(selectedFormationName)">
+                    <i class="fa fa-undo reset-icon"></i>
+                    <p class="reset-text">Sıfırla (Başa Dön)</p>
+                </div>
+
+                <!-- <div class="operation-btn" (click)="undoPlayerPosition()">
+                    <i class="fa fa-undo reset-icon"></i>
+                    <p class="reset-text">Geri</p>
+                </div> -->
+
+                <div class="toggle_box" (click)="isJerseyMode = !isJerseyMode">
+                    <input type="checkbox" [(ngModel)]="isJerseyMode" (click)="$event.stopPropagation()" id="toggle" />
+
+                    <i *ngIf="isJerseyMode" class="fa fa-tshirt active-icon"></i>
+                    <i *ngIf="!isJerseyMode" class="fa fa-circle-plus passive-white-icon"></i>
+
+                    <p class="toggle-on-text" *ngIf="isJerseyMode">Forma</p>
+                    <p class="toggle-off-text" *ngIf="!isJerseyMode">Geleneksel</p>
+                </div>
+
+                <div class="toggle_box" (click)="exportCaptureAsImage()">
+                    <i class="fa fa-image blue-icon"></i>
+                    <p class="toggle-off-text">Dışa Aktar</p>
+                </div>
+
+                <!-- <i n class="fas fa-plus player-icon"></i> -->
+
+                <!-- <button class="gold-button">
+                    Altın Buton
+                </button> -->
+
+            </div>
+        </div>
+
+        <div class="right-content">
+            <div class="jersey-kit-wrapper" [ngClass]="{'opacity-6': !isJerseyMode}">
+                <div *ngFor="let jerseyTemplate of teamJerseyTemplates" (click)="setTeamJerseyTemplate(jerseyTemplate)"
+                    [class.disabled]="!isJerseyMode" class="player-slot is-jersey-mode position-relative">
+                    <div class="player-jersey small-jersey-for-selection"
+                        [ngClass]="{'active-jersey': jerseyTemplate == selectedTeamJerseyTemplate}"
+                        [style.background-color]="jerseyTemplate.secondaryColor" [style.border]="jerseyTemplate.border">
+                        <div class="neck"></div>
+                        <div class="sleeve left-sleeve" [style.background-color]="jerseyTemplate.secondaryColor"
+                            [style.border]="jerseyTemplate.sleeveBorder">
+                        </div>
+                        <div class="sleeve right-sleeve" [style.background-color]="jerseyTemplate.secondaryColor"
+                            [style.border]="jerseyTemplate.sleeveBorder">
+                        </div>
+                        <div class="stripes-container">
+                            <div class="stripe stripe-1" [style.background-color]="jerseyTemplate.primaryColor">
+                            </div>
+                            <div class="stripe stripe-2" [style.background-color]="jerseyTemplate.secondaryColor">
+                            </div>
+                            <div class="stripe stripe-3" [style.background-color]="jerseyTemplate.primaryColor">
+                            </div>
+                            <div class="stripe stripe-4" [style.background-color]="jerseyTemplate.secondaryColor">
+                            </div>
+                            <div class="stripe stripe-5" [style.background-color]="jerseyTemplate.primaryColor">
+                            </div>
+                            <div class="stripe stripe-6" [style.background-color]="jerseyTemplate.secondaryColor">
+                            </div>
+                            <div class="stripe stripe-7" [style.background-color]="jerseyTemplate.primaryColor">
+                            </div>
+                            <div class="stripe stripe-8" [style.background-color]="jerseyTemplate.secondaryColor">
+                            </div>
+                            <div class="stripe stripe-9" [style.background-color]="jerseyTemplate.primaryColor">
+                            </div>
+                        </div>
+                        <!-- <div class="badge"></div> -->
+                        <div class="jersey-number">10</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div *ngIf="!showComponent" style="height: 742px; width: 100%;"></div>
+
+<!-- <img *ngIf="selectedTeamJerseyTemplate.shortName == 'FB'"
+                            src="assets/images/teams/fb-jersey.svg" alt="fb-jersey">
+                        <img *ngIf="selectedTeamJerseyTemplate.shortName == 'GS'"
+                            src="assets/images/teams/gs-jersey.svg" alt="fb-jersey"> -->

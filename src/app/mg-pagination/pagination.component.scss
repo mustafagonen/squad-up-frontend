@@ -1,0 +1,14 @@
+*::selection {
+    background: transparent !important;
+    color: unset !important;
+}
+
+*::-moz-selection {
+    background: transparent !important;
+    color: unset !important;
+}
+
+*::-webkit-selection {
+    background: transparent !important;
+    color: unset !important;
+}

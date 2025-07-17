@@ -1,0 +1,15 @@
+@import "../../../styles.scss";
+
+:host {
+    display: block;
+    height: 100%;
+}
+
+.success-title {
+    font-size: 20px;
+    font-weight: 600;
+    margin-top: 20px;
+    margin-bottom: 50px;
+    text-align: center;
+    color: $navyblue;
+}

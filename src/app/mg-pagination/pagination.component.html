@@ -1,0 +1,90 @@
+<!-- Desktop -->
+<div class="desktop-wrapper h-max-c">
+    <div class="mg-pagination">
+        <div class="mg-previous" [ngClass]="{'opacity-5': data?.index == 0}"
+            (click)="onPreviousPage.emit(data?.index - 1)">
+            <img src="assets/images/list/arrow-left-pg.svg">
+        </div>
+        <div class="mg-next" [ngClass]="{'opacity-7': (data?.index + 1) == data?.pages}"
+            (click)="onNextPage.emit(data?.index+1)">
+            <span class="text-white">{{'İleri' | translate}}</span>
+            <img src="assets/images/list/arrow-right-pg.svg">
+        </div>
+
+        <div (click)="onPreviousPage.emit(data?.index - 1)" [ngClass]="{'opacity-5': data?.index == 0}"
+            class="mg-previous-arrow">
+            <img class="cursor-pointer" src="assets/images/list/chevron-left-pg.svg">
+        </div>
+        <input #pageInput class="mg-active-page" type="number" (ngModelChange)="onPageChangeByInput($event)"
+            (keypress)="onlyNumber($event)" [ngModel]="data?.index + 1">
+
+        <div (click)="onNextPage.emit(data?.index+1)" [ngClass]="{'opacity-5': (data?.index + 1) == data?.pages}"
+            class="mg-next-arrow ml-auto">
+            <img class="cursor-pointer" src="assets/images/list/chevron-right-pg.svg">
+        </div>
+
+        <span><span class="m-l-0 m-r-10">/</span>{{data?.pages}}</span>
+    </div>
+</div>
+
+<!-- Tablet -->
+<div class="tablet-wrapper h-max-c">
+    <div class="mg-pagination">
+        <div class="mg-previous" [ngClass]="{'opacity-5': data?.index == 0}"
+            (click)="onPreviousPage.emit(data?.index - 1)">
+            <img src="assets/images/list/arrow-left-pg.svg">
+        </div>
+        <div class="mg-next" [ngClass]="{'opacity-7': (data?.index + 1) == data?.pages}"
+            (click)="onNextPage.emit(data?.index+1)">
+            <span class="text-white">{{'İleri' | translate}}</span>
+            <img src="assets/images/list/arrow-right-pg.svg">
+        </div>
+
+        <div (click)="onPreviousPage.emit(data?.index - 1)" [ngClass]="{'opacity-5': data?.index == 0}"
+            class="mg-previous-arrow">
+            <img class="cursor-pointer" src="assets/images/list/chevron-left-pg.svg">
+        </div>
+
+        <div class="mg-active-page">
+            {{data?.index + 1}}
+        </div>
+
+        <div (click)="onNextPage.emit(data?.index+1)" [ngClass]="{'opacity-5': (data?.index + 1) == data?.pages}"
+            class="mg-next-arrow ml-auto">
+            <img class="cursor-pointer" src="assets/images/list/chevron-right-pg.svg">
+        </div>
+
+        <span><span class="m-l-0 m-r-10">/</span>{{data?.pages}}</span>
+    </div>
+</div>
+
+<!-- Mobile -->
+<div class="mobile-wrapper h-max-c">
+    <div class="mg-pagination">
+        <div class="mg-previous" [ngClass]="{'opacity-5': data?.index == 0}"
+            (click)="onPreviousPage.emit(data?.index - 1)">
+            <img src="assets/images/list/arrow-left-pg.svg">
+        </div>
+        <div class="mg-next" [ngClass]="{'opacity-7': (data?.index + 1) == data?.pages}"
+            (click)="onNextPage.emit(data?.index+1)">
+            <span class="text-white">{{'İleri' | translate}}</span>
+            <img src="assets/images/list/arrow-right-pg.svg">
+        </div>
+
+        <div (click)="onPreviousPage.emit(data?.index - 1)" [ngClass]="{'opacity-5': data?.index == 0}"
+            class="mg-previous-arrow">
+            <img class="cursor-pointer" src="assets/images/list/chevron-left-pg.svg">
+        </div>
+
+        <div class="mg-active-page">
+            {{data?.index + 1}}
+        </div>
+
+        <div (click)="onNextPage.emit(data?.index+1)" [ngClass]="{'opacity-5': (data?.index + 1) == data?.pages}"
+            class="mg-next-arrow ml-auto">
+            <img class="cursor-pointer" src="assets/images/list/chevron-right-pg.svg">
+        </div>
+
+        <span><span class="m-l-0 m-r-10">/</span>{{data?.pages}}</span>
+    </div>
+</div>

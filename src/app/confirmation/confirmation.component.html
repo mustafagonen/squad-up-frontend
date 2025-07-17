@@ -1,0 +1,55 @@
+<div class="border-wrapper"
+    [ngClass]="{'confirm-status': model.status == 'confirm' , 'error-status': model.status == 'error' , 'success-status': model.status == 'success'}">
+    <div class="title" *ngIf="model && model.title" [innerHTML]="model.title | sanitizeHtml"></div>
+    <div class="body">
+        <div *ngIf="model.status == 'error'" class="text-center img-wrapper-delete">
+            <img *ngIf="!model.imageUrl" class="cursor-pointer" src="assets/images/close-white.svg">
+            <img *ngIf="model.imageUrl" [src]="model.imageUrl" height="16">
+        </div>
+
+        <div *ngIf="model.status == 'confirm'" class="text-center img-wrapper-ok">
+            <img *ngIf="!model.imageUrl" class="cursor-pointer" src="assets/images/create/edit.svg">
+            <img *ngIf="model.imageUrl" [src]="model.imageUrl">
+        </div>
+
+        <div *ngIf="model.status == 'success'" class="text-center img-wrapper-success">
+            <img *ngIf="!model.imageUrl" class="cursor-pointer" src="assets/images/create/tick-conf.svg">
+            <img *ngIf="model.imageUrl" [src]="model.imageUrl">
+        </div>
+
+        <div class="content mx-4"
+            [innerHTML]="(model && model.content ? model.content : 'Are you sure you want to delete ' +  model.item + ' ?' | translate) | sanitizeHtml">
+        </div>
+        <div *ngIf="model.subcontent" class="subcontent">
+            {{model.subcontent}}
+        </div>
+        <div *ngIf="model.subcontentHtml" [innerHTML]="model.subcontentHtml | sanitizeHtml" class="subcontent"></div>
+        <div *ngIf="model.hasTextArea" class="position-relative">
+            <textarea [placeholder]="'Açıklama Giriniz..'" maxlength="50" class="custom-textarea"
+                [(ngModel)]="textAreaValue"></textarea>
+            <span class="custom-textarea-count" *ngIf="textAreaValue">{{textAreaValue.length}} / 50</span>
+            <span class="custom-textarea-count" *ngIf="!textAreaValue">0 / 50</span>
+        </div>
+        <div class=" text-center d-flex align-items-center m-t-8 justify-content-center">
+            <button *ngIf="model.dismissBtnText !='null'"
+                [ngClass]=" {'main-blue-bg': model.secondaryBtnClass=='confirm' , 'success-bg' :
+                model.secondaryBtnClass=='success' , 'danger-conf-bg' : model.secondaryBtnClass=='error', 'gray-bg' : model.secondaryBtnClass=='gray', 'gray-bg-max-content' : model.secondaryBtnClass=='gray-max-content'}"
+                class="no-btn m-r-10" (click)="confirm.emit(false)">
+                <span class="fw-500" *ngIf="!model.dismissBtnText">{{'Vazgeç' | translate}}</span>
+                <span class="fw-500" *ngIf="model.dismissBtnText">{{model.dismissBtnText! | translate}}</span>
+            </button>
+            <button *ngIf="model.okBtnText !='null'" [ngClass]=" {'main-blue-bg': model.primaryBtnClass=='confirm' , 'success-bg' :
+                model.primaryBtnClass=='success' , 'danger-conf-bg' : model.primaryBtnClass=='error'}"
+                class="yes-btn m-l-10" (click)="onSubmitClick()">
+                <span class="fw-500" *ngIf="!model.okBtnText">{{'Sil' |
+                    translate}}</span>
+                <span class="fw-500" *ngIf="model.okBtnText">{{model.okBtnText! |
+                    translate}}</span>
+            </button>
+        </div>
+    </div>
+    <img *ngIf="!model.closeEmitValue" (click)="confirm.emit(false)" class="close-icon"
+        src="assets/images/list/close.svg">
+    <img *ngIf="model.closeEmitValue" (click)="confirm.emit(model.closeEmitValue)" class="close-icon"
+        src="assets/images/list/close.svg">
+</div>

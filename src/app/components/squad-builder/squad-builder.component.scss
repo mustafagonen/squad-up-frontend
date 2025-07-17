@@ -1,0 +1,1427 @@
+// Değişkenler (Bu değişkenler de bileşen SCSS'i içinde tanımlanabilir)
+$dark-background: #0d1222; // Genel arka plan rengi, burada sadece referans için
+$pitch-green: #2e7d32; // Saha yeşili
+$neon-green: #fff; // Çizgiler için neon yeşil (daha az parlak)
+$player-icon-bg: #222; // Oyuncu ikonları içi (daha koyu)
+$player-icon-border: #444; // Oyuncu ikonları kenarlığı
+$goal-line-color: #f0f0f0; // Kale çizgileri için beyaz
+$title-red: #ff3333; // Başlık için kırmızı renk
+
+// Yeni Takım Renkleri Değişkenleri (Değişiklik yoksa kalsın)
+$team-color-1: #FFCC00; // Parlak Sarı (Resimdeki gibi)
+$team-color-2: #0047AB; // Koyu Mavi (Resimdeki gibi)
+$collar-color: #e0e0e0; // Yaka rengi
+$sleeve-color: $team-color-1; // Kol rengi (örneğin ana renkle aynı)
+// $badge-color: #fff; // Bu değişkeni artık kullanmıyoruz, silebilirsiniz.
+
+// Yeni Altın Renk Değişkenleri (Mevcut değişkenlerinizin yanına ekleyebilirsiniz)
+// Yeni Altın Renk Değişkenleri (Daha zengin ve metalik tonlar)
+$gold-base: #FFD700; // Ana altın rengi (Gold)
+$gold-highlight: #FFFACD; // Parlaklık için çok açık altın (Lemon Chiffon gibi)
+$gold-shadow: #DAA520; // Gölge için orta altın (Goldenrod)
+$gold-darkest: #B8860B; // En koyu gölge için (DarkGoldenrod)
+$gold-text: #333333; // Altın üzerinde iyi duracak koyu metin
+$gold-light: #FFEA80; // Parlaklık için daha açık altın
+
+$soft-red: #CD5C5C; // Daha yumuşak, hafif tuğla kırmızısı (Indian Red)
+$muted-red: #8B0000; // Koyu, hafif bordo (Dark Red)
+$subtle-red-glow: #FF6347; // Hafif, domates kırmızısı gibi bir parlama rengi (Tomato)
+
+:host {
+    display: block;
+    margin-top: 102px;
+    max-width: 950px;
+    margin-left: auto;
+    margin-right: auto;
+    // background: radial-gradient(black, transparent); eski koyu
+    background: radial-gradient(#2e7d3285, transparent);
+    border-radius: 24px;
+}
+
+@mixin flex-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+// Altın Buton Stili
+.gold-button {
+    @include flex-center; // Buton içeriğini ortala
+    // Arka plan degrade: Daha belirgin bir ışıktan karanlığa geçiş
+    background: linear-gradient(145deg, $gold-highlight 0%, $gold-base 40%, $gold-shadow 80%, $gold-darkest 100%);
+    color: $gold-text; // Koyu metin rengi
+    border: 1px solid $gold-darkest; // Koyu altın kenarlık
+    padding: 12px 25px; // Daha dolgun bir buton
+    border-radius: 8px; // Yuvarlak köşeler
+    cursor: pointer;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 1.1em;
+    font-weight: 700; // Kalın font
+    letter-spacing: 0.8px; // Hafif harf aralığı
+    transition: all 0.3s ease-in-out;
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+
+    // Metalik gölge ve parlama (görseldeki topa daha yakın)
+    box-shadow: inset 0 0 15px rgba($gold-highlight, 0.8), // İçten gelen güçlü parlama
+        inset 0 0 30px rgba($gold-base, 0.4), // Orta yoğunlukta iç parlama
+        0 4px 20px rgba(0, 0, 0, 0.6), // Daha belirgin dış gölge
+        0 0 40px rgba($gold-base, 0.4); // Dıştan yayılan soft parlama
+
+    // Üzerine gelindiğinde parlama efekti (neon butonlardaki gibi)
+    &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba($gold-highlight, 0.4), transparent); // Altın rengi parlama
+        transition: all 0.5s ease-in-out;
+        z-index: -1;
+        transform: skewX(-20deg); // Eğik parlama efekti
+    }
+
+    &:hover {
+        // Hover'da arka plan degradeyi hafifçe değiştir
+        background: linear-gradient(145deg, lighten($gold-highlight, 5%) 0%, lighten($gold-base, 5%) 40%, lighten($gold-shadow, 5%) 80%, lighten($gold-darkest, 5%) 100%);
+        color: $gold-text;
+        border-color: lighten($gold-darkest, 10%); // Kenarlık biraz açılır
+        box-shadow: inset 0 0 20px rgba($gold-highlight, 1), // Hover'da daha güçlü iç parlama
+            inset 0 0 40px rgba($gold-base, 0.6),
+            0 6px 25px rgba(0, 0, 0, 0.8), // Daha belirgin dış gölge
+            0 0 60px rgba($gold-base, 0.6); // Daha geniş ve yoğun dış parlama
+        transform: translateY(-2px); // Hafif yukarı kalkma
+
+        &::before {
+            left: 100%; // Parlama efekti sağa kaysın
+        }
+    }
+
+    // Aktif/Seçili durum (isteğe bağlı, eğer bu buton da aktif olabiliyorsa)
+    &.active {
+        background: $gold-base; // Düz altın arka plan
+        color: $gold-text;
+        border: 2px solid $gold-light; // Daha belirgin açık altın kenarlık
+        box-shadow: inset 0 0 10px rgba($gold-darkest, 0.8), // İç gölge
+            0 0 20px $gold-base, // Yoğun dış parlama
+            0 0 40px $gold-light; // Yaygın parlama
+        transform: translateY(0);
+        font-weight: 800; // Daha kalın font
+        text-shadow: 0 0 5px rgba($gold-text, 0.5); // Metin gölgesi
+        cursor: default;
+
+        &::before {
+            left: -100%;
+            transition: none;
+        }
+    }
+}
+
+// Mixinler
+@mixin flex-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+// Daha incelikli bir parlama efekti için
+@mixin soft-glow($color, $spread: 5px, $alpha: 0.6) {
+    box-shadow: 0 0 ($spread * 0.8) rgba($color, $alpha),
+        0 0 ($spread * 1.5) rgba($color, $alpha * 0.6),
+        0 0 ($spread * 2.5) rgba($color, $alpha * 0.3);
+}
+
+.container {
+    width: 100%;
+    height: 100%;
+    padding: 20px 20px 36px 26px;
+    box-sizing: border-box;
+    text-align: center;
+    position: relative;
+    z-index: 1;
+    // container'ın kendi background'u body'den gelen rengi devralır
+    // veya özel bir background-color tanımlanabilir
+    // background-color: rgba($dark-background, 0.5); // Hafif şeffaflık
+}
+
+.title {
+    // font-size: 3em;
+    // font-weight: 700;
+    // margin-bottom: 50px;
+    // letter-spacing: 3px;
+    // color: #f0f0f0; // Başlık beyaz
+    // text-shadow: 0 0 15px $title-red, 0 0 30px $title-red, 0 0 45px $title-red; // Kırmızı parlama
+
+    font-size: 24px;
+    font-weight: 700;
+    margin-top: 6px;
+    margin-bottom: 24px;
+    letter-spacing: 3px;
+    color: #f0f0f0; // Başlık rengi beyaz (mevcut)
+    // text-shadow: 0 0 15px $title-red, 0 0 30px $title-red, 0 0 45px $title-red; // Bu satırı kaldırıyoruz!
+    text-shadow: none; // Gölgelendirmeyi tamamen kaldırıyoruz.
+    height: 30px;
+    cursor: pointer;
+
+}
+
+.editable-title {
+    /* İmleç el işareti olur */
+    transition: all 0.3s ease;
+
+    &:hover {
+        color: #FFD700;
+        /* Altın tonunda hover efekti */
+        text-shadow: 0 0 8px rgba(255, 255, 255, 0.6);
+    }
+}
+
+.title-input {
+    font-size: 24px;
+    font-weight: 700;
+    margin-top: 6px;
+    margin-bottom: 24px;
+    letter-spacing: 3px;
+    color: #FFD700;
+    text-shadow: 0 0 8px rgba(255, 255, 255, 0.6);
+    background-color: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba($neon-green, 0.5);
+    border-radius: 5px;
+    padding: 5px 10px;
+    text-align: center;
+    outline: none;
+    width: 100%;
+    box-sizing: border-box;
+    height: 40px;
+    margin-top: 1px;
+    margin-bottom: 19px;
+}
+
+.title-input:focus-visible {
+    border: 2px solid #4A90E2 !important;
+    outline: #0093C9 !important;
+}
+
+.operation-btns {
+    width: 300px;
+    margin-top: 24px;
+    display: flex;
+    /* Flexbox'ı etkinleştir */
+    flex-wrap: wrap;
+    /* Öğelerin yeni satıra geçmesine izin ver */
+    justify-content: flex-start;
+    /* Öğeleri baştan itibaren sırala (isteğe bağlı, center veya space-between de olabilir) */
+    align-content: flex-start;
+    /* İçerik satırlarını baştan itibaren sırala (öğeler dolguyla sarılmadığında önemli) */
+    gap: 12px;
+    /* Öğeler arasında boşluk bırak (isteğe bağlı, kendi istediğiniz değeri ayarlayın) */
+    /* Veya row-gap ve column-gap ayrı ayrı tanımlanabilir */
+    /* row-gap: 20px; */
+    /* column-gap: 20px; */
+}
+
+.toggle_box {
+    width: 144px;
+    height: 44px;
+    position: relative;
+    background: linear-gradient(145deg, rgba(30, 35, 50, 0.9), rgba(15, 20, 35, 0.9));
+    color: #e0e0e0;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1.05em;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    transition: all 0.3s ease-in-out;
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+    box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.4),
+        0 4px 10px rgba(0, 0, 0, 0.5),
+        0 0 15px rgba($neon-green, 0.3);
+    display: flex;
+    align-items: center;
+    padding-left: 12px;
+}
+
+#label_toggle {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background-color: #ffffff;
+    background-color: #ffffff91;
+    background-color: #e0e0e0;
+    position: absolute;
+    left: 0;
+    margin-left: 14px;
+    margin-top: 9px;
+    cursor: pointer;
+    transition: left 0.3s;
+}
+
+#toggle {
+    display: none;
+}
+
+// #toggle:checked+#label_toggle {
+//     left: 166px;
+//     background-color: rgb(255, 255, 255);
+// }
+
+.toggle-active {
+    background-color: #399B3E !important;
+}
+
+.toggle-off-text {
+    color: #e0e0e0;
+    font-size: 11px;
+}
+
+.toggle-on-text {
+    color: #e0e0e0;
+    font-size: 11px;
+}
+
+.active-icon {
+    font-size: 18px;
+    color: #399B3E;
+    margin-right: 12px;
+}
+
+.blue-icon {
+    font-size: 18px;
+    color: #4A90E2;
+    margin-right: 12px;
+}
+
+.passive-white-icon {
+    font-size: 18px;
+    color: #e0e0e0;
+    margin-right: 12px;
+}
+
+.passive-icon {
+    font-size: 18px;
+    color: #CD5C5C;
+    margin-right: 12px;
+}
+
+
+.reset-icon {
+    font-size: 18px;
+    color: #FFA500;
+    color: #FFC000;
+    margin-right: 12px;
+}
+
+.reset-text {
+    color: #e0e0e0;
+    font-size: 11px;
+}
+
+.operation-btn {
+    width: 144px;
+    height: 44px;
+    position: relative;
+    background: linear-gradient(145deg, rgba(30, 35, 50, 0.9), rgba(15, 20, 35, 0.9));
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1.05em;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    transition: all 0.3s ease-in-out;
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+    box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.4),
+        0 4px 10px rgba(0, 0, 0, 0.5),
+        0 0 15px rgba($neon-green, 0.3);
+    display: flex;
+    align-items: center;
+    color: #e0e0e0;
+    font-size: 12px;
+    padding-left: 12px;
+
+    &:hover {
+        background: linear-gradient(145deg, rgba(40, 45, 60, 0.9), rgba(20, 25, 40, 0.9));
+        color: #fff;
+        border-image: linear-gradient(45deg, lighten($neon-green, 10%), $neon-green) 1;
+        box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.6),
+            0 6px 15px rgba(0, 0, 0, 0.7),
+            0 0 25px rgba($neon-green, 0.6);
+
+        &::before {
+            left: 100%;
+        }
+    }
+}
+
+
+.main-content-area {
+    display: flex;
+    /* Flexbox ile içerikleri yan yana hizala */
+    justify-content: flex-start;
+    /* İçerikleri sola hizala */
+    align-items: flex-start;
+    /* İçerikleri üste hizala */
+    gap: 15px;
+    /* Butonlar ve saha arasındaki boşluk */
+    width: 100%;
+    /* Kapsayıcı genişliği */
+    max-width: 1000px;
+    /* Maksimum genişliği koru */
+    margin: 0 auto;
+    /* Eğer main-content-area'nın kendisi de merkezlenmek istenirse */
+}
+
+.left-content {
+    width: 300px;
+}
+
+.center-content {
+    width: calc(100% - 380px);
+}
+
+.right-content {
+    width: 80px;
+    padding-top: 48px;
+}
+
+.formation-buttons {
+    flex-shrink: 0;
+    /* Butonların sıkışmasını engelle */
+    width: 200px;
+    /* Buton alanı için sabit genişlik */
+    display: grid;
+    /* Butonları grid sistemiyle düzenle */
+    grid-template-columns: 1fr 1fr;
+    /* İki eşit sütun */
+    gap: 10px;
+    /* Butonlar arası boşluk */
+    margin-bottom: 0;
+    /* Artık dikey boşluk kalmayacak */
+    justify-content: start;
+    /* Butonları grid içinde sola hizala */
+    align-content: start;
+    /* Butonları grid içinde yukarı hizala */
+
+    button {
+        // Mevcut buton stilleri (aynı kalacak)
+        background: linear-gradient(145deg, rgba(30, 35, 50, 0.9), rgba(15, 20, 35, 0.9));
+        color: #e0e0e0;
+        border: 1px solid;
+        border-image: linear-gradient(45deg, $neon-green, darken($neon-green, 20%)) 1;
+        padding: 10px 22px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        font-size: 1.05em;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+        transition: all 0.3s ease-in-out;
+        position: relative;
+        overflow: hidden;
+        z-index: 1;
+        box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.4),
+            0 4px 10px rgba(0, 0, 0, 0.5),
+            0 0 15px rgba($neon-green, 0.3);
+
+        &::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba($neon-green, 0.2), transparent);
+            transition: all 0.5s ease-in-out;
+            z-index: -1;
+            transform: skewX(-20deg);
+        }
+
+        &:hover {
+            background: linear-gradient(145deg, rgba(40, 45, 60, 0.9), rgba(20, 25, 40, 0.9));
+            color: #fff;
+            border-image: linear-gradient(45deg, lighten($neon-green, 10%), $neon-green) 1;
+            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.6),
+                0 6px 15px rgba(0, 0, 0, 0.7),
+                0 0 25px rgba($neon-green, 0.6);
+            transform: translateY(-2px);
+
+            &::before {
+                left: 100%;
+            }
+        }
+
+        &.active {
+            border: 1px solid lighten($neon-green, 15%);
+            box-shadow: inset 0 0 10px rgba($dark-background, 0.8),
+                0 0 20px $neon-green,
+                0 0 35px lighten($neon-green, 10%);
+            transform: translateY(0);
+            font-weight: 700;
+            text-shadow: 0 0 5px rgba($dark-background, 0.5);
+            cursor: default;
+
+            &::before {
+                left: -100%;
+                transition: none;
+            }
+        }
+    }
+}
+
+.pitch {
+    flex-grow: 1;
+    /* Sahanın kalan alanı doldurmasını sağla */
+    flex-shrink: 1;
+    /* Gerekirse sıkışmasına izin ver */
+    // width: 90%; // Bu satırı kaldırabiliriz, flex-grow halledecek
+    width: 516px;
+    height: 620px;
+    max-width: 550px; // Maksimum genişliğini koruyabiliriz
+    // padding-bottom: 60%; // Eğer px yerine oran kullanıyorsanız bu kalsın, aksi takdirde kaldırın
+    height: 620px; // Sabit yükseklik kullanıyorsanız bu kalsın
+    margin: 0 auto;
+    /* Saha hala kendi içinde ortalanacak */
+    // ... (Geri kalan saha stilleri aynı kalacak)
+    position: relative;
+    background-image: linear-gradient(to bottom,
+            $pitch-green 0%,
+            $pitch-green calc(100% / 8),
+            lighten($pitch-green, 8%) calc(100% / 8),
+            lighten($pitch-green, 8%) calc(200% / 8),
+            $pitch-green calc(200% / 8),
+            $pitch-green calc(300% / 8),
+            lighten($pitch-green, 8%) calc(300% / 8),
+            lighten($pitch-green, 8%) calc(400% / 8),
+            $pitch-green calc(400% / 8),
+            $pitch-green calc(500% / 8),
+            lighten($pitch-green, 8%) calc(500% / 8),
+            lighten($pitch-green, 8%) calc(600% / 8),
+            $pitch-green calc(600% / 8),
+            $pitch-green calc(700% / 8),
+            lighten($pitch-green, 8%) calc(700% / 8),
+            lighten($pitch-green, 8%) 100%);
+    background-size: 100% 100%;
+    border: 2px solid $neon-green;
+    border-radius: 10px;
+    @include soft-glow($neon-green, 15px, 0.7);
+    overflow: hidden;
+    animation: pulse-border 4s infinite alternate;
+    position: relative; // Z-index çalışması için gerekli
+    z-index: 1; // Oyuncu slotlarından daha düşük olmalı
+}
+
+.has-player-in-slot {
+    // border: none !important;
+    // box-shadow: none !important;
+    // background: linear-gradient(to bottom, #1F8E3D, #145A32);
+
+    // background-color: #4CAF50 !important;
+
+    border: 2px solid rgba(255, 255, 255, 0.8) !important;
+    background: linear-gradient(135deg, #2E8B57, #4CAF50, #66BB6A) !important;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3) !important;
+}
+
+.circle-player-img {
+    width: 95%;
+    height: 95%;
+    border-radius: 50%;
+    margin-top: -6px;
+}
+
+.circle-player-info {
+    position: absolute;
+    width: 100px;
+    bottom: -16px;
+    font-size: 13px;
+    font-weight: 500;
+    color: #fff;
+    text-shadow: 2px 2px 4px rgba(30, 35, 50, 0.9019607843);
+    text-align: center;
+
+    &.with-jersey {
+        bottom: -10px;
+    }
+}
+
+@keyframes pulse-border {
+    0% {
+        box-shadow: 0 0 3px rgba($neon-green, 0.7), 0 0 8px rgba($neon-green, 0.5), 0 0 15px rgba($neon-green, 0.3);
+    }
+
+    100% {
+        box-shadow: 0 0 6px rgba($neon-green, 0.9), 0 0 12px rgba($neon-green, 0.7), 0 0 20px rgba($neon-green, 0.5);
+    }
+}
+
+.field-lines {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: 2px solid $neon-green;
+    box-sizing: border-box;
+    border-radius: 8px;
+    @include soft-glow($neon-green, 5px, 0.9);
+}
+
+.goal-area-top,
+.goal-area-bottom {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 50%;
+    height: 20%;
+    border: 2px solid $neon-green;
+    @include soft-glow($neon-green, 5px, 0.9);
+    border-top: none;
+    border-bottom: none;
+}
+
+.goal-area-top {
+    top: 0;
+    border-bottom: 2px solid $neon-green;
+}
+
+.goal-area-bottom {
+    bottom: 0;
+    border-top: 2px solid $neon-green;
+}
+
+.center-circle {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 25%;
+    padding-bottom: 25%;
+    border: 2px solid $neon-green;
+    border-radius: 50%;
+    @include soft-glow($neon-green, 5px, 0.9);
+}
+
+.center-spot {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 1%;
+    padding-bottom: 1%;
+    background-color: $neon-green;
+    border-radius: 50%;
+    @include soft-glow($neon-green, 5px, 0.9);
+}
+
+.goal-top,
+.goal-bottom {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 12%;
+    height: 5%;
+    background-color: transparent;
+    border: 2px solid $goal-line-color;
+    @include soft-glow($goal-line-color, 10px, 0.8);
+    z-index: 2;
+    filter: brightness(1.2);
+}
+
+.goal-top {
+    top: 0;
+    border-top: none;
+    border-radius: 0 0 5px 5px;
+}
+
+.goal-bottom {
+    bottom: 0;
+    border-bottom: none;
+    border-radius: 5px 5px 0 0;
+}
+
+// .player-slot {
+//     position: absolute;
+//     width: 65px;
+//     height: 65px;
+//     background-color: $player-icon-bg;
+//     // background: linear-gradient(145deg, rgba(30, 35, 50, 1), rgba(15, 20, 35, 1));
+//     border: 2px solid $player-icon-border;
+//     border-radius: 50%;
+//     @include flex-center;
+//     font-size: 2em;
+//     color: #f0f0f0;
+//     cursor: pointer;
+//     transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+//     z-index: 3;
+//     @include soft-glow(lighten($player-icon-border, 10%), 5px, 0.5);
+//     z-index: 3; // Player slotları pitch üzerinde olmalı
+
+//     &.is-dragging {
+//         animation: none; // Çok önemli: Animasyonu tamamen durdurur
+//         // Ek olarak, sürükleme sırasında elemanın üzerinde başka beklenmedik transformasyonlar oluşuyorsa,
+//         // buraya ek bir transform resetleme denenebilir ama normalde 'animation: none' yeterli olmalı
+//         // transform: translate(-50%, -50%) !important; // Gerekirse ekle, dikkatli kullan
+//     }
+
+//     &:hover {
+//         transform: scale(1.1);
+//         box-shadow: 0 0 15px $neon-green, 0 0 30px $neon-green;
+//     }
+
+//     i {
+//         text-shadow: 0 0 5px rgba(#f0f0f0, 0.5);
+//     }
+// }
+
+/* --- PLAYER SLOT STYLES (Bu bölümdeki değişiklikler mevcut .player-slot stilini tamamen değiştirecek, eskiyi silip bunu ekleyin) --- */
+.player-slot {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer !important;
+    // transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out, border-radius 0.2s ease-in-out;
+    z-index: 3;
+
+    -webkit-user-select: none;
+    /* Safari */
+    -moz-user-select: none;
+    /* Firefox */
+    -ms-user-select: none;
+    /* Internet Explorer/Edge */
+    user-select: none;
+    /* Standart */
+
+    &.disabled {
+        pointer-events: none; // Click olaylarını iptal eder
+        opacity: 0.5; // İstersen gri göster
+        cursor: default;
+
+        &:hover {
+            background-color: #f1f1f1; // Hover efektini iptal eder
+        }
+    }
+
+    // Sürükleme başladığında forma görünümünü değiştir
+    &.is-dragging {
+        .player-jersey {
+            opacity: 0.7;
+            // transform: scale(1.05);
+        }
+
+        i.player-icon {
+            color: rgba(#222, 0.4);
+        }
+
+        /* Daire modundayken sürükleme efekti */
+        &:not(.is-jersey-mode) {
+            box-shadow: 0 0 10px $neon-green, 0 0 20px $neon-green;
+            transform: scale(1.1);
+        }
+    }
+
+    // Sürükleme devre dışıysa
+    &.drag-disabled {
+        cursor: default;
+
+        &:hover {
+            transform: none;
+            box-shadow: none;
+
+            /* Daire modunda iken hover gölgeyi kaldır */
+            .player-jersey {
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4); // Forma modunda iken normal gölgeye dön
+            }
+        }
+    }
+
+    &:hover {
+        transform: scale(1.1);
+    }
+
+
+    /* --- DAIRE GÖRÜNÜMÜ (Varsayılan veya is-jersey-mode yoksa - BU KISIMDA DEĞİŞİKLİK YOK) --- */
+    &:not(.is-jersey-mode) {
+        width: 70px;
+        /* Dairenin genişliği */
+        height: 70px;
+        /* Dairenin yüksekliği */
+        background-color: #222;
+        /* Dairenin arka plan rengi */
+        border-radius: 50%;
+        /* Dairesel şekil */
+        border: 2px solid #444;
+        /* Dairenin kenarlığı */
+        @include soft-glow(lighten(#444, 10%), 5px, 0.5);
+        /* Daire için parlama */
+
+        /* İçindeki ikon için stil */
+        i {
+            font-size: 32px !important;
+            color: $neon-green;
+            text-shadow: 0 0 5px rgba($neon-green, 0.6);
+        }
+
+        &:hover {
+            box-shadow: 0 0 15px $neon-green, 0 0 30px $neon-green;
+            /* Daire hover efekti */
+        }
+    }
+
+    /* --- FORMA GÖRÜNÜMÜ (is-jersey-mode aktifse - BU KISIM KOMPLE YENİDEN YAZILDI) --- */
+    &.is-jersey-mode {
+        width: 70px;
+        /* Formanın toplam genişliği */
+        height: 80px;
+        /* Formanın toplam yüksekliği */
+        background-color: transparent;
+        /* Arka plan yok */
+        border-radius: 0;
+        /* Artık daire değil */
+        border: none;
+        /* Kenarlık yok */
+        box-shadow: none;
+        /* Gölgeler forma elementinde olacak */
+
+        // Forma ikonunun boyutu ve rengi güncellendi
+        i.player-icon {
+            position: absolute;
+            font-size: 30px !important; // Forma içinde daha belirgin ikon
+            color: rgba(#222, 0.75); // Koyu ve hafif opak
+            z-index: 5;
+            text-shadow: 0 0 3px rgba(#fff, 0.5);
+            // İkonu formanın biraz altına kaydırabiliriz
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -35%); // Dikeyde biraz yukarı çek
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding-bottom: 14px;
+        }
+
+        /* Forma Elementleri */
+        .player-jersey {
+            position: relative;
+            width: 60px;
+            /* Formanın gövde genişliği */
+            height: 65px;
+            /* Formanın gövde yüksekliği */
+            background-color: $team-color-1;
+            /* Ana forma rengi */
+            // YENİ border-radius ile daha kompleks forma şekli
+            // Top-left | Top-right | Bottom-right | Bottom-left
+            // Yatay eğriler / Dikey eğriler
+            border-radius: 35% 35% 15% 15% / 40% 40% 10px 10px;
+            /* Daha belirgin omuz ve daha düz alt */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+            overflow: hidden;
+            z-index: 4;
+            border: 2px solid darken($team-color-1, 15%);
+            @include soft-glow($team-color-1, 8px, 0.6);
+            transition: box-shadow 0.2s ease-in-out, transform 0.2s ease-in-out;
+
+            &:hover {
+                box-shadow: 0 0 15px $neon-green, 0 0 30px $neon-green;
+            }
+        }
+
+        .neck {
+            position: absolute;
+            top: -2px;
+            /* Hafifçe dışarı taşır */
+            left: 50%;
+            transform: translateX(-50%);
+            width: 30%;
+            /* Yaka genişliği */
+            height: 10px;
+            /* Yaka yüksekliği */
+            background-color: $collar-color;
+            border-radius: 0 0 5px 5px;
+            /* Alt köşeleri yuvarlak */
+            border: 1px solid darken($collar-color, 15%);
+            z-index: 6;
+        }
+
+        .sleeve {
+            position: absolute;
+            width: 25px;
+            /* Kol genişliği artırıldı */
+            height: 20px;
+            /* Kol yüksekliği azaltıldı */
+            background-color: $sleeve-color;
+            /* Kol rengi */
+            z-index: 3;
+            border: 1px solid darken($sleeve-color, 15%);
+            // Basit radius yerine görseldeki keskin koltuk altı efekti için
+            // border-radius: 0; // Sıfırlıyoruz ve alttaki şekilleri kullanıyoruz
+            // background-clip: padding-box; // Kenarlıklarla çakışmaması için
+        }
+
+        .left-sleeve {
+            top: 15%;
+            /* Kolların dikey pozisyonu yukarı çekildi */
+            left: -10px;
+            /* Sol taraftan biraz dışarıya taşı */
+            transform: rotate(310deg);
+            /* Kollar artık düz duruyor */
+            // Şekil için daha detaylı border-radius
+            border-top-left-radius: 5px;
+            border-bottom-left-radius: 20px;
+            /* Koltuk altı eğrisi */
+            border-top-right-radius: 5px;
+            border-bottom-right-radius: 5px;
+        }
+
+        .right-sleeve {
+            top: 15%;
+            /* Kolların dikey pozisyonu yukarı çekildi */
+            right: -10px;
+            /* Sağ taraftan biraz dışarıya taşı */
+            transform: rotate(50deg);
+            /* Kollar artık düz duruyor */
+            // Şekil için daha detaylı border-radius
+            border-top-left-radius: 5px;
+            border-bottom-left-radius: 5px;
+            border-top-right-radius: 5px;
+            border-bottom-right-radius: 20px;
+            /* Koltuk altı eğrisi */
+        }
+
+
+        .stripes-container {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            display: flex;
+            /* Çubukları yan yana dizmek için */
+            justify-content: center; // Çubukları merkeze hizala
+            align-items: stretch;
+            overflow: hidden; // Çubukların jersey dışına taşmamasını sağla
+        }
+
+        .stripe {
+            width: calc(100% / 9);
+            /* 9 çubuk için eşit genişlik */
+            height: 100%;
+
+            /* Alternatif renkleri atayalım */
+            &:nth-child(even) {
+                background-color: $team-color-1; // Sarı çubuklar
+            }
+
+            &:nth-child(odd) {
+                background-color: $team-color-2; // Mavi çubuklar
+            }
+        }
+    }
+}
+
+.small-jersey-for-selection {
+    transform: scale(.7);
+}
+
+.small-jersey-for-selection:hover {
+    box-shadow: none !important;
+}
+
+.jersey-kit-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0;
+    width: 100%;
+}
+
+.jersey-number {
+    color: #fff;
+    position: absolute;
+    right: 0;
+    left: 0;
+    top: 4px;
+    bottom: 0;
+    z-index: 5;
+    text-shadow: 2px 2px 4px #1e2332e6;
+    font-size: 28px;
+    font-weight: bold;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.active-jersey {
+    box-shadow: 0 0 15px #fff, 0 0 30px #fff !important;
+}
+
+/* --- CDK Drag & Drop Animasyon Fix (BU KISIM KOMPLE YENİDEN YAZILDI) --- */
+// .cdk-drag-preview {
+//     box-sizing: border-box;
+//     // Ortak stiller
+//     box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2),
+//         0 8px 10px 1px rgba(0, 0, 0, 0.14),
+//         0 3px 14px 2px rgba(0, 0, 0, 0.12);
+//     z-index: 9999;
+//     cursor: grabbing;
+//     transform: translate(-50%, -50%) scale(1.1);
+//     opacity: 0.9;
+
+//     /* Daire görünümdeyken preview stili */
+//     &:not(.is-jersey-mode) {
+//         border-radius: 50%;
+//         background-color: lighten(#222, 10%); // Dairenin açık hali
+//         border: 2px solid $neon-green; // Dairenin kenarlığı
+
+//         .player-jersey {
+//             display: none;
+//         }
+
+//         // Forma gizle
+//         i {
+//             color: $neon-green;
+//         }
+//     }
+
+//     /* Forma görünümdeyken preview stili */
+//     &.is-jersey-mode {
+//         border-radius: 0;
+//         border: none;
+//         background-color: transparent; // Arka plan yok
+//         width: 70px; // Preview formanın toplam genişliği
+//         height: 80px; // Preview formanın toplam yüksekliği
+
+//         .player-jersey {
+//             display: block; // Forma göster
+//             background-color: $team-color-1;
+//             // Forma şekli preview'da da aynı olacak
+//             border-radius: 35% 35% 15% 15% / 40% 40% 10px 10px;
+//             width: 60px; // Normal forma boyutu
+//             height: 65px; // Normal forma boyutu
+//             border: 2px solid darken($team-color-1, 15%);
+//             box-shadow: none;
+//         }
+
+//         .neck,
+//         .sleeve,
+//         .stripes-container,
+//         .stripe {
+//             display: block; // Preview'da da bu elementlerin görünmesini sağla
+//         }
+
+//         // Preview içindeki ikonun pozisyonu ve rengi
+//         i.player-icon {
+//             position: absolute;
+//             font-size: 30px !important;
+//             color: rgba(#222, 0.5);
+//             z-index: 5;
+//             top: 50%;
+//             left: 50%;
+//             transform: translate(-50%, -35%);
+//         }
+
+//         // Preview içindeki forma detayları
+//         .neck {
+//             position: absolute;
+//             top: -2px;
+//             left: 50%;
+//             transform: translateX(-50%);
+//             width: 30%;
+//             height: 10px;
+//             background-color: $collar-color;
+//             border-radius: 0 0 5px 5px;
+//             border: 1px solid darken($collar-color, 15%);
+//             z-index: 6;
+//         }
+
+//         .sleeve {
+//             position: absolute;
+//             width: 25px;
+//             height: 20px;
+//             background-color: $sleeve-color;
+//             z-index: 3;
+//             border: 1px solid darken($sleeve-color, 15%);
+//         }
+
+//         .left-sleeve {
+//             top: 15%;
+//             left: -10px;
+//             transform: rotate(0deg);
+//             border-top-left-radius: 5px;
+//             border-bottom-left-radius: 20px;
+//             border-top-right-radius: 5px;
+//             border-bottom-right-radius: 5px;
+//         }
+
+//         .right-sleeve {
+//             top: 15%;
+//             right: -10px;
+//             transform: rotate(0deg);
+//             border-top-left-radius: 5px;
+//             border-bottom-left-radius: 5px;
+//             border-top-right-radius: 5px;
+//             border-bottom-right-radius: 20px;
+//         }
+
+//         .stripes-container {
+//             position: absolute;
+//             width: 100%;
+//             height: 100%;
+//             top: 0;
+//             left: 0;
+//             display: flex;
+//             justify-content: center;
+//             align-items: stretch;
+//             overflow: hidden;
+//         }
+
+//         .stripe {
+//             width: calc(100% / 9);
+//             height: 100%;
+
+//             &:nth-child(even) {
+//                 background-color: $team-color-1;
+//             }
+
+//             &:nth-child(odd) {
+//                 background-color: $team-color-2;
+//             }
+//         }
+//     }
+// }
+
+/* --- Responsive Ayarlamalar (Mevcut responsive ayarlarınızın içine ekleyin/değiştirin) --- */
+@media (max-width: 768px) {
+    .player-slot {
+        &:not(.is-jersey-mode) {
+            width: 60px;
+            height: 60px;
+
+            i {
+                font-size: 28px !important;
+            }
+        }
+
+        &.is-jersey-mode {
+            width: 60px; // Formanın toplam genişliği
+            height: 70px; // Formanın toplam yüksekliği
+
+            .player-jersey {
+                width: 55px; // Formanın gövde genişliği
+                height: 60px; // Formanın gövde yüksekliği
+                border-radius: 30% 30% 10% 10% / 35% 35% 8px 8px;
+                /* Responsive için ayarlandı */
+            }
+
+            .neck {
+                height: 9px;
+            }
+
+            .sleeve {
+                width: 22px;
+                height: 18px;
+                top: 15%;
+            }
+
+            i.player-icon {
+                font-size: 26px !important;
+            }
+        }
+    }
+}
+
+@media (max-width: 480px) {
+    .player-slot {
+        &:not(.is-jersey-mode) {
+            width: 50px;
+            height: 50px;
+
+            i {
+                font-size: 24px !important;
+            }
+        }
+
+        &.is-jersey-mode {
+            width: 50px; // Formanın toplam genişliği
+            height: 60px; // Formanın toplam yüksekliği
+
+            .player-jersey {
+                width: 45px; // Formanın gövde genişliği
+                height: 50px; // Formanın gövde yüksekliği
+                border-radius: 25% 25% 8% 8% / 30% 30% 6px 6px;
+                /* Responsive için ayarlandı */
+            }
+
+            .neck {
+                height: 8px;
+            }
+
+            .sleeve {
+                width: 20px;
+                height: 16px;
+                top: 14%;
+            }
+
+            i.player-icon {
+                font-size: 22px !important;
+            }
+        }
+    }
+}
+
+.player-slot i {
+    font-size: 32px !important;
+}
+
+.gk {
+    top: 85%;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.def {
+    &.def-1 {
+        top: 65%;
+        left: 15%;
+    }
+
+    &.def-2 {
+        top: 65%;
+        left: 35%;
+    }
+
+    &.def-3 {
+        top: 65%;
+        left: 65%;
+    }
+
+    &.def-4 {
+        top: 65%;
+        left: 85%;
+    }
+}
+
+.mid {
+    &.mid-1 {
+        top: 40%;
+        left: 15%;
+    }
+
+    &.mid-2 {
+        top: 40%;
+        left: 35%;
+    }
+
+    &.mid-3 {
+        top: 40%;
+        left: 65%;
+    }
+
+    &.mid-4 {
+        top: 40%;
+        left: 85%;
+    }
+}
+
+.fw {
+    &.fw-1 {
+        top: 15%;
+        left: 15%;
+    }
+
+    &.fw-2 {
+        top: 15%;
+        left: 35%;
+    }
+
+    &.fw-3 {
+        top: 15%;
+        left: 65%;
+    }
+
+    &.fw-4 {
+        top: 15%;
+        left: 85%;
+    }
+}
+
+// Alt statik kutu
+.static-box {
+    position: absolute;
+    bottom: -15%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 30%;
+    max-width: 250px;
+    height: 50px;
+    background-color: #f0f0f0;
+    border: 2px solid $dark-background;
+    border-radius: 25px;
+    @include flex-center;
+    font-size: 1.1em;
+    font-weight: 600;
+    color: $dark-background;
+    box-shadow: 0 0 10px rgba($neon-green, 0.8), 0 0 20px rgba($neon-green, 0.6), 0 0 30px rgba($neon-green, 0.4);
+    z-index: 4;
+    text-shadow: 0 0 2px rgba($dark-background, 0.3);
+    animation: float 3s ease-in-out infinite alternate;
+    z-index: 2; // Pitch üzerinde ama oyunculardan aşağıda
+}
+
+.formation-buttons {
+    display: flex;
+    // justify-content: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    width: 300px;
+
+    button {
+        background: linear-gradient(145deg, rgba(30, 35, 50, 0.9), rgba(15, 20, 35, 0.9));
+        color: #e0e0e0;
+        border: 1px solid;
+        border-image: linear-gradient(45deg, $neon-green, darken($neon-green, 20%)) 1;
+        border-radius: 8px;
+        cursor: pointer;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        font-size: 12px;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+        transition: all 0.3s ease-in-out;
+        position: relative;
+        overflow: hidden;
+        z-index: 1;
+        width: 92px;
+        height: 44px;
+        // İç gölge ve dış hafif parlama
+        box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.4),
+            0 4px 10px rgba(0, 0, 0, 0.5),
+            0 0 15px rgba($neon-green, 0.3);
+
+        // Buton üzerine gelindiğinde neon animasyon efekti
+        &::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba($neon-green, 0.2), transparent);
+            transition: all 0.5s ease-in-out;
+            z-index: -1;
+            transform: skewX(-20deg); // Eğik parlama efekti
+        }
+
+        &:hover {
+            background: linear-gradient(145deg, rgba(40, 45, 60, 0.9), rgba(20, 25, 40, 0.9));
+            color: #fff;
+            border-image: linear-gradient(45deg, lighten($neon-green, 10%), $neon-green) 1;
+            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.6),
+                0 6px 15px rgba(0, 0, 0, 0.7),
+                0 0 25px rgba($neon-green, 0.6);
+            transform: translateY(-2px); // Hafif yukarı kalkma
+
+            &::before {
+                left: 100%; // Parlama efekti sağa kaysın
+            }
+        }
+
+        // Aktif buton stili
+        &.active {
+            // background: linear-gradient(145deg, $neon-green, darken($neon-green, 15%));
+            // color: $dark-background;
+            border: 1px solid lighten($neon-green, 15%);
+            box-shadow: inset 0 0 10px rgba($dark-background, 0.8),
+                0 0 20px $neon-green,
+                0 0 35px lighten($neon-green, 10%);
+            transform: translateY(0); // Varsa hover'daki kalkmayı iptal et
+            text-shadow: 0 0 5px rgba($dark-background, 0.5); // Hafif metin gölgesi
+            cursor: default; // Aktif butonda imleç değişmesin
+
+            &::before {
+                left: -100%; // Parlama animasyonunu sıfırla
+                transition: none; // Geçişi devre dışı bırak
+            }
+        }
+    }
+}
+
+@keyframes float {
+    0% {
+        transform: translateX(-50%) translateY(0px);
+    }
+
+    50% {
+        transform: translateX(-50%) translateY(-8px);
+    }
+
+    100% {
+        transform: translateX(-50%) translateY(0px);
+    }
+}
+
+
+// Responsive Ayarlamalar
+@media (max-width: 768px) {
+    .title {
+        font-size: 2.2em;
+        margin-bottom: 30px;
+    }
+
+    .player-slot {
+        width: 55px;
+        height: 55px;
+        font-size: 1.8em;
+    }
+
+    .static-box {
+        width: 50%;
+        max-width: none;
+        font-size: 0.9em;
+        height: 45px;
+    }
+
+    .left-content {
+        display: none;
+    }
+
+    .center-content {
+        width: 100%;
+    }
+
+    .right-content {
+        display: none;
+    }
+
+    :host {
+        margin-top: 50px;
+    }
+
+    .pitch {
+        max-width: 310px;
+        height: 400px;
+    }
+}
+
+@media (max-width: 480px) {
+    .title {
+        font-size: 1.8em;
+        margin-bottom: 20px;
+    }
+
+    .player-slot {
+        width: 45px;
+        height: 45px;
+        font-size: 1.5em;
+    }
+
+    .static-box {
+        width: 70%;
+        font-size: 0.8em;
+        height: 40px;
+    }
+}

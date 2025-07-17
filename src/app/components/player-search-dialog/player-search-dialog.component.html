@@ -1,0 +1,25 @@
+<div>
+    <input id="playerSearchInput" placeholder="Oyuncu Ara" class="player-search-input" type="text"
+        (ngModelChange)="onSearchPlayer()" [(ngModel)]="playerSearchText">
+
+    <div class="player-result-wrapper">
+        <div class="player-result-item" *ngFor="let player of playerSearchResult?.players"
+            (click)="selectPlayerFromResultList(player)">
+            <div class="img-wrapper">
+                <img [src]="player.imgSrc">
+            </div>
+            <div class="player-name">{{ player.knownName}}</div>
+
+            <div class="position-list">
+                <div *ngFor="let position of player.positions; let last = last">
+                    <span *ngIf="position">{{ position }}<ng-container *ngIf="!last">,</ng-container></span>
+                </div>
+            </div>
+
+            <div class="flag-wrapper">
+                <img [src]="player.nationalitySrc" width="30" height="30">
+                <img [src]="player.clubSrc" class="m-l-6" width="32" height="32">
+            </div>
+        </div>
+    </div>
+</div>
