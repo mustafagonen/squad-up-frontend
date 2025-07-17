@@ -176,7 +176,7 @@ export class MgTacticalBoardComponent implements OnInit {
 
     changedPlayerIdList: any = [];
 
-    selectedFormationName: string = '4-4-2'; // Default Formation
+    selectedFormation: string = '4-4-2'; // Default Formation
 
     teamJerseyTemplates = [
         {
@@ -253,13 +253,13 @@ export class MgTacticalBoardComponent implements OnInit {
     ) { }
 
     ngOnInit() {
-        this.setFormation(this.selectedFormationName);
+        this.setFormation(this.selectedFormation);
         this.onPlayerTest();
     }
 
     // Set Selected Formation
     setFormation(formationName: string) {
-        this.selectedFormationName = formationName;
+        this.selectedFormation = formationName;
         this.calculatePlayerPositions();
         this.onResetPlayersTransform();
     }
@@ -268,10 +268,10 @@ export class MgTacticalBoardComponent implements OnInit {
     calculatePlayerPositions() {
         const beforeChangeFormation = this.players;
         this.players = [];
-        const formationData = this.formations[this.selectedFormationName];
+        const formationData = this.formations[this.selectedFormation];
 
         if (!formationData) {
-            console.warn(`Diziliş bulunamadı: ${this.selectedFormationName}`);
+            console.warn(`Diziliş bulunamadı: ${this.selectedFormation}`);
             return;
         }
 
@@ -315,22 +315,22 @@ export class MgTacticalBoardComponent implements OnInit {
         ];
 
         // Detaylı Formasyonlar Config (Sahanın genel yönüne göre ayarlandı)
-        if (this.selectedFormationName === '4-4-2') {
+        if (this.selectedFormation === '4-4-2') {
             positionMap['mid'] = [
                 { top: 11, left: 55 }, { top: 37, left: 50 }, { top: 63, left: 50 }, { top: 89, left: 55 } // Eski top 45,50,50,45 --> 100-45=55, 100-50=50
             ];
             positionMap['fw'] = [
                 { top: 37, left: 80 }, { top: 63, left: 80 } // Eski top 20 --> 100-20=80
             ];
-        } else if (this.selectedFormationName === '4-3-3') {
+        } else if (this.selectedFormation === '4-3-3') {
             positionMap['mid-c'] = [
                 { top: 25, left: 55 }, { top: 50, left: 50 }, { top: 75, left: 55 } // Eski top 45,50,45 --> 100-45=55, 100-50=50
             ];
-        } else if (this.selectedFormationName === '4-3-3-(2)') {
+        } else if (this.selectedFormation === '4-3-3-(2)') {
             positionMap['mid-c'] = [
-                { top: 25, left: 50 }, { top: 50, left: 60 }, { top: 75, left: 50 } // Eski top 50,40,50 --> 100-50=50, 100-40=60
+                { top: 25, left: 50 }, { top: 50, left: 55 }, { top: 75, left: 50 } // Eski top 50,40,50 --> 100-50=50, 100-40=60
             ];
-        } else if (this.selectedFormationName === '3-5-2') {
+        } else if (this.selectedFormation === '3-5-2') {
             positionMap['mid-wb'] = [
                 { top: 8, left: 55 }, { top: 92, left: 55 } // Eski top 45 --> 100-45=55
             ];
@@ -340,7 +340,7 @@ export class MgTacticalBoardComponent implements OnInit {
             positionMap['fw'] = [
                 { top: 37, left: 80 }, { top: 63, left: 80 } // Eski top 20 --> 100-20=80
             ];
-        } else if (this.selectedFormationName === '4-2-3-1') {
+        } else if (this.selectedFormation === '4-2-3-1') {
             positionMap['mid-c'] = [
                 { top: 37, left: 45 }, { top: 63, left: 45 } // Eski top 55 --> 100-55=45
             ];
@@ -350,7 +350,7 @@ export class MgTacticalBoardComponent implements OnInit {
             positionMap['fw'] = [
                 { top: 50, left: 87 } // Eski top 13 --> 100-13=87
             ];
-        } else if (this.selectedFormationName === '4-1-4-1') {
+        } else if (this.selectedFormation === '4-1-4-1') {
             positionMap['mid-dm'] = [
                 { top: 50, left: 45 } // Eski top 55 --> 100-55=45
             ];
@@ -363,14 +363,14 @@ export class MgTacticalBoardComponent implements OnInit {
             positionMap['fw'] = [
                 { top: 50, left: 87 } // Eski top 13 --> 100-13=87
             ];
-        } else if (this.selectedFormationName === '3-4-3') {
+        } else if (this.selectedFormation === '3-4-3') {
             positionMap['mid-wb'] = [
                 { top: 8, left: 55 }, { top: 92, left: 55 } // Eski top 45 --> 100-45=55
             ];
             positionMap['mid-c'] = [
                 { top: 37, left: 50 }, { top: 63, left: 50 } // Eski top 50 --> 100-50=50
             ];
-        } else if (this.selectedFormationName === '5-3-2') {
+        } else if (this.selectedFormation === '5-3-2') {
             positionMap['def'] = [
                 { top: 8, left: 27 }, { top: 28, left: 23 }, { top: 50, left: 23 }, { top: 72, left: 23 }, { top: 92, left: 27 } // Eski top 73,77,77,77,73 --> 100-73=27, 100-77=23
             ];
@@ -380,7 +380,7 @@ export class MgTacticalBoardComponent implements OnInit {
             positionMap['fw'] = [
                 { top: 37, left: 80 }, { top: 63, left: 80 } // Eski top 20 --> 100-20=80
             ];
-        } else if (this.selectedFormationName === '4-5-1') {
+        } else if (this.selectedFormation === '4-5-1') {
             positionMap['mid-dm'] = [
                 { top: 50, left: 45 } // Eski top 55 --> 100-55=45
             ];
@@ -393,7 +393,7 @@ export class MgTacticalBoardComponent implements OnInit {
             positionMap['fw'] = [
                 { top: 50, left: 87 } // Eski top 13 --> 100-13=87
             ];
-        } else if (this.selectedFormationName === '4-3-2-1') {
+        } else if (this.selectedFormation === '4-3-2-1') {
             positionMap['mid-c'] = [
                 { top: 25, left: 50 }, { top: 50, left: 45 }, { top: 75, left: 50 } // Eski top 50,55,50 --> 100-50=50, 100-55=45
             ];
@@ -403,7 +403,7 @@ export class MgTacticalBoardComponent implements OnInit {
             positionMap['fw'] = [
                 { top: 50, left: 87 } // Eski top 13 --> 100-13=87
             ];
-        } else if (this.selectedFormationName === '3-6-1') {
+        } else if (this.selectedFormation === '3-6-1') {
             positionMap['mid-dm'] = [
                 { top: 37, left: 45 }, { top: 63, left: 45 } // Eski top 55 --> 100-55=45
             ];
@@ -416,7 +416,7 @@ export class MgTacticalBoardComponent implements OnInit {
             positionMap['fw'] = [
                 { top: 50, left: 87 } // Eski top 13 --> 100-13=87
             ];
-        } else if (this.selectedFormationName === '4-2-2-2') {
+        } else if (this.selectedFormation === '4-2-2-2') {
             positionMap['mid-c'] = [
                 { top: 42, left: 45 }, { top: 58, left: 45 } // Eski top 55 --> 100-55=45
             ];
@@ -426,7 +426,7 @@ export class MgTacticalBoardComponent implements OnInit {
             positionMap['fw'] = [
                 { top: 37, left: 80 }, { top: 63, left: 80 } // Eski top 20 --> 100-20=80
             ];
-        } else if (this.selectedFormationName === '3-2-4-1') {
+        } else if (this.selectedFormation === '3-2-4-1') {
             positionMap['mid-dm'] = [
                 { top: 37, left: 45 }, { top: 63, left: 45 } // Eski top 55 --> 100-55=45
             ];
@@ -439,7 +439,7 @@ export class MgTacticalBoardComponent implements OnInit {
             positionMap['fw'] = [
                 { top: 50, left: 87 } // Eski top 13 --> 100-13=87
             ];
-        } else if (this.selectedFormationName === '4-4-1-1') {
+        } else if (this.selectedFormation === '4-4-1-1') {
             positionMap['mid-w'] = [
                 { top: 11, left: 50 }, { top: 89, left: 50 } // Eski top 50 --> 100-50=50
             ];
@@ -452,7 +452,7 @@ export class MgTacticalBoardComponent implements OnInit {
             positionMap['fw'] = [
                 { top: 50, left: 87 } // Eski top 13 --> 100-13=87
             ];
-        } else if (this.selectedFormationName === '4-3-1-2') {
+        } else if (this.selectedFormation === '4-3-1-2') {
             positionMap['mid-dm'] = [
                 { top: 50, left: 45 } // Eski top 55 --> 100-55=45
             ];
@@ -465,7 +465,7 @@ export class MgTacticalBoardComponent implements OnInit {
             positionMap['fw'] = [
                 { top: 37, left: 87 }, { top: 63, left: 87 } // Eski top 13 --> 100-13=87
             ];
-        } else if (this.selectedFormationName === '3-4-2-1') {
+        } else if (this.selectedFormation === '3-4-2-1') {
             positionMap['mid-wb'] = [
                 { top: 10, left: 55 }, { top: 90, left: 55 } // Eski top 45 --> 100-45=55
             ];
@@ -497,7 +497,7 @@ export class MgTacticalBoardComponent implements OnInit {
                     isDragging: false // Bu özellik olmalı
                 });
             } else {
-                console.warn(`Pozisyon verisi eksik veya fazla: Tip - ${playerDef.type}, Sıra - ${playerDef.order} for formation ${this.selectedFormationName}`);
+                console.warn(`Pozisyon verisi eksik veya fazla: Tip - ${playerDef.type}, Sıra - ${playerDef.order} for formation ${this.selectedFormation}`);
             }
 
 
@@ -529,7 +529,9 @@ export class MgTacticalBoardComponent implements OnInit {
         const dialog = this._dialog.open(MgPlayerSearchComponent, {
             disableClose: false,
             width: '500px',
+            maxWidth: '80vh',
             height: '500px',
+            maxHeight: '90vw',
             panelClass: 'dark-dialog-panel'
         });
 
@@ -560,7 +562,7 @@ export class MgTacticalBoardComponent implements OnInit {
     }
 
     // Export As Image
-    async exportCaptureAsImage() {
+    async exportCaptureAsImageClick() {
         const element = this.pitchBoundaryForExport.nativeElement;
 
         try {

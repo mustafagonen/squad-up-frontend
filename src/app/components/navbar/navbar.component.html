@@ -11,7 +11,7 @@
             <ul>
                 <li>
                     <a routerLink="/squad-builder"
-                        [ngClass]="{'active-menu': selectedMenu == '/squad-builder' || selectedMenu == '/' }">
+                        [ngClass]="{'active-menu': selectedMenu.includes('/squad-builder') || selectedMenu == '/' }">
                         {{'Kadro Kur' | translate}}
                     </a>
                 </li>

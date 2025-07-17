@@ -3,14 +3,14 @@ export const environment = {
   production: false,
   appVersion: 'v1.0.1',
   apiUrl: 'http://localhost:3000/api',
+  appUrl: 'http://localhost:1234/',
   firebaseConfig: {
-    apiKey: "AIzaSyDPVgRtMXISSvQvT5u7B50CWveQleOOga0",
-    authDomain: "budgetmore-9829a.firebaseapp.com",
-    databaseURL: "https://budgetmore-9829a-default-rtdb.firebaseio.com",
-    projectId: "budgetmore-9829a",
-    storageBucket: "budgetmore-9829a.appspot.com",
-    messagingSenderId: "317982292168",
-    appId: "1:317982292168:web:81b2d7f050bfffd4094dfd",
-    measurementId: "G-TG5TP2QP9S"
+    apiKey: "AIzaSyC-aPdMUluPdikINF187USLR8nzGFQ27w8",
+    authDomain: "tactical-6d273.firebaseapp.com",
+    projectId: "tactical-6d273",
+    storageBucket: "tactical-6d273.firebasestorage.app",
+    messagingSenderId: "119406720368",
+    appId: "1:119406720368:web:5964489020e95111444bb5",
+    measurementId: "G-YJW9W1XBSZ"
   }
 };

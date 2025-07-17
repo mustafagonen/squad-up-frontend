@@ -222,7 +222,7 @@ $subtle-red-glow: #FF6347; // Hafif, domates kırmızısı gibi bir parlama reng
     /* column-gap: 20px; */
 }
 
-.toggle_box {
+.toggle-box {
     width: 144px;
     height: 44px;
     position: relative;
@@ -245,7 +245,7 @@ $subtle-red-glow: #FF6347; // Hafif, domates kırmızısı gibi bir parlama reng
     padding-left: 12px;
 }
 
-#label_toggle {
+#label-toggle {
     width: 28px;
     height: 28px;
     border-radius: 50%;
@@ -264,7 +264,7 @@ $subtle-red-glow: #FF6347; // Hafif, domates kırmızısı gibi bir parlama reng
     display: none;
 }
 
-// #toggle:checked+#label_toggle {
+// #toggle:checked+#label-toggle {
 //     left: 166px;
 //     background-color: rgb(255, 255, 255);
 // }
@@ -273,12 +273,12 @@ $subtle-red-glow: #FF6347; // Hafif, domates kırmızısı gibi bir parlama reng
     background-color: #399B3E !important;
 }
 
-.toggle-off-text {
+.operation-btn-off-text {
     color: #e0e0e0;
     font-size: 11px;
 }
 
-.toggle-on-text {
+.operation-btn-on-text {
     color: #e0e0e0;
     font-size: 11px;
 }
@@ -292,7 +292,7 @@ $subtle-red-glow: #FF6347; // Hafif, domates kırmızısı gibi bir parlama reng
 .blue-icon {
     font-size: 18px;
     color: #4A90E2;
-    margin-right: 12px;
+    margin-right: 8px;
 }
 
 .passive-white-icon {
@@ -312,7 +312,7 @@ $subtle-red-glow: #FF6347; // Hafif, domates kırmızısı gibi bir parlama reng
     font-size: 18px;
     color: #FFA500;
     color: #FFC000;
-    margin-right: 12px;
+    margin-right: 7px;
 }
 
 .reset-text {
@@ -519,16 +519,23 @@ $subtle-red-glow: #FF6347; // Hafif, domates kırmızısı gibi bir parlama reng
 
 .circle-player-info {
     position: absolute;
-    width: 100px;
-    bottom: -16px;
-    font-size: 13px;
+    width: 90px;
+    bottom: -25px;
+    font-size: 12px;
     font-weight: 500;
     color: #fff;
     text-shadow: 2px 2px 4px rgba(30, 35, 50, 0.9019607843);
     text-align: center;
+    // background-color: rgba(0, 0, 0, 0.9);
+    background: linear-gradient(145deg, rgba(30, 35, 50, .95), rgba(15, 20, 35, .95));
+    padding: 2px;
+    border-radius: 4px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 
     &.with-jersey {
-        bottom: -10px;
+        bottom: -15px;
     }
 }
 
@@ -626,7 +633,7 @@ $subtle-red-glow: #FF6347; // Hafif, domates kırmızısı gibi bir parlama reng
        yatay sahada da yaklaşık olarak o oranı yakalamaya çalışın.
        Örneğin, %5 genişlik ve %12 yükseklik deneyebiliriz. */
     width: 5%;
-    height: 12%;
+    height: 21%;
     background-color: transparent;
     border: 2px solid $goal-line-color;
     @include soft-glow($goal-line-color, 10px, 0.8);
@@ -757,9 +764,9 @@ $subtle-red-glow: #FF6347; // Hafif, domates kırmızısı gibi bir parlama reng
 
     /* --- DAIRE GÖRÜNÜMÜ (Varsayılan veya is-jersey-mode yoksa - BU KISIMDA DEĞİŞİKLİK YOK) --- */
     &:not(.is-jersey-mode) {
-        width: 70px;
+        width: 50px;
         /* Dairenin genişliği */
-        height: 70px;
+        height: 50px;
         /* Dairenin yüksekliği */
         background-color: #222;
         /* Dairenin arka plan rengi */
@@ -772,7 +779,7 @@ $subtle-red-glow: #FF6347; // Hafif, domates kırmızısı gibi bir parlama reng
 
         /* İçindeki ikon için stil */
         i {
-            font-size: 32px !important;
+            font-size: 20px !important;
             color: $neon-green;
             text-shadow: 0 0 5px rgba($neon-green, 0.6);
         }
@@ -785,9 +792,9 @@ $subtle-red-glow: #FF6347; // Hafif, domates kırmızısı gibi bir parlama reng
 
     /* --- FORMA GÖRÜNÜMÜ (is-jersey-mode aktifse - BU KISIM KOMPLE YENİDEN YAZILDI) --- */
     &.is-jersey-mode {
-        width: 70px;
+        width: 50px;
         /* Formanın toplam genişliği */
-        height: 80px;
+        height: 60px;
         /* Formanın toplam yüksekliği */
         background-color: transparent;
         /* Arka plan yok */
@@ -1110,8 +1117,8 @@ $subtle-red-glow: #FF6347; // Hafif, domates kırmızısı gibi bir parlama reng
 @media (max-width: 768px) {
     .player-slot {
         &:not(.is-jersey-mode) {
-            width: 60px;
-            height: 60px;
+            width: 30px;
+            height: 30px;
 
             i {
                 font-size: 28px !important;
@@ -1119,12 +1126,12 @@ $subtle-red-glow: #FF6347; // Hafif, domates kırmızısı gibi bir parlama reng
         }
 
         &.is-jersey-mode {
-            width: 60px; // Formanın toplam genişliği
-            height: 70px; // Formanın toplam yüksekliği
+            width: 40px; // Formanın toplam genişliği
+            height: 50px; // Formanın toplam yüksekliği
 
             .player-jersey {
-                width: 55px; // Formanın gövde genişliği
-                height: 60px; // Formanın gövde yüksekliği
+                width: 45px; // Formanın gövde genişliği
+                height: 55px; // Formanın gövde yüksekliği
                 border-radius: 30% 30% 10% 10% / 35% 35% 8px 8px;
                 /* Responsive için ayarlandı */
             }
@@ -1186,7 +1193,7 @@ $subtle-red-glow: #FF6347; // Hafif, domates kırmızısı gibi bir parlama reng
 }
 
 .player-slot i {
-    font-size: 32px !important;
+    font-size: 20px !important;
 }
 
 .gk {
@@ -1378,9 +1385,20 @@ $subtle-red-glow: #FF6347; // Hafif, domates kırmızısı gibi bir parlama reng
 
 // Responsive Ayarlamalar
 @media (max-width: 768px) {
+
+    .container {
+        padding: 10px 12px;
+    }
+
     .title {
         font-size: 2.2em;
         margin-bottom: 30px;
+    }
+
+    .title-input {
+        font-size: 20px;
+        padding: 2px 10px;
+        height: 30px;
     }
 
     .player-slot {
@@ -1420,8 +1438,17 @@ $subtle-red-glow: #FF6347; // Hafif, domates kırmızısı gibi bir parlama reng
 
 @media (max-width: 480px) {
     .title {
-        font-size: 1.8em;
-        margin-bottom: 20px;
+        font-size: 20px;
+        margin-top: 0 !important;
+        margin-bottom: 6px;
+    }
+
+    .title-input {
+        font-size: 20px;
+        padding: 2px 10px;
+        height: 30px;
+        margin-bottom: 9px;
+        margin-top: -3px;
     }
 
     .player-slot {

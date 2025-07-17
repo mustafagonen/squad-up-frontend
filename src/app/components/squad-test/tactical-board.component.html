@@ -98,26 +98,26 @@
 
             <div class="formation-buttons">
                 <button *ngFor="let formation of formationLabels" (click)="setFormation(formation.value)"
-                    [class.active]="selectedFormationName === formation.value">
+                    [class.active]="selectedFormation === formation.value">
                     {{formation.label}}
                 </button>
             </div>
 
             <div class="operation-btns">
-                <div class="toggle_box" (click)="isDragEnabled = !isDragEnabled">
+                <div class="operation-btn" (click)="isDragEnabled = !isDragEnabled">
                     <input type="checkbox" [(ngModel)]="isDragEnabled" (click)="$event.stopPropagation()" id="toggle" />
-                    <!-- <label for="toggle" (click)="$event.stopPropagation()" id="label_toggle"
+                    <!-- <label for="toggle" (click)="$event.stopPropagation()" id="label-toggle"
                         [ngClass]="{'toggle-active': isDragEnabled}"></label> -->
 
                     <i *ngIf="isDragEnabled" class="fa fa-unlock active-icon"></i>
                     <i *ngIf="!isDragEnabled" class="fa fa-lock passive-icon"></i>
 
                     <!-- Serbest -->
-                    <p class="toggle-on-text" *ngIf="isDragEnabled">Sürüklenebilir</p>
-                    <p class="toggle-off-text" *ngIf="!isDragEnabled">Taktiksel (Kilitli)</p>
+                    <p class="operation--on-text" *ngIf="isDragEnabled">Sürüklenebilir</p>
+                    <p class="operation-btn-off-text" *ngIf="!isDragEnabled">Taktiksel (Kilitli)</p>
                 </div>
 
-                <div class="operation-btn" (click)="setFormation(selectedFormationName)">
+                <div class="operation-btn" (click)="setFormation(selectedFormation)">
                     <i class="fa fa-undo reset-icon"></i>
                     <p class="reset-text">Sıfırla (Başa Dön)</p>
                 </div>
@@ -127,19 +127,19 @@
                     <p class="reset-text">Geri</p>
                 </div> -->
 
-                <div class="toggle_box" (click)="isJerseyMode = !isJerseyMode">
+                <div class="operation-btn" (click)="isJerseyMode = !isJerseyMode">
                     <input type="checkbox" [(ngModel)]="isJerseyMode" (click)="$event.stopPropagation()" id="toggle" />
 
                     <i *ngIf="isJerseyMode" class="fa fa-tshirt active-icon"></i>
                     <i *ngIf="!isJerseyMode" class="fa fa-circle-plus passive-white-icon"></i>
 
-                    <p class="toggle-on-text" *ngIf="isJerseyMode">Forma</p>
-                    <p class="toggle-off-text" *ngIf="!isJerseyMode">Geleneksel</p>
+                    <p class="operation--on-text" *ngIf="isJerseyMode">Forma</p>
+                    <p class="operation-btn-off-text" *ngIf="!isJerseyMode">Geleneksel</p>
                 </div>
 
-                <div class="toggle_box" (click)="exportCaptureAsImage()">
+                <div class="operation-btn" (click)="exportCaptureAsImageClick()">
                     <i class="fa fa-image blue-icon"></i>
-                    <p class="toggle-off-text">Dışa Aktar</p>
+                    <p class="operation-btn-off-text">Dışa Aktar</p>
                 </div>
 
                 <!-- <i n class="fas fa-plus player-icon"></i> -->

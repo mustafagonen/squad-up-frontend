@@ -1,10 +1,20 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, inject, OnInit, ViewChild } from '@angular/core';
 import { SharedModule } from '../../shared.module';
 import { DragDropModule, CdkDragEnd, CdkDragStart } from '@angular/cdk/drag-drop';
 import { PlayerService } from '../../services/player.service';
 import { MatDialog } from '@angular/material/dialog';
 import { MgPlayerSearchComponent } from '../player-search-dialog/player-search-dialog.component';
 import html2canvas from 'html2canvas';
+import { initializeApp } from 'firebase/app';
+import { collection, doc, getDocs, getFirestore, query, serverTimestamp, setDoc, where } from 'firebase/firestore';
+import { environment } from '../../../environments/environment';
+import { Firestore } from '@angular/fire/firestore';
+import * as uuid from 'uuid';
+import { nanoid } from 'nanoid';
+import { SquadModel } from '../../models/squad.model';
+import { ActivatedRoute } from '@angular/router';
+import { toPng } from 'html-to-image';
+import domtoimage from 'dom-to-image';
 
 @Component({
     selector: 'mg-squad-builder',
@@ -19,10 +29,17 @@ import html2canvas from 'html2canvas';
 
 export class MgSquadBuilderComponent implements OnInit {
 
+    firestore = inject(Firestore);
+    fireBaseApp = initializeApp(environment.firebaseConfig);
+    fireDataBase = getFirestore(this.fireBaseApp);
+
     @ViewChild('teamNameInput') teamNameInput!: ElementRef;
     @ViewChild('pitchBoundaryForExport') pitchBoundaryForExport!: ElementRef;
 
     // States Variables
+    isLoading = false;
+    isSquadFromUrl = false;
+    squadFirebaseId: any;
     showComponent = true;
     isDragEnabled: boolean = false;
     hasDragging: boolean = false;
@@ -165,7 +182,7 @@ export class MgSquadBuilderComponent implements OnInit {
     };
 
     players: {
-        id: number,
+        id: any,
         type: string,
         style: any,
         position: { top: any, left: any, transform: string },
@@ -176,7 +193,7 @@ export class MgSquadBuilderComponent implements OnInit {
 
     changedPlayerIdList: any = [];
 
-    selectedFormationName: string = '4-4-2'; // Default Formation
+    selectedFormation: string = '4-4-2';
 
     teamJerseyTemplates = [
         {
@@ -247,42 +264,84 @@ export class MgSquadBuilderComponent implements OnInit {
 
     selectedTeamJerseyTemplate = this.teamJerseyTemplates[0];
 
+    squadModel = new SquadModel();
+
     constructor(
         private _dialog: MatDialog,
-        private _playerService: PlayerService
+        private _playerService: PlayerService,
+        private _activatedRoute: ActivatedRoute,
     ) { }
 
-    ngOnInit() {
-        this.setFormation(this.selectedFormationName);
-        this.onPlayerTest();
+    async ngOnInit() {
+        this.isLoading = true;
+        await this.checkSquadFromUrlOrNot()
+        await this.setFormation(this.selectedFormation);
+        this.isLoading = false;
+    }
+
+    async checkSquadFromUrlOrNot() {
+        this._activatedRoute.paramMap.subscribe(async (params) => {
+            this.squadFirebaseId = params.get('id');
+            if (this.squadFirebaseId) {
+                const result = await this.getSquadFromUrl(this.squadFirebaseId);
+
+                if (result && result?.length > 0) {
+                    console.log('girme');
+
+                    this.isSquadFromUrl = true;
+                    this.players = result[0].data['players'];
+                    this.selectedFormation = result[0].data['formation'];
+                    this.isJerseyMode = result[0].data['isJerseyMode'];
+                    this.selectedTeamJerseyTemplate = result[0].data['teamJerseyTemplate'];
+                }
+
+                else {
+                    alert('kadro bulunamadı');
+                    this.isSquadFromUrl = false;
+                }
+            }
+            else {
+                this.isSquadFromUrl = false;
+            }
+
+        });
+    }
+
+    async getSquadFromUrl(squadId: any) {
+        if (!squadId) { return; }
+        return (
+            await getDocs(query(collection(this.firestore, 'squad'), where("id", "==", squadId)))
+        ).docs.map((items) => {
+            return { id: items.id, data: items.data() }
+        });
     }
 
     // Set Selected Formation
-    setFormation(formationName: string) {
-        this.selectedFormationName = formationName;
-        this.calculatePlayerPositions();
-        this.onResetPlayersTransform();
+    async setFormation(formationName: string, resetAlsoPlayers?: any) {
+        this.selectedFormation = formationName;
+        await this.calculatePlayerPositions(resetAlsoPlayers);
+        await this.onResetPlayersTransform();
     }
 
     // Set Players Position With Formations
-    calculatePlayerPositions() {
+    async calculatePlayerPositions(alsoResetPlayers?: any) {
         const beforeChangeFormation = this.players;
         this.players = [];
-        const formationData = this.formations[this.selectedFormationName];
+        const formationData = this.formations[this.selectedFormation];
 
         if (!formationData) {
-            console.warn(`Diziliş bulunamadı: ${this.selectedFormationName}`);
+            console.warn(`Diziliş bulunamadı: ${this.selectedFormation}`);
             return;
         }
 
         const positionMap: { [type: string]: { top: number, left: number }[] } = {};
 
-        positionMap['gk'] = [{ top: 92, left: 50 }];
+        positionMap['gk'] = [{ top: 90, left: 50 }];
         positionMap['def'] = [
-            { top: 73, left: 11 }, { top: 77, left: 37 }, { top: 77, left: 63 }, { top: 73, left: 89 }
+            { top: 73, left: 11 }, { top: 75, left: 37 }, { top: 75, left: 63 }, { top: 73, left: 89 }
         ];
         positionMap['def-cb'] = [
-            { top: 77, left: 25 }, { top: 77, left: 50 }, { top: 77, left: 75 }
+            { top: 75, left: 25 }, { top: 75, left: 50 }, { top: 75, left: 75 }
         ];
         positionMap['def-wb'] = [
             { top: 60, left: 8 }, { top: 60, left: 92 }
@@ -314,22 +373,22 @@ export class MgSquadBuilderComponent implements OnInit {
         ];
 
         // Detailed Formations Config
-        if (this.selectedFormationName === '4-4-2') {
+        if (this.selectedFormation === '4-4-2') {
             positionMap['mid'] = [
                 { top: 45, left: 11 }, { top: 50, left: 37 }, { top: 50, left: 63 }, { top: 45, left: 89 }
             ];
             positionMap['fw'] = [
                 { top: 20, left: 37 }, { top: 20, left: 63 }
             ];
-        } else if (this.selectedFormationName === '4-3-3') {
+        } else if (this.selectedFormation === '4-3-3') {
             positionMap['mid-c'] = [
                 { top: 45, left: 25 }, { top: 50, left: 50 }, { top: 45, left: 75 }
             ];
-        } else if (this.selectedFormationName === '4-3-3-(2)') {
+        } else if (this.selectedFormation === '4-3-3-(2)') {
             positionMap['mid-c'] = [
-                { top: 50, left: 25 }, { top: 40, left: 50 }, { top: 50, left: 75 }
+                { top: 50, left: 25 }, { top: 45, left: 50 }, { top: 50, left: 75 }
             ];
-        } else if (this.selectedFormationName === '3-5-2') {
+        } else if (this.selectedFormation === '3-5-2') {
             positionMap['mid-wb'] = [
                 { top: 45, left: 8 }, { top: 45, left: 92 }
             ];
@@ -339,7 +398,7 @@ export class MgSquadBuilderComponent implements OnInit {
             positionMap['fw'] = [
                 { top: 20, left: 37 }, { top: 20, left: 63 }
             ];
-        } else if (this.selectedFormationName === '4-2-3-1') {
+        } else if (this.selectedFormation === '4-2-3-1') {
             positionMap['mid-c'] = [
                 { top: 55, left: 37 }, { top: 55, left: 63 }
             ];
@@ -349,7 +408,7 @@ export class MgSquadBuilderComponent implements OnInit {
             positionMap['fw'] = [
                 { top: 13, left: 50 }
             ];
-        } else if (this.selectedFormationName === '4-1-4-1') {
+        } else if (this.selectedFormation === '4-1-4-1') {
             positionMap['mid-dm'] = [
                 { top: 55, left: 50 }
             ];
@@ -362,16 +421,16 @@ export class MgSquadBuilderComponent implements OnInit {
             positionMap['fw'] = [
                 { top: 13, left: 50 }
             ];
-        } else if (this.selectedFormationName === '3-4-3') {
+        } else if (this.selectedFormation === '3-4-3') {
             positionMap['mid-wb'] = [
                 { top: 45, left: 8 }, { top: 45, left: 92 }
             ];
             positionMap['mid-c'] = [
                 { top: 50, left: 37 }, { top: 50, left: 63 }
             ];
-        } else if (this.selectedFormationName === '5-3-2') {
+        } else if (this.selectedFormation === '5-3-2') {
             positionMap['def'] = [
-                { top: 73, left: 8 }, { top: 77, left: 28 }, { top: 77, left: 50 }, { top: 77, left: 72 }, { top: 73, left: 92 }
+                { top: 73, left: 8 }, { top: 75, left: 28 }, { top: 75, left: 50 }, { top: 75, left: 72 }, { top: 73, left: 92 }
             ];
             positionMap['mid-c'] = [
                 { top: 45, left: 25 }, { top: 50, left: 50 }, { top: 45, left: 75 }
@@ -379,7 +438,7 @@ export class MgSquadBuilderComponent implements OnInit {
             positionMap['fw'] = [
                 { top: 20, left: 37 }, { top: 20, left: 63 }
             ];
-        } else if (this.selectedFormationName === '4-5-1') {
+        } else if (this.selectedFormation === '4-5-1') {
             positionMap['mid-dm'] = [
                 { top: 55, left: 50 }
             ];
@@ -392,7 +451,7 @@ export class MgSquadBuilderComponent implements OnInit {
             positionMap['fw'] = [
                 { top: 13, left: 50 }
             ];
-        } else if (this.selectedFormationName === '4-3-2-1') {
+        } else if (this.selectedFormation === '4-3-2-1') {
             positionMap['mid-c'] = [
                 { top: 50, left: 25 }, { top: 55, left: 50 }, { top: 50, left: 75 }
             ];
@@ -402,7 +461,7 @@ export class MgSquadBuilderComponent implements OnInit {
             positionMap['fw'] = [
                 { top: 13, left: 50 }
             ];
-        } else if (this.selectedFormationName === '3-6-1') {
+        } else if (this.selectedFormation === '3-6-1') {
             positionMap['mid-dm'] = [
                 { top: 55, left: 37 }, { top: 55, left: 63 }
             ];
@@ -415,7 +474,7 @@ export class MgSquadBuilderComponent implements OnInit {
             positionMap['fw'] = [
                 { top: 13, left: 50 }
             ];
-        } else if (this.selectedFormationName === '4-2-2-2') {
+        } else if (this.selectedFormation === '4-2-2-2') {
             positionMap['mid-c'] = [
                 { top: 55, left: 42 }, { top: 55, left: 58 }
             ];
@@ -425,7 +484,7 @@ export class MgSquadBuilderComponent implements OnInit {
             positionMap['fw'] = [
                 { top: 20, left: 37 }, { top: 20, left: 63 }
             ];
-        } else if (this.selectedFormationName === '3-2-4-1') {
+        } else if (this.selectedFormation === '3-2-4-1') {
             positionMap['mid-dm'] = [
                 { top: 55, left: 37 }, { top: 55, left: 63 }
             ];
@@ -438,7 +497,7 @@ export class MgSquadBuilderComponent implements OnInit {
             positionMap['fw'] = [
                 { top: 13, left: 50 }
             ];
-        } else if (this.selectedFormationName === '4-4-1-1') {
+        } else if (this.selectedFormation === '4-4-1-1') {
             positionMap['mid-w'] = [
                 { top: 50, left: 11 }, { top: 50, left: 89 }
             ];
@@ -451,7 +510,7 @@ export class MgSquadBuilderComponent implements OnInit {
             positionMap['fw'] = [
                 { top: 13, left: 50 }
             ];
-        } else if (this.selectedFormationName === '4-3-1-2') {
+        } else if (this.selectedFormation === '4-3-1-2') {
             positionMap['mid-dm'] = [
                 { top: 55, left: 50 }
             ];
@@ -464,7 +523,7 @@ export class MgSquadBuilderComponent implements OnInit {
             positionMap['fw'] = [
                 { top: 13, left: 37 }, { top: 13, left: 63 }
             ];
-        } else if (this.selectedFormationName === '3-4-2-1') {
+        } else if (this.selectedFormation === '3-4-2-1') {
             positionMap['mid-wb'] = [
                 { top: 45, left: 10 }, { top: 45, left: 90 }
             ];
@@ -496,26 +555,33 @@ export class MgSquadBuilderComponent implements OnInit {
                     isDragging: false // Bu özellik olmalı
                 });
             } else {
-                console.warn(`Pozisyon verisi eksik veya fazla: Tip - ${playerDef.type}, Sıra - ${playerDef.order} for formation ${this.selectedFormationName}`);
+                console.warn(`Pozisyon verisi eksik veya fazla: Tip - ${playerDef.type}, Sıra - ${playerDef.order} for formation ${this.selectedFormation}`);
             }
 
 
         });
 
-        beforeChangeFormation.forEach(player => {
-            if (player.playerInfo) {
-                this.players[player.id].playerInfo = player.playerInfo;
-            }
-        });
+        if (!alsoResetPlayers) {
+            beforeChangeFormation.forEach(player => {
+                if (player.playerInfo) {
+                    this.players[player.id].playerInfo = player.playerInfo;
+                }
+            });
+        }
     }
 
     // To Reset Transform Style Coming With CDK Drag
-    onResetPlayersTransform() {
+    async onResetPlayersTransform() {
         this.showComponent = false;  // component yok olur
         setTimeout(() => {
             this.showComponent = true; // component yeniden oluşturulur
             this.calculatePlayerPositions();
         });
+    }
+
+    // To Reset Player Names
+    async onResetPlayersName() {
+        this.players = [];
     }
 
     // To set or change Selected Team Jersey
@@ -558,13 +624,38 @@ export class MgSquadBuilderComponent implements OnInit {
         }
     }
 
-    // Export As Image
-    async exportCaptureAsImage() {
+    async exportPng() {
         const element = this.pitchBoundaryForExport.nativeElement;
 
+        toPng(element, { cacheBust: true },)
+            .then((dataUrl) => {
+                const link = document.createElement('a');
+                link.href = dataUrl;
+                link.download = 'capture.png';
+                link.click();
+            });
+
+
+
+        // domtoimage.toPng(element)
+        //     .then((dataUrl: any) => {
+        //         const link = document.createElement('a');
+        //         link.href = dataUrl;
+        //         link.download = 'screenshot.png';
+        //         link.click();
+        //     });
+    }
+
+    // Export As Image
+    async exportCaptureAsImageClick() {
+        this.isLoading = true;
+        await this.convertImagesToBase64();
+        const element = this.pitchBoundaryForExport.nativeElement;
         try {
             const canvas = await html2canvas(element, {
                 useCORS: true,
+                allowTaint: true,
+                scale: 2, // yüksek çözünürlük
                 backgroundColor: '#0d1222',
             });
             const imageData = canvas.toDataURL('image/png'); // 'image/jpeg' de kullanabilirsiniz
@@ -576,8 +667,59 @@ export class MgSquadBuilderComponent implements OnInit {
             link.click(); // Linke tıkla
             document.body.removeChild(link); // Linki DOM'dan kaldır
         } catch (error) {
-            console.error('Div resme dönüştürülürken bir hata oluştu:', error);
+            console.error('Dışa aktarılırken bir hata oluştu:', error);
+            this.isLoading = false;
         }
+        this.isLoading = false;
+        console.log(this.players);
+
+    }
+
+    // Save My Squad
+    async onSaveSquadClick() {
+
+        console.log(this.players);
+
+        const nanoId = nanoid(10);
+        const squadData = {
+            id: this.isSquadFromUrl ? this.squadFirebaseId : nanoId,
+            name: this.currentTeamName,
+            formation: this.selectedFormation,
+            isJerseyMode: this.isJerseyMode,
+            teamJerseyTemplate: this.selectedTeamJerseyTemplate,
+            createdAt: serverTimestamp(),
+            players: this.players,
+        }
+        console.log(squadData);
+
+        await setDoc(doc(this.fireDataBase, "squad", this.isSquadFromUrl ? this.squadFirebaseId : nanoId), squadData);
+    }
+
+    // Continue New Team Without Saved Squad
+    async onCreateNewTeam() {
+        window.location.href = '/squad-builder'
+    }
+
+    async convertImagesToBase64() {
+        // const images = document.querySelectorAll('img');
+
+        // for (const img of Array.from(images)) {
+        //     console.log(img);
+
+        //     const url = img.src;
+
+        //     // Base64'e çevir
+        //     const response = await fetch(url);
+        //     const blob = await response.blob();
+
+        //     const base64 = await new Promise<string>((resolve) => {
+        //         const reader = new FileReader();
+        //         reader.onloadend = () => resolve(reader.result as string);
+        //         reader.readAsDataURL(blob);
+        //     });
+
+        //     img.src = base64; // Artık CORS problemi yok
+        // }
     }
 
     undoPlayerPosition() {
@@ -591,10 +733,6 @@ export class MgSquadBuilderComponent implements OnInit {
             left: `${this.players[this.changedPlayerIdList[this.changedPlayerIdList.length - 1]].lastPosition.left}%`,
             transform: `translate(-50%, -50%)`
         };
-    }
-
-    async onPlayerTest() {
-        await this._playerService.getPlayers();
     }
 
     onPlayerDragStarted(player: any) {
@@ -637,10 +775,13 @@ export class MgSquadBuilderComponent implements OnInit {
                 left: `${leftPercentage}%`,
                 transform: `translate(-50%, -50%)`
             };
+
+
+
             setTimeout(() => {
                 player.isDragging = false;
                 this.hasDragging = false;
-                this.changedPlayerIdList.push(player.id)
+                this.changedPlayerIdList.push(player.id);
             });
         }
 

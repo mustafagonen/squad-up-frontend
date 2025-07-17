@@ -1,32 +1,48 @@
-<div #contentToCapture *ngIf="showComponent" class="container">
+<div #contentToCapture *ngIf="showComponent && !isLoading" class="container">
     <div class="main-content-area">
         <div class="left-content">
             <h1 class="title">Formasyonlar</h1>
 
             <div class="formation-buttons">
                 <button *ngFor="let formation of formationLabels" (click)="setFormation(formation.value)"
-                    [class.active]="selectedFormationName === formation.value">
+                    [class.active]="selectedFormation === formation.value">
                     {{formation.label}}
                 </button>
             </div>
 
             <div class="operation-btns">
-                <div class="toggle_box" (click)="isDragEnabled = !isDragEnabled">
+                <div class="operation-btn" (click)="isDragEnabled = !isDragEnabled">
                     <input type="checkbox" [(ngModel)]="isDragEnabled" (click)="$event.stopPropagation()" id="toggle" />
-                    <!-- <label for="toggle" (click)="$event.stopPropagation()" id="label_toggle"
-                        [ngClass]="{'toggle-active': isDragEnabled}"></label> -->
+                    <!-- <label for="toggle" (click)="$event.stopPropagation()" id="label-toggle"
+                        [ngClass]="{'operation-btonactive': isDragEnabled}"></label> -->
 
                     <i *ngIf="isDragEnabled" class="fa fa-unlock active-icon"></i>
                     <i *ngIf="!isDragEnabled" class="fa fa-lock passive-icon"></i>
 
                     <!-- Serbest -->
-                    <p class="toggle-on-text" *ngIf="isDragEnabled">Sürüklenebilir</p>
-                    <p class="toggle-off-text" *ngIf="!isDragEnabled">Taktiksel (Kilitli)</p>
+                    <p class="operation-btn-on-text" *ngIf="isDragEnabled">Sürüklenebilir</p>
+                    <p class="operation-btn-off-text" *ngIf="!isDragEnabled">Taktiksel (Kilitli)</p>
                 </div>
 
-                <div class="operation-btn" (click)="setFormation(selectedFormationName)">
-                    <i class="fa fa-undo reset-icon"></i>
-                    <p class="reset-text">Sıfırla (Başa Dön)</p>
+
+                <div class="operation-btn" (click)="isJerseyMode = !isJerseyMode">
+                    <input type="checkbox" [(ngModel)]="isJerseyMode" (click)="$event.stopPropagation()" id="toggle" />
+
+                    <i *ngIf="isJerseyMode" class="fa fa-tshirt active-icon"></i>
+                    <i *ngIf="!isJerseyMode" class="fa fa-circle-plus passive-white-icon"></i>
+
+                    <p class="operation-btn-on-text" *ngIf="isJerseyMode">Forma</p>
+                    <p class="operation-btn-off-text" *ngIf="!isJerseyMode">Geleneksel</p>
+                </div>
+
+                <div class="operation-btn" (click)="setFormation(selectedFormation)">
+                    <i class="fa fa-sync reset-icon"></i>
+                    <p class="reset-text">Sıfırla (Pozisyonlar)</p>
+                </div>
+
+                <div class="operation-btn" (click)="setFormation(selectedFormation,true)">
+                    <i class="fa fa-sync blue-icon"></i>
+                    <p class="reset-text">Sıfırla (Oyuncular)</p>
                 </div>
 
                 <!-- <div class="operation-btn" (click)="undoPlayerPosition()">
@@ -34,21 +50,21 @@
                     <p class="reset-text">Geri</p>
                 </div> -->
 
-                <div class="toggle_box" (click)="isJerseyMode = !isJerseyMode">
-                    <input type="checkbox" [(ngModel)]="isJerseyMode" (click)="$event.stopPropagation()" id="toggle" />
 
-                    <i *ngIf="isJerseyMode" class="fa fa-tshirt active-icon"></i>
-                    <i *ngIf="!isJerseyMode" class="fa fa-circle-plus passive-white-icon"></i>
-
-                    <p class="toggle-on-text" *ngIf="isJerseyMode">Forma</p>
-                    <p class="toggle-off-text" *ngIf="!isJerseyMode">Geleneksel</p>
+                <div class="operation-btn" (click)="exportCaptureAsImageClick()">
+                    <i class="fa fa-image green-icon"></i>
+                    <p class="operation-btn-off-text">Dışa Aktar</p>
                 </div>
 
-                <div class="toggle_box" (click)="exportCaptureAsImage()">
-                    <i class="fa fa-image blue-icon"></i>
-                    <p class="toggle-off-text">Dışa Aktar</p>
+                <div class="operation-btn" (click)="onSaveSquadClick()">
+                    <i class="fa fa-image active-icon"></i>
+                    <p class="operation-btn-off-text">Kadroyu Kaydet</p>
                 </div>
 
+                <div class="operation-btn" (click)="onCreateNewTeam()">
+                    <i class="fa fa-image active-icon"></i>
+                    <p class="operation-btn-off-text">Yeni Takım</p>
+                </div>
                 <!-- <i n class="fas fa-plus player-icon"></i> -->
 
                 <!-- <button class="gold-button">
@@ -195,4 +211,8 @@
     </div>
 </div>
 
-<div *ngIf="!showComponent" style="height: 742px; width: 100%;"></div>
+<div *ngIf="!showComponent && !isLoading" style="height: 742px; width: 100%;"></div>
+
+<div *ngIf="isLoading" class="loader-wrapper">
+    <span class="loader"></span>
+</div>
