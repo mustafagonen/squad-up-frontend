@@ -205,7 +205,7 @@ $subtle-red-glow: #FF6347; // Hafif, domates kırmızısı gibi bir parlama reng
 }
 
 .operation-btns {
-    width: 300px;
+    width: 100%;
     margin-top: 24px;
     display: flex;
     /* Flexbox'ı etkinleştir */
@@ -1289,7 +1289,7 @@ $subtle-red-glow: #FF6347; // Hafif, domates kırmızısı gibi bir parlama reng
     // justify-content: center;
     flex-wrap: wrap;
     gap: 12px;
-    width: 300px;
+    width: 100%;
 
     button {
         background: linear-gradient(145deg, rgba(30, 35, 50, 0.9), rgba(15, 20, 35, 0.9));

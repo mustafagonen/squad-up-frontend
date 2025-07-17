@@ -277,205 +277,206 @@ export class MgTacticalBoardComponent implements OnInit {
 
         const positionMap: { [type: string]: { top: number, left: number }[] } = {};
 
-        positionMap['gk'] = [{ top: 92, left: 50 }];
+        // Genel Pozisyonlar
+        positionMap['gk'] = [{ top: 50, left: 8 }]; // Eski left 50, eski top 92 --> 100-92=8
         positionMap['def'] = [
-            { top: 73, left: 11 }, { top: 77, left: 37 }, { top: 77, left: 63 }, { top: 73, left: 89 }
+            { top: 11, left: 27 }, { top: 37, left: 23 }, { top: 63, left: 23 }, { top: 89, left: 27 } // Eski top 73,77,77,73 --> 100-73=27, 100-77=23
         ];
         positionMap['def-cb'] = [
-            { top: 77, left: 25 }, { top: 77, left: 50 }, { top: 77, left: 75 }
+            { top: 25, left: 23 }, { top: 50, left: 23 }, { top: 75, left: 23 } // Eski top 77 --> 100-77=23
         ];
         positionMap['def-wb'] = [
-            { top: 60, left: 8 }, { top: 60, left: 92 }
+            { top: 8, left: 40 }, { top: 92, left: 40 } // Eski top 60 --> 100-60=40
         ];
         positionMap['mid-c'] = [
-            { top: 50, left: 25 }, { top: 50, left: 50 }, { top: 50, left: 75 }
+            { top: 25, left: 50 }, { top: 50, left: 50 }, { top: 75, left: 50 } // Eski top 50 --> 100-50=50
         ];
         positionMap['mid-w'] = [
-            { top: 45, left: 11 }, { top: 45, left: 89 }
+            { top: 11, left: 55 }, { top: 89, left: 55 } // Eski top 45 --> 100-45=55
         ];
         positionMap['mid-dm'] = [
-            { top: 55, left: 50 }, { top: 55, left: 37 }, { top: 55, left: 63 }
+            { top: 50, left: 45 }, { top: 37, left: 45 }, { top: 63, left: 45 } // Eski top 55 --> 100-55=45
         ];
         positionMap['mid-am'] = [
-            { top: 25, left: 50 }, { top: 25, left: 37 }, { top: 25, left: 63 },
-            { top: 30, left: 20 }, { top: 25, left: 50 }, { top: 30, left: 80 }
+            { top: 50, left: 75 }, { top: 37, left: 75 }, { top: 63, left: 75 }, // Eski top 25 --> 100-25=75
+            { top: 20, left: 70 }, { top: 50, left: 75 }, { top: 80, left: 70 } // Eski top 30 --> 100-30=70
         ];
         positionMap['mid-am-w'] = [
-            { top: 35, left: 30 }, { top: 35, left: 70 }
+            { top: 30, left: 65 }, { top: 70, left: 65 } // Eski top 35 --> 100-35=65
         ];
         positionMap['fw'] = [
-            { top: 13, left: 50 }, { top: 13, left: 37 }, { top: 13, left: 63 }
+            { top: 50, left: 87 }, { top: 37, left: 87 }, { top: 63, left: 87 } // Eski top 13 --> 100-13=87
         ];
         positionMap['fw-w'] = [
-            { top: 20, left: 20 }, { top: 20, left: 80 }
+            { top: 20, left: 80 }, { top: 80, left: 80 } // Eski top 20 --> 100-20=80
         ];
         positionMap['fw-s'] = [
-            { top: 13, left: 50 }
+            { top: 50, left: 87 } // Eski top 13 --> 100-13=87
         ];
 
-        // Detailed Formations Config
+        // Detaylı Formasyonlar Config (Sahanın genel yönüne göre ayarlandı)
         if (this.selectedFormationName === '4-4-2') {
             positionMap['mid'] = [
-                { top: 45, left: 11 }, { top: 50, left: 37 }, { top: 50, left: 63 }, { top: 45, left: 89 }
+                { top: 11, left: 55 }, { top: 37, left: 50 }, { top: 63, left: 50 }, { top: 89, left: 55 } // Eski top 45,50,50,45 --> 100-45=55, 100-50=50
             ];
             positionMap['fw'] = [
-                { top: 20, left: 37 }, { top: 20, left: 63 }
+                { top: 37, left: 80 }, { top: 63, left: 80 } // Eski top 20 --> 100-20=80
             ];
         } else if (this.selectedFormationName === '4-3-3') {
             positionMap['mid-c'] = [
-                { top: 45, left: 25 }, { top: 50, left: 50 }, { top: 45, left: 75 }
+                { top: 25, left: 55 }, { top: 50, left: 50 }, { top: 75, left: 55 } // Eski top 45,50,45 --> 100-45=55, 100-50=50
             ];
         } else if (this.selectedFormationName === '4-3-3-(2)') {
             positionMap['mid-c'] = [
-                { top: 50, left: 25 }, { top: 40, left: 50 }, { top: 50, left: 75 }
+                { top: 25, left: 50 }, { top: 50, left: 60 }, { top: 75, left: 50 } // Eski top 50,40,50 --> 100-50=50, 100-40=60
             ];
         } else if (this.selectedFormationName === '3-5-2') {
             positionMap['mid-wb'] = [
-                { top: 45, left: 8 }, { top: 45, left: 92 }
+                { top: 8, left: 55 }, { top: 92, left: 55 } // Eski top 45 --> 100-45=55
             ];
             positionMap['mid-c'] = [
-                { top: 45, left: 30 }, { top: 55, left: 50 }, { top: 45, left: 70 }
+                { top: 30, left: 55 }, { top: 50, left: 45 }, { top: 70, left: 55 } // Eski top 45,55,45 --> 100-45=55, 100-55=45
             ];
             positionMap['fw'] = [
-                { top: 20, left: 37 }, { top: 20, left: 63 }
+                { top: 37, left: 80 }, { top: 63, left: 80 } // Eski top 20 --> 100-20=80
             ];
         } else if (this.selectedFormationName === '4-2-3-1') {
             positionMap['mid-c'] = [
-                { top: 55, left: 37 }, { top: 55, left: 63 }
+                { top: 37, left: 45 }, { top: 63, left: 45 } // Eski top 55 --> 100-55=45
             ];
             positionMap['mid-ac'] = [
-                { top: 37, left: 25 }, { top: 32, left: 50 }, { top: 37, left: 75 }
+                { top: 25, left: 63 }, { top: 50, left: 68 }, { top: 75, left: 63 } // Eski top 37,32,37 --> 100-37=63, 100-32=68
             ];
             positionMap['fw'] = [
-                { top: 13, left: 50 }
+                { top: 50, left: 87 } // Eski top 13 --> 100-13=87
             ];
         } else if (this.selectedFormationName === '4-1-4-1') {
             positionMap['mid-dm'] = [
-                { top: 55, left: 50 }
+                { top: 50, left: 45 } // Eski top 55 --> 100-55=45
             ];
             positionMap['mid-w'] = [
-                { top: 35, left: 11 }, { top: 35, left: 89 }
+                { top: 11, left: 65 }, { top: 89, left: 65 } // Eski top 35 --> 100-35=65
             ];
             positionMap['mid-c'] = [
-                { top: 40, left: 37 }, { top: 40, left: 63 }
+                { top: 37, left: 60 }, { top: 63, left: 60 } // Eski top 40 --> 100-40=60
             ];
             positionMap['fw'] = [
-                { top: 13, left: 50 }
+                { top: 50, left: 87 } // Eski top 13 --> 100-13=87
             ];
         } else if (this.selectedFormationName === '3-4-3') {
             positionMap['mid-wb'] = [
-                { top: 45, left: 8 }, { top: 45, left: 92 }
+                { top: 8, left: 55 }, { top: 92, left: 55 } // Eski top 45 --> 100-45=55
             ];
             positionMap['mid-c'] = [
-                { top: 50, left: 37 }, { top: 50, left: 63 }
+                { top: 37, left: 50 }, { top: 63, left: 50 } // Eski top 50 --> 100-50=50
             ];
         } else if (this.selectedFormationName === '5-3-2') {
             positionMap['def'] = [
-                { top: 73, left: 8 }, { top: 77, left: 28 }, { top: 77, left: 50 }, { top: 77, left: 72 }, { top: 73, left: 92 }
+                { top: 8, left: 27 }, { top: 28, left: 23 }, { top: 50, left: 23 }, { top: 72, left: 23 }, { top: 92, left: 27 } // Eski top 73,77,77,77,73 --> 100-73=27, 100-77=23
             ];
             positionMap['mid-c'] = [
-                { top: 45, left: 25 }, { top: 50, left: 50 }, { top: 45, left: 75 }
+                { top: 25, left: 55 }, { top: 50, left: 50 }, { top: 75, left: 55 } // Eski top 45,50,45 --> 100-45=55, 100-50=50
             ];
             positionMap['fw'] = [
-                { top: 20, left: 37 }, { top: 20, left: 63 }
+                { top: 37, left: 80 }, { top: 63, left: 80 } // Eski top 20 --> 100-20=80
             ];
         } else if (this.selectedFormationName === '4-5-1') {
             positionMap['mid-dm'] = [
-                { top: 55, left: 50 }
+                { top: 50, left: 45 } // Eski top 55 --> 100-55=45
             ];
             positionMap['mid-c'] = [
-                { top: 45, left: 30 }, { top: 45, left: 70 }
+                { top: 30, left: 55 }, { top: 70, left: 55 } // Eski top 45 --> 100-45=55
             ];
             positionMap['mid-w'] = [
-                { top: 35, left: 11 }, { top: 35, left: 89 }
+                { top: 11, left: 65 }, { top: 89, left: 65 } // Eski top 35 --> 100-35=65
             ];
             positionMap['fw'] = [
-                { top: 13, left: 50 }
+                { top: 50, left: 87 } // Eski top 13 --> 100-13=87
             ];
         } else if (this.selectedFormationName === '4-3-2-1') {
             positionMap['mid-c'] = [
-                { top: 50, left: 25 }, { top: 55, left: 50 }, { top: 50, left: 75 }
+                { top: 25, left: 50 }, { top: 50, left: 45 }, { top: 75, left: 50 } // Eski top 50,55,50 --> 100-50=50, 100-55=45
             ];
             positionMap['mid-am'] = [
-                { top: 30, left: 37 }, { top: 30, left: 63 }
+                { top: 37, left: 70 }, { top: 63, left: 70 } // Eski top 30 --> 100-30=70
             ];
             positionMap['fw'] = [
-                { top: 13, left: 50 }
+                { top: 50, left: 87 } // Eski top 13 --> 100-13=87
             ];
         } else if (this.selectedFormationName === '3-6-1') {
             positionMap['mid-dm'] = [
-                { top: 55, left: 37 }, { top: 55, left: 63 }
+                { top: 37, left: 45 }, { top: 63, left: 45 } // Eski top 55 --> 100-55=45
             ];
             positionMap['mid-c'] = [
-                { top: 35, left: 37 }, { top: 35, left: 63 }
+                { top: 37, left: 65 }, { top: 63, left: 65 } // Eski top 35 --> 100-35=65
             ];
             positionMap['mid-w'] = [
-                { top: 45, left: 8 }, { top: 45, left: 92 }
+                { top: 8, left: 55 }, { top: 92, left: 55 } // Eski top 45 --> 100-45=55
             ];
             positionMap['fw'] = [
-                { top: 13, left: 50 }
+                { top: 50, left: 87 } // Eski top 13 --> 100-13=87
             ];
         } else if (this.selectedFormationName === '4-2-2-2') {
             positionMap['mid-c'] = [
-                { top: 55, left: 42 }, { top: 55, left: 58 }
+                { top: 42, left: 45 }, { top: 58, left: 45 } // Eski top 55 --> 100-55=45
             ];
             positionMap['mid-ac'] = [
-                { top: 40, left: 22 }, { top: 40, left: 78 }
+                { top: 22, left: 60 }, { top: 78, left: 60 } // Eski top 40 --> 100-40=60
             ];
             positionMap['fw'] = [
-                { top: 20, left: 37 }, { top: 20, left: 63 }
+                { top: 37, left: 80 }, { top: 63, left: 80 } // Eski top 20 --> 100-20=80
             ];
         } else if (this.selectedFormationName === '3-2-4-1') {
             positionMap['mid-dm'] = [
-                { top: 55, left: 37 }, { top: 55, left: 63 }
+                { top: 37, left: 45 }, { top: 63, left: 45 } // Eski top 55 --> 100-55=45
             ];
             positionMap['mid-w'] = [
-                { top: 30, left: 10 }, { top: 30, left: 90 }
+                { top: 10, left: 70 }, { top: 90, left: 70 } // Eski top 30 --> 100-30=70
             ];
             positionMap['mid-c'] = [
-                { top: 35, left: 40 }, { top: 35, left: 60 }
+                { top: 40, left: 65 }, { top: 60, left: 65 } // Eski top 35 --> 100-35=65
             ];
             positionMap['fw'] = [
-                { top: 13, left: 50 }
+                { top: 50, left: 87 } // Eski top 13 --> 100-13=87
             ];
         } else if (this.selectedFormationName === '4-4-1-1') {
             positionMap['mid-w'] = [
-                { top: 50, left: 11 }, { top: 50, left: 89 }
+                { top: 11, left: 50 }, { top: 89, left: 50 } // Eski top 50 --> 100-50=50
             ];
             positionMap['mid-c'] = [
-                { top: 50, left: 37 }, { top: 50, left: 63 }
+                { top: 37, left: 50 }, { top: 63, left: 50 } // Eski top 50 --> 100-50=50
             ];
             positionMap['mid-am'] = [
-                { top: 30, left: 50 }
+                { top: 50, left: 70 } // Eski top 30 --> 100-30=70
             ];
             positionMap['fw'] = [
-                { top: 13, left: 50 }
+                { top: 50, left: 87 } // Eski top 13 --> 100-13=87
             ];
         } else if (this.selectedFormationName === '4-3-1-2') {
             positionMap['mid-dm'] = [
-                { top: 55, left: 50 }
+                { top: 50, left: 45 } // Eski top 55 --> 100-55=45
             ];
             positionMap['mid-c'] = [
-                { top: 50, left: 30 }, { top: 50, left: 70 }
+                { top: 30, left: 50 }, { top: 70, left: 50 } // Eski top 50 --> 100-50=50
             ];
             positionMap['mid-am'] = [
-                { top: 30, left: 50 }
+                { top: 50, left: 70 } // Eski top 30 --> 100-30=70
             ];
             positionMap['fw'] = [
-                { top: 13, left: 37 }, { top: 13, left: 63 }
+                { top: 37, left: 87 }, { top: 63, left: 87 } // Eski top 13 --> 100-13=87
             ];
         } else if (this.selectedFormationName === '3-4-2-1') {
             positionMap['mid-wb'] = [
-                { top: 45, left: 10 }, { top: 45, left: 90 }
+                { top: 10, left: 55 }, { top: 90, left: 55 } // Eski top 45 --> 100-45=55
             ];
             positionMap['mid-c'] = [
-                { top: 50, left: 37 }, { top: 50, left: 63 }
+                { top: 37, left: 50 }, { top: 63, left: 50 } // Eski top 50 --> 100-50=50
             ];
             positionMap['mid-am'] = [
-                { top: 30, left: 37 }, { top: 30, left: 63 }
+                { top: 37, left: 70 }, { top: 63, left: 70 } // Eski top 30 --> 100-30=70
             ];
             positionMap['fw'] = [
-                { top: 13, left: 50 }
+                { top: 50, left: 87 } // Eski top 13 --> 100-13=87
             ];
         }
 
