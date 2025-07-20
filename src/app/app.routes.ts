@@ -9,5 +9,6 @@ export const routes: Routes = [
   { path: 'squad-builder', title: "Kadro Kur", component: MgSquadBuilderComponent },
   { path: 'tactical-board', title: "Tactical Board", component: MgTacticalBoardComponent },
 
-  { path: '', title: "Tactical", component: MgSquadBuilderComponent },
+  { path: '', redirectTo: '/home', pathMatch: 'full' },
+  { path: '**', component: MgSquadBuilderComponent },
 ];
