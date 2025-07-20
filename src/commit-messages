@@ -1,0 +1,19 @@
+feat: A new feature.
+
+fix: A bug fix.
+
+docs: Documentation changes.
+
+style: Code style changes (whitespace, formatting, semicolons, etc. – does not affect code behavior).
+
+refactor: A code refactoring (no behavior change).
+
+test: Adding missing tests or correcting existing tests.
+
+chore: Maintenance tasks, build process changes, auxiliary tools, etc. (neither a feature, a fix, nor a refactor).
+
+perf: A code change that improves performance.
+
+build: Changes that affect the build system or external dependencies.
+
+ci: Changes to CI configuration files and scripts.
