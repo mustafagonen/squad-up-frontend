@@ -22,7 +22,7 @@ export class PlayerService {
         skip: number = 0,
         showIcons: boolean = true
     ): Promise<any> {
-        const url = `${environment.apiUrl}/players?name=${name}&limit=${limit}&skip=${skip}&showIcons=${showIcons}`;
+        const url = `${environment.apiUrl}/player?name=${name}&limit=${limit}&skip=${skip}&showIcons=${showIcons}`;
         try {
             const response = await firstValueFrom(this._httpClient.get<any>(url));
             return response;
