@@ -2,7 +2,7 @@ export const environment = {
   author: 'Mustafa Gönen',
   production: true,
   appVersion: 'v1.0.1',
-  apiUrl: 'https://squad-up-backend.onrender.com/api',
+  apiUrl: 'https://api.lineup-builder.co.uk/api',
   appUrl: 'https://tactical.netlify.app/',
   firebaseConfig: {
     apiKey: "AIzaSyC-aPdMUluPdikINF187USLR8nzGFQ27w8",
