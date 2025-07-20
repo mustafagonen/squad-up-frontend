@@ -29,8 +29,9 @@ $subtle-red-glow: #FF6347; // Hafif, domates kırmızısı gibi bir parlama reng
 
 :host {
     display: block;
-    margin-top: 102px;
+    margin-top: 60px;
     max-width: 950px;
+    max-width: 100%;
     margin-left: auto;
     margin-right: auto;
     // background: radial-gradient(black, transparent); eski koyu
@@ -136,7 +137,7 @@ $subtle-red-glow: #FF6347; // Hafif, domates kırmızısı gibi bir parlama reng
 .container {
     width: 100%;
     height: 100%;
-    padding: 20px 20px 36px 26px;
+    padding: 12px 20px 36px 26px;
     box-sizing: border-box;
     text-align: center;
     position: relative;
@@ -375,12 +376,12 @@ $subtle-red-glow: #FF6347; // Hafif, domates kırmızısı gibi bir parlama reng
     /* İçerikleri sola hizala */
     align-items: flex-start;
     /* İçerikleri üste hizala */
-    gap: 15px;
+    gap: 20px;
     /* Butonlar ve saha arasındaki boşluk */
     width: 100%;
     /* Kapsayıcı genişliği */
-    max-width: 1000px;
-    /* Maksimum genişliği koru */
+    max-width: 976px;
+    /* Maksimum genişliği koru 300px left center + 20pxgap + 516pxpitch + 20px gap + 120px right-content */
     margin: 0 auto;
     /* Eğer main-content-area'nın kendisi de merkezlenmek istenirse */
 }
@@ -390,11 +391,11 @@ $subtle-red-glow: #FF6347; // Hafif, domates kırmızısı gibi bir parlama reng
 }
 
 .center-content {
-    width: calc(100% - 380px);
+    width: max-content;
 }
 
 .right-content {
-    width: 80px;
+    width: 120px;
     padding-top: 48px;
 }
 
@@ -493,7 +494,6 @@ $subtle-red-glow: #FF6347; // Hafif, domates kırmızısı gibi bir parlama reng
     max-width: 550px; // Maksimum genişliğini koruyabiliriz
     // padding-bottom: 60%; // Eğer px yerine oran kullanıyorsanız bu kalsın, aksi takdirde kaldırın
     height: 620px; // Sabit yükseklik kullanıyorsanız bu kalsın
-    margin: 0 auto;
     /* Saha hala kendi içinde ortalanacak */
     // ... (Geri kalan saha stilleri aynı kalacak)
     position: relative;

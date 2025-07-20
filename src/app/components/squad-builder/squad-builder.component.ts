@@ -594,7 +594,9 @@ export class MgSquadBuilderComponent implements OnInit {
         const dialog = this._dialog.open(MgPlayerSearchComponent, {
             disableClose: false,
             width: '500px',
+            maxWidth: '90vw',
             height: '500px',
+            maxHeight: '80vh',
             panelClass: 'dark-dialog-panel'
         });
 
@@ -679,6 +681,10 @@ export class MgSquadBuilderComponent implements OnInit {
     async onSaveSquadClick() {
 
         console.log(this.players);
+
+        setInterval(() => {
+            console.log('x');
+        }, 100);
 
         const nanoId = nanoid(10);
         const squadData = {

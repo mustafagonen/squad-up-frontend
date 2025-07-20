@@ -110,6 +110,7 @@
     padding: 20px 5rem;
     /* Açık gri, mevcut tasarımla uyumlu */
     color: #374151;
+    height: 60px;
     /* Koyu gri renk */
     position: fixed;
     width: 100%;
@@ -124,6 +125,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    height: 100%;
     margin: 0 auto;
     position: relative;
 }

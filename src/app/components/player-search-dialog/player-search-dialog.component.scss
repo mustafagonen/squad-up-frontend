@@ -110,6 +110,20 @@
     .position-list {
         display: none !important;
     }
+
+    .img-wrapper {
+        width: 32px !important;
+        height: 32px !important;
+    }
+
+    .player-result-item {
+        padding: 4px 12px;
+    }
+
+    .flag-wrapper img {
+        width: 24px;
+        height: 24px;
+    }
 }
 
 @media (max-width: 480px) {
@@ -126,5 +140,19 @@
 
     .position-list {
         display: none !important;
+    }
+
+    .img-wrapper {
+        width: 32px !important;
+        height: 32px !important;
+    }
+
+    .player-result-item {
+        padding: 4px 12px;
+    }
+
+    .flag-wrapper img {
+        width: 24px;
+        height: 24px;
     }
 }
