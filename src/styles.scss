@@ -788,6 +788,10 @@ body::after {
     background: radial-gradient(circle at 50% 100%, rgba(57, 255, 20, 0.02) 0%, transparent 50%); // Alt kısım için hafif parlaklık
 }
 
+.mat-mdc-menu-panel {
+    background-color: #1a232d !important;
+    border-radius: 16px !important;
+}
 
 .dark-dialog-panel .mat-dialog-container {
     background-color: #1e1e1e !important;
@@ -797,6 +801,15 @@ body::after {
     background: linear-gradient(145deg,
             rgba(30, 35, 50, .95),
             rgba(15, 20, 35, .95)) !important;
+}
+
+.no-hover-transform {
+    transform: scale(1) !important;
+}
+
+.no-hover-shadow {
+    box-shadow: unset !important;
+
 }
 
 //Shortcut Classes

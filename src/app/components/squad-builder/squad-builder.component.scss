@@ -942,6 +942,10 @@ $subtle-red-glow: #FF6347; // Hafif, domates kırmızısı gibi bir parlama reng
     }
 }
 
+.small-jersey-for-icon {
+    transform: scale(.35);
+}
+
 .small-jersey-for-selection {
     transform: scale(.7);
 }
@@ -955,6 +959,7 @@ $subtle-red-glow: #FF6347; // Hafif, domates kırmızısı gibi bir parlama reng
     flex-wrap: wrap;
     gap: 0;
     width: 100%;
+    overflow: hidden;
 }
 
 .jersey-number {
@@ -973,7 +978,7 @@ $subtle-red-glow: #FF6347; // Hafif, domates kırmızısı gibi bir parlama reng
     align-items: center;
 }
 
-.active-jersey {
+z .active-jersey {
     box-shadow: 0 0 15px #fff, 0 0 30px #fff !important;
 }
 

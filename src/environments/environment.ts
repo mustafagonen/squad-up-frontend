@@ -2,7 +2,8 @@ export const environment = {
   author: 'Mustafa Gönen',
   production: false,
   appVersion: 'v1.0.1',
-  apiUrl: 'http://localhost:3000/api',
+  // apiUrl: 'http://localhost:3000/api',
+  apiUrl: 'https://api.lineup-builder.co.uk/api/25',
   appUrl: 'http://localhost:1234/',
   firebaseConfig: {
     apiKey: "AIzaSyC-aPdMUluPdikINF187USLR8nzGFQ27w8",
