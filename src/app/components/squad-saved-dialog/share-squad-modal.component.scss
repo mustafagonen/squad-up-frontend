@@ -1,0 +1,109 @@
+.modal-content {
+    border-radius: 10px;
+    padding: 30px;
+    width: 400px;
+    color: #eee;
+    text-align: center;
+    position: relative;
+    transform: translateY(-20px);
+    opacity: 0;
+    animation: slideIn 0.3s forwards;
+    animation-delay: 0.1s;
+}
+
+.close-button {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: none;
+    border: none;
+    font-size: 24px;
+    color: #bbb;
+    cursor: pointer;
+    transition: color 0.2s ease-in-out;
+}
+
+.close-button:hover {
+    color: #fff;
+}
+
+.close-icon {
+    width: 20px;
+    height: 20px;
+    filter: invert(80%);
+}
+
+.modal-title {
+    color: #4CAF50;
+    margin-bottom: 0;
+    margin-top: 0;
+    font-size: 24px;
+}
+
+.modal-description {
+    font-size: 13px;
+    margin-bottom: 25px;
+}
+
+.link-display-area {
+    margin-bottom: 25px;
+    padding: 10px 15px;
+    color: rgb(217, 217, 217);
+    background-color: rgba(43, 45, 60, 0.95);
+    padding: 8px 12px;
+    cursor: pointer;
+    border-radius: 10px;
+    border: none;
+}
+
+.share-link-input {
+    width: 100%;
+    background: transparent;
+    border: none !important;
+    color: #8aff8a;
+    font-size: 15px;
+    text-align: center;
+    outline: none;
+    cursor: text;
+}
+
+.copy-button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 12px 25px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out, transform 0.1s ease;
+}
+
+.copy-button:hover {
+    background-color: #5cb85c;
+}
+
+.copy-button:active {
+    transform: translateY(0);
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateY(-50px);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}

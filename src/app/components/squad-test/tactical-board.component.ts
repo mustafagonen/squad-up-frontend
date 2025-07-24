@@ -694,25 +694,17 @@ export class MgTacticalBoardComponent implements OnInit {
         // const xPercent = (x / width) * 100;
         // const yPercent = (y / height) * 100;
 
-        // console.log(`Player id: ${event.source.element.nativeElement.id}`);
-        // console.log(`X sapma: %${xPercent.toFixed(2)}`);
-        // console.log(`Y sapma: %${yPercent.toFixed(2)}`);
 
         // const newLeft = parseFloat(player.style.left.replace('%', '')) + parseFloat(xPercent.toFixed(2));
-        // console.log('1', parseFloat(player.style.left.replace('%', '')));
-        // console.log('2', parseFloat(xPercent.toFixed(2)));
-        // console.log('asd', newLeft);
 
 
         // const newTop = parseFloat(player.style.top.replace('%', '')) + yPercent.toFixed(2);
-        // console.log('new', newTop);
 
         // player.style = {
         //     left: `${newLeft}%`,
         //     top: `${newTop}%`,
         //     transform: `translate(-50%, -50%)`,
         // };
-        // console.log(player.style);
 
         // return;
         // const draggedElement = event.source.element.nativeElement;
@@ -726,8 +718,6 @@ export class MgTacticalBoardComponent implements OnInit {
         // const absoluteY = elRect.top - parentRect.top;
         // const percentLeft = (absoluteX / pitchWidth) * 100;
         // const percentTop = (absoluteY / pitchHeight) * 100;
-        // console.log(absoluteX, absoluteY);
-        // console.log(percentLeft, percentTop);
         // player.position.left = percentLeft;
         // player.position.top = percentTop;
         // // player.style = {
@@ -741,7 +731,6 @@ export class MgTacticalBoardComponent implements OnInit {
         // player.isDragging = false;
 
         // // if (this.checkCollision(player)) {
-        // //     console.log('çakışma');
 
         // //     // Geri dönüş için yeni obje ata ki Angular algılasın
         // //     if (player.lastPosition) {
@@ -753,7 +742,6 @@ export class MgTacticalBoardComponent implements OnInit {
         // //     }
         // // }
 
-        // console.log(this.players);
 
     }
 
@@ -789,7 +777,6 @@ export class MgTacticalBoardComponent implements OnInit {
                 // );
 
                 // if (isOverlapping) {
-                //     console.log(
                 //         `Çakışma: Oyuncu ${current.id} → Oyuncu ${other.id} (sol: ${currentLeft.toFixed(1)}px / ${otherLeft.toFixed(1)}px)`
                 //     );
                 // }

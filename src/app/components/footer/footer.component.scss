@@ -1,15 +1,13 @@
 :host {
     display: block;
     color: #374151;
+    padding-top: 16px;
 }
 
 /* Footer Genel Stilleri */
 .footer {
     background-color: #0d1222;
-    /* Açık gri */
     color: #374151;
-    /* Koyu gri */
-    padding: 40px 46px;
     text-align: center;
     font-size: 0.9rem;
 }
@@ -61,13 +59,12 @@
     display: flex;
     justify-content: center;
     gap: 20px;
-    margin-top: 20px;
 }
 
 .footer-social a {
     text-decoration: none;
     color: #374151;
-    font-size: 1.1rem;
+    font-size: 12px;
     transition: color 0.3s ease;
 }
 

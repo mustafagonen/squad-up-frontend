@@ -523,7 +523,7 @@ textarea:focus-visible {
 }
 
 .toast-message {
-    font-size: 13px;
+    font-size: 12px;
     margin-top: 0;
     color: #fff;
     font-weight: 400;
@@ -729,7 +729,7 @@ $title-red: #ff3333; // Başlık için kırmızı renk (görselde olduğu gibi)
 body {
     margin: 0;
     padding: 0;
-    // font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background-color: $dark-background; // Koyu lacivert tonu
     min-height: 100vh;
     color: #f0f0f0; // Genel metin rengi
@@ -1405,6 +1405,16 @@ body::after {
 
 .text-capital {
     text-transform: capitalize !important;
+}
+
+::selection {
+    background-color: #4CAF50;
+    color: white;
+}
+
+::-moz-selection {
+    background-color: #4CAF50;
+    color: white;
 }
 
 //Mat Select

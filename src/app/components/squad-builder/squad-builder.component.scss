@@ -30,7 +30,6 @@ $subtle-red-glow: #FF6347; // Hafif, domates kırmızısı gibi bir parlama reng
 :host {
     display: block;
     margin-top: 60px;
-    max-width: 950px;
     max-width: 100%;
     margin-left: auto;
     margin-right: auto;
@@ -142,9 +141,6 @@ $subtle-red-glow: #FF6347; // Hafif, domates kırmızısı gibi bir parlama reng
     text-align: center;
     position: relative;
     z-index: 1;
-    // container'ın kendi background'u body'den gelen rengi devralır
-    // veya özel bir background-color tanımlanabilir
-    // background-color: rgba($dark-background, 0.5); // Hafif şeffaflık
 }
 
 .title {
@@ -206,21 +202,13 @@ $subtle-red-glow: #FF6347; // Hafif, domates kırmızısı gibi bir parlama reng
 }
 
 .operation-btns {
-    width: 150px;
+    width: 135px;
     margin-top: 24px;
     display: flex;
-    /* Flexbox'ı etkinleştir */
     flex-wrap: wrap;
-    /* Öğelerin yeni satıra geçmesine izin ver */
     justify-content: flex-start;
-    /* Öğeleri baştan itibaren sırala (isteğe bağlı, center veya space-between de olabilir) */
     align-content: flex-start;
-    /* İçerik satırlarını baştan itibaren sırala (öğeler dolguyla sarılmadığında önemli) */
     gap: 12px;
-    /* Öğeler arasında boşluk bırak (isteğe bağlı, kendi istediğiniz değeri ayarlayın) */
-    /* Veya row-gap ve column-gap ayrı ayrı tanımlanabilir */
-    /* row-gap: 20px; */
-    /* column-gap: 20px; */
 }
 
 .toggle-box {
@@ -291,13 +279,13 @@ $subtle-red-glow: #FF6347; // Hafif, domates kırmızısı gibi bir parlama reng
 .active-icon {
     font-size: 18px;
     color: #399B3E;
-    margin-right: 9px;
+    margin-right: 8px;
 }
 
 .green-icon {
     font-size: 18px;
     color: #00C0A6;
-    margin-right: 10px;
+    margin-right: 8px;
 }
 
 .blue-icon {
@@ -309,20 +297,20 @@ $subtle-red-glow: #FF6347; // Hafif, domates kırmızısı gibi bir parlama reng
 .passive-white-icon {
     font-size: 18px;
     color: #e0e0e0;
-    margin-right: 9px;
+    margin-right: 8px;
 }
 
 .passive-icon {
     font-size: 18px;
     color: #CD5C5C;
-    margin-right: 12px;
+    margin-right: 8px;
 }
 
 .reset-icon {
     font-size: 18px;
     color: #FFA500;
     color: #FFC000;
-    margin-right: 7px;
+    margin-right: 8px;
 }
 
 .reset-text {
@@ -378,7 +366,7 @@ $subtle-red-glow: #FF6347; // Hafif, domates kırmızısı gibi bir parlama reng
 }
 
 .left-content {
-    width: 150px;
+    width: 135px;
 }
 
 .center-content {
@@ -386,7 +374,7 @@ $subtle-red-glow: #FF6347; // Hafif, domates kırmızısı gibi bir parlama reng
 }
 
 .right-content {
-    width: 120px;
+    width: 135px;
     padding-top: 48px;
 }
 
@@ -1006,7 +994,7 @@ $subtle-red-glow: #FF6347; // Hafif, domates kırmızısı gibi bir parlama reng
     position: absolute;
     right: 0;
     left: 0;
-    top: 4px;
+    top: 16px;
     bottom: 0;
     z-index: 5;
     text-shadow: 2px 2px 4px #1e2332e6;
@@ -1335,20 +1323,29 @@ $subtle-red-glow: #FF6347; // Hafif, domates kırmızısı gibi bir parlama reng
     }
 
     :host {
-        margin-top: 50px;
+        margin-top: 40px;
     }
 
     .pitch {
         width: 350px;
         max-width: 100%;
         height: 480px;
+        margin-left: auto;
+        margin-right: auto;
     }
 
     .circle-player-info {
-        width: 70px;
+        width: 86px;
         font-size: 11px;
-        bottom: -20px;
+        bottom: -24px;
     }
+
+    .alternative-player-textarea {
+        width: 86px;
+        bottom: -44px;
+    }
+
+
 }
 
 @media (max-width: 480px) {
@@ -1379,8 +1376,14 @@ $subtle-red-glow: #FF6347; // Hafif, domates kırmızısı gibi bir parlama reng
     }
 
     .circle-player-info {
-        width: 70px;
+        width: 86px;
         font-size: 11px;
-        bottom: -20px;
+        bottom: -24px;
     }
+
+    .alternative-player-textarea {
+        width: 86px;
+        bottom: -44px;
+    }
+
 }

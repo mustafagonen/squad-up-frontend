@@ -16,6 +16,7 @@ import { ActivatedRoute } from '@angular/router';
 import { toPng } from 'html-to-image';
 import domtoimage from 'dom-to-image';
 import { ToastrService } from 'ngx-toastr';
+import { MgShareSquadModalComponent } from '../squad-saved-dialog/share-squad-modal.component';
 
 @Component({
     selector: 'mg-squad-builder',
@@ -42,14 +43,15 @@ export class MgSquadBuilderComponent implements OnInit {
     isSquadFromUrl = false;
     squadFirebaseId: any;
     showComponent = true;
+    isShowBenchPlayers = false;
     isDragEnabled: boolean = false;
     hasDragging: boolean = false;
     isJerseyMode: boolean = false;
     isEditingTeamName: boolean = false;
     playerWidth = 70;
     playerHeight = 70;
-    pitchWidth = 514; // 2px for borders
-    pitchHeight = 618; // 2px for borders
+    pitchWidth = 548; // 2px for borders
+    pitchHeight = 658; // 2px for borders
 
     currentTeamName: any = 'Takımınız';
 
@@ -196,6 +198,20 @@ export class MgSquadBuilderComponent implements OnInit {
         lastPosition?: any;
     }[] = [];
 
+    benchPlayers: {
+        id: any,
+        type: string,
+        style: any,
+        position: { top: any, left: any, transform: string },
+        isDragging: boolean,
+        playerInfo?: any,
+        isHoveredToPlayerName?: any;
+        alternativePlayerMode?: any;
+        alternativePlayerName?: any;
+        isNeedTransfer?: any;
+        lastPosition?: any;
+    }[] = [];
+
     changedPlayerIdList: any = [];
 
     selectedFormation: string = '4-4-2';
@@ -257,8 +273,15 @@ export class MgSquadBuilderComponent implements OnInit {
     // Set Selected Formation
     async setFormation(formationName: string, resetAlsoPlayers?: any) {
         this.selectedFormation = formationName;
-        await this.calculatePlayerPositions(resetAlsoPlayers);
-        await this.onResetPlayersTransform();
+        if (resetAlsoPlayers) {
+            this.showComponent = false;
+            await this.calculatePlayerPositions(resetAlsoPlayers);
+            this.showComponent = true;
+        }
+        else {
+            await this.calculatePlayerPositions();
+        }
+
     }
 
     // Set Players Position With Formations
@@ -490,8 +513,21 @@ export class MgSquadBuilderComponent implements OnInit {
                         left: `${pos.left}%`,
                         transform: `translate(-50%, -50%)`
                     },
-                    isDragging: false // Bu özellik olmalı
+                    isDragging: false
                 });
+                if (playerId < 7) {
+                    this.benchPlayers.push({
+                        id: playerId,
+                        type: playerDef.type,
+                        position: { top: pos.top, left: pos.left, transform: `translate(-50%, -50%)` },
+                        style: {
+                            top: `${pos.top}%`,
+                            left: `${pos.left}%`,
+                            transform: `translate(-50%, -50%)`
+                        },
+                        isDragging: false
+                    });
+                }
             } else {
                 console.warn(`Pozisyon verisi eksik veya fazla: Tip - ${playerDef.type}, Sıra - ${playerDef.order} for formation ${this.selectedFormation}`);
             }
@@ -529,7 +565,7 @@ export class MgSquadBuilderComponent implements OnInit {
     }
 
     // Search Player API
-    async onPlayerSearchClick(player: any) {
+    async onPlayerSearchClick(player: any, type: any) {
         if (this.hasDragging) return; // Avoid click and dragging at the same time
         const dialog = this._dialog.open(MgPlayerSearchComponent, {
             disableClose: false,
@@ -543,13 +579,26 @@ export class MgSquadBuilderComponent implements OnInit {
 
         dialog.afterClosed().subscribe((selectedPlayer) => {
             if (selectedPlayer) {
-                this.players[player.id].playerInfo = selectedPlayer;
-                if (selectedPlayer.shortName !== 'Transfer') {
-                    this.players[player.id].isNeedTransfer = false;
+                if (type == 'player') {
+                    this.players[player.id].playerInfo = selectedPlayer;
+                    if (selectedPlayer.shortName !== 'Transfer') {
+                        this.players[player.id].isNeedTransfer = false;
+                    }
+                    else {
+                        this.players[player.id].isNeedTransfer = true;
+                    }
                 }
-                else {
-                    this.players[player.id].isNeedTransfer = true;
+
+                else if (type == 'benchPlayer') {
+                    this.benchPlayers[player.id - 1].playerInfo = selectedPlayer;
+                    if (selectedPlayer.shortName !== 'Transfer') {
+                        this.benchPlayers[player.id - 1].isNeedTransfer = false;
+                    }
+                    else {
+                        this.benchPlayers[player.id - 1].isNeedTransfer = true;
+                    }
                 }
+
             }
         });
     }
@@ -574,28 +623,26 @@ export class MgSquadBuilderComponent implements OnInit {
 
     // Export As Image
     async exportAsPng() {
+        this.isLoading = true;
         const element = this.pitchBoundaryForExport.nativeElement;
-
+        const now = new Date();
+        const day = String(now.getDate()).padStart(2, '0');
+        const month = String(now.getMonth() + 1).padStart(2, '0');
+        const year = now.getFullYear();
+        const hours = String(now.getHours()).padStart(2, '0');
+        const minutes = String(now.getMinutes()).padStart(2, '0');
+        const formattedDateTime = `${day}/${month}/${year} - ${hours}:${minutes}`;
         toPng(element, { cacheBust: true },)
             .then((dataUrl) => {
                 const link = document.createElement('a');
                 link.href = dataUrl;
-                link.download = 'capture.png';
+                link.download = `${this.currentTeamName} - ${formattedDateTime}`;
                 link.click();
+                this.isLoading = false;
             });
-
-
-
-        // domtoimage.toPng(element)
-        //     .then((dataUrl: any) => {
-        //         const link = document.createElement('a');
-        //         link.href = dataUrl;
-        //         link.download = 'screenshot.png';
-        //         link.click();
-        //     });
     }
 
-    // Export As Image
+    // Export As Image Alternative package library
     async exportCaptureAsImageClick() {
         this.isLoading = true;
         await this.convertImagesToBase64();
@@ -620,25 +667,22 @@ export class MgSquadBuilderComponent implements OnInit {
             this.isLoading = false;
         }
         this.isLoading = false;
-        console.log(this.players);
-
     }
 
     // Save My Squad
     async onSaveSquadClick() {
 
         try {
-
             const hasMissingPlayerInfo = this.players.some(item => !item.hasOwnProperty('playerInfo'));
-
             if (hasMissingPlayerInfo) {
                 this._toastrService.warning(' Takım kadrosu eksik görünüyor. Lütfen eksik oyuncuları tamamlayın.');
                 return;
             }
 
             const nanoId = nanoid(10);
+            const dbId = this.isSquadFromUrl ? this.squadFirebaseId : nanoId
             const squadData = {
-                id: this.isSquadFromUrl ? this.squadFirebaseId : nanoId,
+                id: dbId,
                 name: this.currentTeamName,
                 formation: this.selectedFormation,
                 isJerseyMode: this.isJerseyMode,
@@ -646,10 +690,19 @@ export class MgSquadBuilderComponent implements OnInit {
                 createdAt: serverTimestamp(),
                 players: this.players,
             }
-            await setDoc(doc(this.fireDataBase, "squad", this.isSquadFromUrl ? this.squadFirebaseId : nanoId), squadData);
+            await setDoc(doc(this.fireDataBase, "squad", dbId), squadData);
             this._toastrService.success('Kadronuz başarıyla kaydedildi.');
-        } catch (error) {
 
+            const dialog = this._dialog.open(MgShareSquadModalComponent, {
+                disableClose: false,
+                maxWidth: '90vw',
+                maxHeight: '80vh',
+                panelClass: 'dark-dialog-panel'
+            });
+            dialog.componentInstance.generatedShareLink = environment.appUrl + dbId;
+
+        } catch (error) {
+            console.error(error);
         }
     }
 
@@ -658,8 +711,9 @@ export class MgSquadBuilderComponent implements OnInit {
         window.location.href = '/squad-builder'
     }
 
-    //
+    // Activate Alternative Player
     activateAlternativePlayerTextarea(player: any) {
+        if (!player.playerInfo) { return; }
         this.players[player.id].alternativePlayerMode = true;
         const textareaElement = document.getElementById('textarea' + player.id) as HTMLTextAreaElement;
         if (textareaElement) {
@@ -671,14 +725,21 @@ export class MgSquadBuilderComponent implements OnInit {
     async handeEnterAlternativePlayerTextarea(event: Event, player: any) {
         event.preventDefault();
         this.players[player.id].alternativePlayerMode = false;
+        const textareaElement = document.getElementById('textarea' + player.id) as HTMLTextAreaElement;
+        if (textareaElement) {
+            textareaElement.blur();
+        }
+    }
+
+    // Toggle Bench Players
+    toggleBenchPlayers() {
+        this.isShowBenchPlayers = !this.isShowBenchPlayers;
     }
 
     async convertImagesToBase64() {
         // const images = document.querySelectorAll('img');
 
         // for (const img of Array.from(images)) {
-        //     console.log(img);
-
         //     const url = img.src;
 
         //     // Base64'e çevir
@@ -805,26 +866,14 @@ export class MgSquadBuilderComponent implements OnInit {
         // const xPercent = (x / width) * 100;
         // const yPercent = (y / height) * 100;
 
-        // console.log(`Player id: ${event.source.element.nativeElement.id}`);
-        // console.log(`X sapma: %${xPercent.toFixed(2)}`);
-        // console.log(`Y sapma: %${yPercent.toFixed(2)}`);
-
         // const newLeft = parseFloat(player.style.left.replace('%', '')) + parseFloat(xPercent.toFixed(2));
-        // console.log('1', parseFloat(player.style.left.replace('%', '')));
-        // console.log('2', parseFloat(xPercent.toFixed(2)));
-        // console.log('asd', newLeft);
-
 
         // const newTop = parseFloat(player.style.top.replace('%', '')) + yPercent.toFixed(2);
-        // console.log('new', newTop);
-
         // player.style = {
         //     left: `${newLeft}%`,
         //     top: `${newTop}%`,
         //     transform: `translate(-50%, -50%)`,
         // };
-        // console.log(player.style);
-
         // return;
         // const draggedElement = event.source.element.nativeElement;
         // const parent = draggedElement.parentElement;
@@ -837,9 +886,6 @@ export class MgSquadBuilderComponent implements OnInit {
         // const absoluteY = elRect.top - parentRect.top;
         // const percentLeft = (absoluteX / pitchWidth) * 100;
         // const percentTop = (absoluteY / pitchHeight) * 100;
-        // console.log(absoluteX, absoluteY);
-        // console.log(percentLeft, percentTop);
-        // player.position.left = percentLeft;
         // player.position.top = percentTop;
         // // player.style = {
         // //     left: `${percentLeft}%`,
@@ -852,8 +898,6 @@ export class MgSquadBuilderComponent implements OnInit {
         // player.isDragging = false;
 
         // // if (this.checkCollision(player)) {
-        // //     console.log('çakışma');
-
         // //     // Geri dönüş için yeni obje ata ki Angular algılasın
         // //     if (player.lastPosition) {
         // //         player.position = {
@@ -863,8 +907,6 @@ export class MgSquadBuilderComponent implements OnInit {
         // //         };
         // //     }
         // // }
-
-        // console.log(this.players);
 
     }
 
@@ -900,8 +942,6 @@ export class MgSquadBuilderComponent implements OnInit {
                 // );
 
                 // if (isOverlapping) {
-                //     console.log(
-                //         `Çakışma: Oyuncu ${current.id} → Oyuncu ${other.id} (sol: ${currentLeft.toFixed(1)}px / ${otherLeft.toFixed(1)}px)`
                 //     );
                 // }
 

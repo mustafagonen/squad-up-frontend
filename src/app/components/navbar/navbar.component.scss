@@ -139,7 +139,6 @@
     font-weight: 600;
     position: absolute;
     left: 0;
-    left: 46px;
     display: flex;
     align-items: center;
 
@@ -188,6 +187,7 @@
     justify-content: space-between;
     cursor: pointer;
     position: relative;
+    transform: scale(.8);
 }
 
 .hamburger span {
@@ -238,11 +238,22 @@
     }
 
     .navbar {
-        padding: 12px 2rem !important;
+        padding: 12px 16px !important;
+        height: 44px;
     }
 
     .navbar-logo {
         left: 0;
+
+        span {
+            font-size: 18px;
+        }
+    }
+
+    .soccer {
+        transform: scale(.7) !important;
+        margin-top: 4px;
+        animation: unset !important
     }
 
     .navbar-links {

@@ -22,11 +22,9 @@ export class MgPlayerSearchComponent implements OnInit {
     constructor(
         private _playerService: PlayerService,
         public _dialogRef: MatDialogRef<MgPlayerSearchComponent>,
-
     ) { }
 
     ngOnInit(): void {
-        console.log(this.previousSearchPlayer);
     }
 
     async onSearchPlayer() {

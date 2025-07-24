@@ -1,0 +1,19 @@
+<div class="modal-content">
+    <button class="close-button" (click)="closeModal()">
+        <i class="fas fa-times"></i>
+    </button>
+
+    <h2 class="modal-title">Kadronuz Hazır!</h2>
+
+    <p class="modal-description">Kadronuz başarıyla kaydedildi. Aşağıdaki linki arkadaşlarınızla paylaşabilirsiniz:
+    </p>
+
+    <div class="link-display-area">
+        <input type="text" class="share-link-input" [value]="generatedShareLink" readonly #shareLinkInput>
+    </div>
+
+    <button class="copy-button" (click)="copyLinkToClipboard()">
+        <span *ngIf="!copySuccess">Link Kopyala</span>
+        <span *ngIf="copySuccess">Kopyalandı! &#10003;</span>
+    </button>
+</div>
