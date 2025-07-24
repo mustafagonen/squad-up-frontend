@@ -55,6 +55,11 @@
         background-color: #3A3C4F;
     }
 
+    &.selected {
+        background-color: #333;
+        border: 2px solid #ffcc00;
+    }
+
     .img-wrapper {
         position: relative;
         width: 46px;
@@ -62,6 +67,13 @@
         border-radius: 40px;
         background: rgba(22, 22, 22, 0.8);
         overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        i {
+            font-size: 16px;
+        }
 
         img {
             position: absolute;

@@ -3,8 +3,39 @@
         (ngModelChange)="onSearchPlayer()" [(ngModel)]="playerSearchText">
 
     <div class="player-result-wrapper">
+
+        <!-- Previous Selected Player Info -->
+        <div *ngIf="previousSearchPlayer && previousSearchPlayer.shortName != 'Transfer' && !playerSearchResult"
+            class="player-result-item selected">
+            <div class="img-wrapper">
+                <img [src]="previousSearchPlayer.imgSrc">
+            </div>
+            <div class="player-name">{{ previousSearchPlayer.knownName}}</div>
+
+            <div class="position-list">
+                <div *ngFor="let position of previousSearchPlayer.positions; let last = last">
+                    <span *ngIf="position">{{ position }}<ng-container *ngIf="!last">,</ng-container></span>
+                </div>
+            </div>
+
+            <div class="flag-wrapper">
+                <img [src]="previousSearchPlayer.nationalitySrc" width="30" height="30">
+                <img [src]="previousSearchPlayer.clubSrc" class="m-l-6" width="32" height="32">
+            </div>
+        </div>
+
+        <!-- Need Transfer -->
+        <div *ngIf="!playerSearchResult" class="player-result-item"
+            (click)="selectPlayerFromResultList(undefined, true)">
+            <div class="img-wrapper">
+                <i class="fas fa-question"></i>
+            </div>
+            <div class="player-name m-r-auto">Transfer Gerekli</div>
+        </div>
+
         <div class="player-result-item" *ngFor="let player of playerSearchResult?.players"
-            (click)="selectPlayerFromResultList(player)">
+            [ngClass]="{'selected': player.id == previousSearchPlayer?.id}"
+            (click)="selectPlayerFromResultList(player, false)">
             <div class="img-wrapper">
                 <img [src]="player.imgSrc">
             </div>

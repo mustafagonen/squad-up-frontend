@@ -15,6 +15,7 @@ import { SquadModel } from '../../models/squad.model';
 import { ActivatedRoute } from '@angular/router';
 import { toPng } from 'html-to-image';
 import domtoimage from 'dom-to-image';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
     selector: 'mg-squad-builder',
@@ -188,7 +189,11 @@ export class MgSquadBuilderComponent implements OnInit {
         position: { top: any, left: any, transform: string },
         isDragging: boolean,
         playerInfo?: any,
-        lastPosition?: any
+        isHoveredToPlayerName?: any;
+        alternativePlayerMode?: any;
+        alternativePlayerName?: any;
+        isNeedTransfer?: any;
+        lastPosition?: any;
     }[] = [];
 
     changedPlayerIdList: any = [];
@@ -203,6 +208,7 @@ export class MgSquadBuilderComponent implements OnInit {
     constructor(
         private _dialog: MatDialog,
         private _playerService: PlayerService,
+        private _toastrService: ToastrService,
         private _activatedRoute: ActivatedRoute,
     ) { }
 
@@ -497,6 +503,7 @@ export class MgSquadBuilderComponent implements OnInit {
             beforeChangeFormation.forEach(player => {
                 if (player.playerInfo) {
                     this.players[player.id].playerInfo = player.playerInfo;
+                    this.players[player.id].isNeedTransfer = player.isNeedTransfer;
                 }
             });
         }
@@ -521,6 +528,7 @@ export class MgSquadBuilderComponent implements OnInit {
         this.selectedTeamJerseyTemplate = teamJerseyTemplate;
     }
 
+    // Search Player API
     async onPlayerSearchClick(player: any) {
         if (this.hasDragging) return; // Avoid click and dragging at the same time
         const dialog = this._dialog.open(MgPlayerSearchComponent, {
@@ -531,10 +539,17 @@ export class MgSquadBuilderComponent implements OnInit {
             maxHeight: '80vh',
             panelClass: 'dark-dialog-panel'
         });
+        dialog.componentInstance.previousSearchPlayer = player.playerInfo;
 
         dialog.afterClosed().subscribe((selectedPlayer) => {
             if (selectedPlayer) {
                 this.players[player.id].playerInfo = selectedPlayer;
+                if (selectedPlayer.shortName !== 'Transfer') {
+                    this.players[player.id].isNeedTransfer = false;
+                }
+                else {
+                    this.players[player.id].isNeedTransfer = true;
+                }
             }
         });
     }
@@ -548,7 +563,6 @@ export class MgSquadBuilderComponent implements OnInit {
         }, 0);
     }
 
-
     // Stop Editing Title
     stopEditingTeamName() {
         this.isEditingTeamName = false;
@@ -558,7 +572,8 @@ export class MgSquadBuilderComponent implements OnInit {
         }
     }
 
-    async exportPng() {
+    // Export As Image
+    async exportAsPng() {
         const element = this.pitchBoundaryForExport.nativeElement;
 
         toPng(element, { cacheBust: true },)
@@ -612,30 +627,50 @@ export class MgSquadBuilderComponent implements OnInit {
     // Save My Squad
     async onSaveSquadClick() {
 
-        console.log(this.players);
+        try {
 
-        setInterval(() => {
-            console.log('x');
-        }, 100);
+            const hasMissingPlayerInfo = this.players.some(item => !item.hasOwnProperty('playerInfo'));
 
-        const nanoId = nanoid(10);
-        const squadData = {
-            id: this.isSquadFromUrl ? this.squadFirebaseId : nanoId,
-            name: this.currentTeamName,
-            formation: this.selectedFormation,
-            isJerseyMode: this.isJerseyMode,
-            teamJerseyTemplate: this.selectedTeamJerseyTemplate,
-            createdAt: serverTimestamp(),
-            players: this.players,
+            if (hasMissingPlayerInfo) {
+                this._toastrService.warning(' Takım kadrosu eksik görünüyor. Lütfen eksik oyuncuları tamamlayın.');
+                return;
+            }
+
+            const nanoId = nanoid(10);
+            const squadData = {
+                id: this.isSquadFromUrl ? this.squadFirebaseId : nanoId,
+                name: this.currentTeamName,
+                formation: this.selectedFormation,
+                isJerseyMode: this.isJerseyMode,
+                teamJerseyTemplate: this.selectedTeamJerseyTemplate,
+                createdAt: serverTimestamp(),
+                players: this.players,
+            }
+            await setDoc(doc(this.fireDataBase, "squad", this.isSquadFromUrl ? this.squadFirebaseId : nanoId), squadData);
+            this._toastrService.success('Kadronuz başarıyla kaydedildi.');
+        } catch (error) {
+
         }
-        console.log(squadData);
-
-        await setDoc(doc(this.fireDataBase, "squad", this.isSquadFromUrl ? this.squadFirebaseId : nanoId), squadData);
     }
 
     // Continue New Team Without Saved Squad
     async onCreateNewTeam() {
         window.location.href = '/squad-builder'
+    }
+
+    //
+    activateAlternativePlayerTextarea(player: any) {
+        this.players[player.id].alternativePlayerMode = true;
+        const textareaElement = document.getElementById('textarea' + player.id) as HTMLTextAreaElement;
+        if (textareaElement) {
+            textareaElement.focus();
+        }
+    }
+
+    // Handle Add to Alternative Player on Textarea
+    async handeEnterAlternativePlayerTextarea(event: Event, player: any) {
+        event.preventDefault();
+        this.players[player.id].alternativePlayerMode = false;
     }
 
     async convertImagesToBase64() {

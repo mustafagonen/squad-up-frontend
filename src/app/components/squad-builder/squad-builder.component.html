@@ -1,35 +1,39 @@
 <div #contentToCapture *ngIf="showComponent && !isLoading" class="container">
     <div class="main-content-area">
         <div class="left-content">
-            <h1 class="title">Formasyonlar</h1>
-
-            <div class="formation-buttons">
-                <button *ngFor="let formation of formationLabels" (click)="setFormation(formation.value)"
-                    [class.active]="selectedFormation === formation.value">
-                    {{formation.label}}
-                </button>
-            </div>
+            <!-- <h1 class="title">Formasyonlar</h1> -->
+            <h1 class="title">#11</h1>
 
             <div class="operation-btns">
 
+                <div class="operation-btn" [matMenuTriggerFor]="formationSelectMenu">
+                    <i class="fa fa-futbol reset-icon"></i>
+                    <p class="operation-btn-off-text">{{selectedFormation}}</p>
+                </div>
+
+                <mat-menu #formationSelectMenu="matMenu" class="small-mat-menu">
+                    <div class="formation-buttons">
+                        <button *ngFor="let formation of formationLabels" (click)="setFormation(formation.value)"
+                            [class.active]="selectedFormation === formation.value">
+                            {{formation.label}}
+                        </button>
+                    </div>
+                </mat-menu>
+
                 <!-- <div class="operation-btn" (click)="isDragEnabled = !isDragEnabled">
-                    <input type="checkbox" [(ngModel)]="isDragEnabled" (click)="$event.stopPropagation()" id="toggle" />
-                    <label for="toggle" (click)="$event.stopPropagation()" id="label-toggle"
-                        [ngClass]="{'operation-btonactive': isDragEnabled}"></label>
+                        <i *ngIf="isDragEnabled" class="fa fa-unlock active-icon"></i>
+                        <i *ngIf="!isDragEnabled" class="fa fa-lock passive-icon"></i>
 
-                    <i *ngIf="isDragEnabled" class="fa fa-unlock active-icon"></i>
-                    <i *ngIf="!isDragEnabled" class="fa fa-lock passive-icon"></i>
-
-                    Serbest
-                    <p class="operation-btn-on-text" *ngIf="isDragEnabled">Sürüklenebilir</p>
-                    <p class="operation-btn-off-text" *ngIf="!isDragEnabled">Taktiksel (Kilitli)</p>
-                </div> -->
+                        Serbest
+                        <p class="operation-btn-on-text" *ngIf="isDragEnabled">Sürüklenebilir</p>
+                        <p class="operation-btn-off-text" *ngIf="!isDragEnabled">Taktiksel (Kilitli)</p>
+                    </div> -->
 
                 <div class="operation-btn" (click)="isJerseyMode = !isJerseyMode">
                     <input type="checkbox" [(ngModel)]="isJerseyMode" (click)="$event.stopPropagation()" id="toggle" />
 
                     <i *ngIf="isJerseyMode" class="fa fa-tshirt active-icon"></i>
-                    <i *ngIf="!isJerseyMode" class="fa fa-circle-plus passive-white-icon"></i>
+                    <i *ngIf="!isJerseyMode" class="fa fa-circle passive-white-icon"></i>
 
                     <p class="operation-btn-on-text" *ngIf="isJerseyMode">Forma</p>
                     <p class="operation-btn-off-text" *ngIf="!isJerseyMode">Klasik</p>
@@ -85,7 +89,7 @@
                             </div>
                         </div>
                     </div>
-                    <p class="operation-btn-on-text" style="margin-left: -14px;">Forma Seçimi</p>
+                    <p class="operation-btn-on-text" style="margin-left: -17px;">Forma Seçimi</p>
                 </div>
 
                 <mat-menu #jerseySelectMenu="matMenu" panelClass="dark-dialog-panel">
@@ -142,7 +146,7 @@
                 </div> -->
 
                 <div class="operation-btn" (click)="setFormation(selectedFormation,true)">
-                    <i class="fa fa-sync blue-icon"></i>
+                    <i class="fa fa-sync-alt passive-icon"></i>
                     <p class="reset-text">Temizle</p>
                 </div>
 
@@ -158,12 +162,12 @@
                 </div>
 
                 <div class="operation-btn" (click)="onSaveSquadClick()">
-                    <i class="fa fa-image active-icon"></i>
+                    <i class="fa fa-save active-icon"></i>
                     <p class="operation-btn-off-text">Kadroyu Kaydet</p>
                 </div>
 
                 <div *ngIf="isSquadFromUrl" class="operation-btn" (click)="onCreateNewTeam()">
-                    <i class="fa fa-image active-icon"></i>
+                    <i class="fa fa-plus blue-icon"></i>
                     <p class="operation-btn-off-text">Yeni Takım</p>
                 </div>
                 <!-- <i n class="fas fa-plus player-icon"></i> -->
@@ -192,9 +196,10 @@
                 <div class="goal-bottom"></div>
 
 
-                @for (player of players; track player.id) { <div class="player-slot" [ngStyle]="player.style"
-                    [ngClass]="{'has-player-in-slot': player.playerInfo && !isJerseyMode}" cdkDrag [id]="player.id"
-                    [attr.data-id]="player.id" [class.is-dragging]="player.isDragging"
+                @for (player of players; track player.id) { <div class="player-slot" [ngStyle]="player.style" [ngClass]="{
+                    'has-player-in-slot': player.playerInfo && !player.isNeedTransfer && !isJerseyMode,
+                    'need-transfer-in-slot': player.isNeedTransfer && !isJerseyMode
+                    }" cdkDrag [id]="player.id" [attr.data-id]="player.id" [class.is-dragging]="player.isDragging"
                     [cdkDragDisabled]="!isDragEnabled" [class.drag-disabled]="!isDragEnabled"
                     (click)="onPlayerSearchClick(player)" (cdkDragStarted)="onPlayerDragStarted(player)"
                     (cdkDragMoved)="onPlayerDragMoved($event, player)" (cdkDragEnded)="onPlayerDragEnded(player,$event)"
@@ -245,27 +250,37 @@
                         <!-- <i n class="fas fa-plus player-icon"></i> -->
                         <div class="jersey-number">{{player.id + 1}}</div>
                         <div *ngIf="player.playerInfo && isJerseyMode" class="circle-player-info with-jersey">
-                            {{player.playerInfo.shortName}}
+                            <span>{{player.playerInfo.shortName}}</span>
                         </div>
                     </ng-container>
 
                     <!-- Circle Mode -->
                     <ng-template #circleMode>
-                        <i *ngIf="!player.playerInfo && !isJerseyMode" class="fas fa-plus"></i>
-                        <img *ngIf="player.playerInfo && !isJerseyMode" class="circle-player-img"
-                            [src]="player.playerInfo?.imgSrc">
-                        <div *ngIf="player.playerInfo && !isJerseyMode" class="circle-player-info">
-                            {{player.playerInfo.shortName}}
+                        <span style="color: white; position: absolute;"></span>
+                        <i *ngIf="!player.playerInfo && !player.isNeedTransfer && !isJerseyMode"
+                            class="fas fa-plus"></i>
+                        <i *ngIf="player.playerInfo && player.isNeedTransfer && !isJerseyMode" class="fas fa-question">
+                        </i>
+                        <img *ngIf="player.playerInfo && !player.isNeedTransfer && !isJerseyMode"
+                            class="circle-player-img" [src]="player.playerInfo?.imgSrc">
+                        <div *ngIf="player.playerInfo && !isJerseyMode" class="circle-player-info"
+                            (mouseenter)="player.isHoveredToPlayerName = true"
+                            (mouseleave)="player.isHoveredToPlayerName = false">
+                            <span>
+                                {{player.playerInfo.shortName}}
+                                <!-- <span class="d-none"
+                                    [ngClass]="{'add-alternative-player-hovered': player.isHoveredToPlayerName}">+</span> -->
+                            </span>
                         </div>
                     </ng-template>
-
+                    <textarea [id]="'textarea' + player.id"
+                        (click)="activateAlternativePlayerTextarea(player); $event.stopPropagation()"
+                        (keydown.enter)="handeEnterAlternativePlayerTextarea($event,player)" spellcheck="false"
+                        class="alternative-player-textarea" [ngClass]="{'with-jersey': isJerseyMode}"
+                        [(ngModel)]="player.alternativePlayerName">
+                    </textarea>
                 </div>
                 }
-
-                <div class="static-box">
-                    <p>Maç Bilgileri</p>
-                </div>
-
             </div>
         </div>
 
@@ -277,6 +292,17 @@
 
 <div *ngIf="!showComponent && !isLoading" style="height: 742px; width: 100%;"></div>
 
-<div *ngIf="isLoading" class="loader-wrapper">
-    <span class="loader"></span>
+<div *ngIf="isLoading" class="loader-container">
+    <div class="football-loader">
+        <div class="ball-piece piece-1"></div>
+        <div class="ball-piece piece-2"></div>
+        <div class="ball-piece piece-3"></div>
+        <div class="ball-piece piece-4"></div>
+        <div class="ball-piece piece-5"></div>
+        <div class="ball-piece piece-6"></div>
+        <div class="ball-piece piece-7"></div>
+        <div class="ball-piece piece-8"></div>
+        <div class="ball-piece piece-9"></div>
+        <div class="ball-piece piece-10"></div>
+    </div>
 </div>

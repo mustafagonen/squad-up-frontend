@@ -14,6 +14,8 @@ import { MatDialogRef } from '@angular/material/dialog';
 })
 export class MgPlayerSearchComponent implements OnInit {
 
+    @Input() public previousSearchPlayer: any;
+
     public playerSearchText: any;
     public playerSearchResult: any;
 
@@ -23,13 +25,23 @@ export class MgPlayerSearchComponent implements OnInit {
 
     ) { }
 
-    ngOnInit(): void { }
+    ngOnInit(): void {
+        console.log(this.previousSearchPlayer);
+    }
 
     async onSearchPlayer() {
         this.playerSearchResult = await this._playerService.getPlayers(this.playerSearchText, 10);
     }
 
-    selectPlayerFromResultList(player: any) {
-        this._dialogRef.close(player);
+    selectPlayerFromResultList(player: any, isNeedTransfer: any) {
+        if (!isNeedTransfer) {
+            this._dialogRef.close(player);
+        }
+        else {
+            const transferObj = {
+                shortName: 'Transfer',
+            }
+            this._dialogRef.close(transferObj);
+        }
     }
 }

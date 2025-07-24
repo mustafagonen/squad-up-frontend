@@ -261,6 +261,10 @@ body {
     font-weight: 500;
 }
 
+textarea {
+    font-family: "Montserrat", sans-serif !important;
+}
+
 label {
     display: block;
     text-align: left;
@@ -493,8 +497,7 @@ textarea:focus-visible {
 }
 
 .toast-success {
-    border: 1px solid $success;
-    background-color: #E7F8E9 !important;
+    background-color: #00C0A6 !important;
     overflow: hidden !important;
     max-height: 2000px !important;
     border-radius: 12px !important;
@@ -507,28 +510,7 @@ textarea:focus-visible {
 }
 
 .toast-warning {
-    border: 1px solid #F1C21B;
-    background-color: #FCF3D1;
-    overflow: hidden !important;
-    max-height: 2000px !important;
-    border-radius: 12px !important;
-    color: $navyblue !important;
-    box-shadow: none !important;
-}
-
-.toast-error {
-    border: 1px solid #BD1111;
-    background-color: #fee0e0 !important;
-    overflow: hidden !important;
-    max-height: 2000px !important;
-    border-radius: 12px !important;
-    color: $navyblue !important;
-    box-shadow: none !important;
-}
-
-.toast-success {
-    border: 1px solid $success;
-    background-color: #E7F8E9 !important;
+    background-color: #D97706;
     overflow: hidden !important;
     max-height: 2000px !important;
     border-radius: 12px !important;
@@ -538,23 +520,13 @@ textarea:focus-visible {
 
 .toast-success img {
     filter: brightness(0) saturate(100%) invert(48%) sepia(23%) saturate(6037%) hue-rotate(141deg) brightness(99%) contrast(101%);
-}
-
-.toast-warning {
-    border: 1px solid #F1C21B;
-    background-color: #FCF3D1;
-    overflow: hidden !important;
-    max-height: 2000px !important;
-    border-radius: 12px !important;
-    color: $navyblue !important;
-    box-shadow: none !important;
 }
 
 .toast-message {
     font-size: 13px;
     margin-top: 0;
-    color: #10B981;
-    font-weight: 600;
+    color: #fff;
+    font-weight: 400;
 }
 
 .toast-title {
@@ -791,6 +763,14 @@ body::after {
 .mat-mdc-menu-panel {
     background-color: #1a232d !important;
     border-radius: 16px !important;
+
+}
+
+.small-mat-menu {
+    max-width: max-content !important;
+    width: max-content !important;
+    padding: 0 !important;
+    border-radius: 8px !important;
 }
 
 .dark-dialog-panel .mat-dialog-container {
@@ -1029,6 +1009,126 @@ body::after {
 
     100% {
         transform: translate(24px, 0);
+    }
+}
+
+.loader-container {
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.football-loader {
+    position: relative;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    border: 3px solid #eee;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+    transform: scale(.6);
+}
+
+.ball-piece {
+    position: absolute;
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    background-color: #eee;
+    opacity: 0.3;
+    animation: pulsePiece 1.5s infinite ease-in-out;
+}
+
+/* Her parçanın farklı bir zamanda başlamasını sağlamak için gecikme (delay) ekliyoruz */
+.piece-1 {
+    top: 10%;
+    left: 42%;
+    animation-delay: 0s;
+}
+
+.piece-2 {
+    top: 25%;
+    left: 18%;
+    animation-delay: 0.15s;
+}
+
+/* Her bir sonraki parça için gecikmeyi artır */
+.piece-3 {
+    top: 25%;
+    left: 66%;
+    animation-delay: 0.30s;
+}
+
+.piece-4 {
+    top: 48%;
+    left: 4%;
+    animation-delay: 0.45s;
+}
+
+.piece-5 {
+    top: 48%;
+    left: 80%;
+    animation-delay: 0.60s;
+}
+
+.piece-6 {
+    top: 48%;
+    left: 42%;
+    animation-delay: 0.75s;
+}
+
+/* Merkez parçalardan biri */
+.piece-7 {
+    top: 65%;
+    left: 18%;
+    animation-delay: 0.90s;
+}
+
+.piece-8 {
+    top: 65%;
+    left: 66%;
+    animation-delay: 1.05s;
+}
+
+.piece-9 {
+    top: 80%;
+    left: 42%;
+    animation-delay: 1.20s;
+}
+
+/* .piece-10'u eklemedim, 9 parça yeterli olabilir. Ekleyecekseniz delay'i artırın. */
+.piece-10 {
+    top: 48%;
+    left: 42%;
+    animation-delay: 1.35s;
+}
+
+
+/* ! Yanıp sönme animasyonu (Keyframes) */
+@keyframes pulsePiece {
+    0% {
+        opacity: 0.3;
+        transform: scale(1);
+        box-shadow: none;
+    }
+
+    50% {
+        opacity: 1;
+        /* Ortada tamamen opak */
+        transform: scale(1.2);
+        /* Hafif büyüme efekti */
+        box-shadow: 0 0 10px 5px rgba(76, 175, 80, 0.7);
+        /* Yeşil parlama */
+    }
+
+    100% {
+        opacity: 0.3;
+        transform: scale(1);
+        box-shadow: none;
     }
 }
 
@@ -1556,6 +1656,10 @@ div.mat-mdc-select-panel {
 
 //Opacity
 
+.opacity-0 {
+    opacity: 0 !important;
+}
+
 .opacity-1 {
     opacity: .1 !important;
 }
@@ -1591,6 +1695,11 @@ div.mat-mdc-select-panel {
 .opacity-9 {
     opacity: .9 !important;
 }
+
+.opacity-full {
+    opacity: 1 !important;
+}
+
 
 //FontWeight
 
