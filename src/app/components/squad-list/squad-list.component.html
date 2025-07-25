@@ -1,0 +1,34 @@
+<div *ngIf="showComponent && !isLoading" class="squads-list-container">
+    <div class="squad-card" *ngFor="let squad of savedSquads" (click)="viewSquadDetails(squad.id)">
+        <div class="card-header">
+            <h3 class="squad-name">{{ squad.data.name || 'İsimsiz Kadro' }}</h3>
+            <span class="formation-tag">{{ squad.data.formation || 'Bilinmiyor' }}</span>
+        </div>
+
+        <div class="mini-pitch-container">
+            <div class="mini-pitch-field">
+                <div *ngFor="let player of squad.data.players" class="mini-player-dot"
+                    [ngClass]="'dot-type-' + player.type" [style.top.%]="player.position.top"
+                    [style.left.%]="player.position.left" [style.transform]="player.position.transform">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div *ngIf="!showComponent && !isLoading" style="height: 742px; width: 100%;"></div>
+
+<div *ngIf="isLoading" class="loader-container">
+    <div class="football-loader">
+        <div class="ball-piece piece-1"></div>
+        <div class="ball-piece piece-2"></div>
+        <div class="ball-piece piece-3"></div>
+        <div class="ball-piece piece-4"></div>
+        <div class="ball-piece piece-5"></div>
+        <div class="ball-piece piece-6"></div>
+        <div class="ball-piece piece-7"></div>
+        <div class="ball-piece piece-8"></div>
+        <div class="ball-piece piece-9"></div>
+        <div class="ball-piece piece-10"></div>
+    </div>
+</div>

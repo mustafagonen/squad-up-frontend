@@ -1,0 +1,168 @@
+:host {
+    display: block;
+    display: block;
+    margin-top: 60px;
+    background: radial-gradient(rgba(46, 125, 50, 0.5215686275), transparent);
+}
+
+.squads-list-container {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 20px;
+    box-sizing: border-box;
+    gap: 12px;
+    max-width: 1040px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.squad-card {
+    background-color: #2a2a2a;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    overflow: hidden;
+    cursor: pointer;
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    width: 240px;
+    display: flex;
+    flex-direction: column;
+}
+
+.squad-card:hover {
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    background-color: #0d1222;
+}
+
+.squad-name {
+    margin: 0;
+    font-size: 18px;
+    color: #eee;
+    font-weight: 600;
+    font-size: 15px;
+}
+
+.formation-tag {
+    background-color: #4CAF50;
+    color: white;
+    padding: 4px 10px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.mini-pitch-container {
+    background-color: #1e1e1e;
+    padding: 16px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-grow: 1;
+    min-height: 150px;
+}
+
+.mini-pitch-field {
+    position: relative;
+    width: 210px;
+    height: 210px;
+    background-color: #28a745;
+    border: 1px solid #4CAF50;
+    border-radius: 5px;
+    overflow: hidden;
+
+    &::before,
+    &::after {
+        content: '';
+        position: absolute;
+        background-color: rgba(255, 255, 255, 0.6);
+        border-radius: 50%;
+    }
+
+    &::before {
+        width: 60%;
+        height: 60%;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        border: 1px solid rgba(255, 255, 255, 0.6);
+        background: transparent;
+    }
+
+    &::after {
+        width: 5px;
+        height: 5px;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+}
+
+.mini-player-dot {
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.8);
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+    z-index: 2;
+}
+
+.dot-type-gk {
+    background-color: #fdd835;
+}
+
+.dot-type-def,
+.dot-type-def-cb {
+    background-color: #2196f3;
+}
+
+.dot-type-mid,
+.dot-type-mid-c,
+.dot-type-mid-dm,
+.dot-type-mid-w {
+    background-color: #ff9800;
+}
+
+.dot-type-fw,
+.dot-type-fw-w,
+.dot-type-fw-s {
+    background-color: #f44336;
+}
+
+.save-date {
+    font-size: 13px;
+    color: #aaa;
+}
+
+.card-action-btn {
+    background: none;
+    border: 1px solid #4CAF50;
+    color: #4CAF50;
+    padding: 6px 12px;
+    border-radius: 4px;
+    font-size: 13px;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+}
+
+.card-action-btn:hover {
+    background-color: #4CAF50;
+    color: white;
+}
+
+/* Responsive Tasarım */
+@media (max-width: 480px) {
+    .squad-card {
+        width: 100%;
+    }
+
+    .mini-pitch-field {
+        width: 100%;
+    }
+}

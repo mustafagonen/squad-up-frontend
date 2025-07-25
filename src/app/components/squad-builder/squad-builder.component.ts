@@ -40,9 +40,9 @@ export class MgSquadBuilderComponent implements OnInit {
 
     // States Variables
     isLoading = false;
+    showComponent = true;
     isSquadFromUrl = false;
     squadFirebaseId: any;
-    showComponent = true;
     isShowBenchPlayers = false;
     isDragEnabled: boolean = false;
     hasDragging: boolean = false;
@@ -242,7 +242,9 @@ export class MgSquadBuilderComponent implements OnInit {
                 const result = await this.getSquadFromUrl(this.squadFirebaseId);
 
                 if (result && result?.length > 0) {
+                    console.log(result[0]);
                     this.isSquadFromUrl = true;
+                    this.currentTeamName = result[0].data['name'];
                     this.players = result[0].data['players'];
                     this.selectedFormation = result[0].data['formation'];
                     this.isJerseyMode = result[0].data['isJerseyMode'];
@@ -623,7 +625,6 @@ export class MgSquadBuilderComponent implements OnInit {
 
     // Export As Image
     async exportAsPng() {
-        this.isLoading = true;
         const element = this.pitchBoundaryForExport.nativeElement;
         const now = new Date();
         const day = String(now.getDate()).padStart(2, '0');
@@ -632,13 +633,12 @@ export class MgSquadBuilderComponent implements OnInit {
         const hours = String(now.getHours()).padStart(2, '0');
         const minutes = String(now.getMinutes()).padStart(2, '0');
         const formattedDateTime = `${day}/${month}/${year} - ${hours}:${minutes}`;
-        toPng(element, { cacheBust: true },)
+        toPng(element, { cacheBust: true })
             .then((dataUrl) => {
                 const link = document.createElement('a');
                 link.href = dataUrl;
                 link.download = `${this.currentTeamName} - ${formattedDateTime}`;
                 link.click();
-                this.isLoading = false;
             });
     }
 
@@ -671,11 +671,15 @@ export class MgSquadBuilderComponent implements OnInit {
 
     // Save My Squad
     async onSaveSquadClick() {
-
         try {
             const hasMissingPlayerInfo = this.players.some(item => !item.hasOwnProperty('playerInfo'));
             if (hasMissingPlayerInfo) {
                 this._toastrService.warning(' Takım kadrosu eksik görünüyor. Lütfen eksik oyuncuları tamamlayın.');
+                return;
+            }
+
+            if (this.currentTeamName == 'Takımınız') {
+                this.startEditingTeamName();
                 return;
             }
 
@@ -699,7 +703,7 @@ export class MgSquadBuilderComponent implements OnInit {
                 maxHeight: '80vh',
                 panelClass: 'dark-dialog-panel'
             });
-            dialog.componentInstance.generatedShareLink = environment.appUrl + dbId;
+            dialog.componentInstance.generatedShareLink = environment.appUrl + 'squad-builder/' + dbId;
 
         } catch (error) {
             console.error(error);

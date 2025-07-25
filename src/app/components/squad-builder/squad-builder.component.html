@@ -44,8 +44,8 @@
                     <input type="checkbox" [(ngModel)]="isJerseyMode" (click)="$event.stopPropagation()" id="toggle" />
 
                     <!-- <i class="fa fa-fill-drip reset-icon"></i> -->
-                    <div class="player-slot is-jersey-mode position-relative no-hover-transform"
-                        style="margin-left: -26px;">
+                    <div
+                        class="player-slot is-jersey-mode position-relative no-hover-transform negative-position-jersey">
                         <div class="player-jersey small-jersey-for-icon no-hover-shadow"
                             [style.background-color]="selectedTeamJerseyTemplate.secondaryColor"
                             [style.border]="selectedTeamJerseyTemplate.border">

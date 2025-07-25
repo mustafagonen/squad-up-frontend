@@ -16,8 +16,14 @@
                     </a>
                 </li>
                 <li>
-                    <a routerLink="/tactical-board" [ngClass]="{'active-menu': selectedMenu == '/tactical-board'}">
+                    <a routerLink="/squad-list" [ngClass]="{'active-menu': selectedMenu == '/squad-list'}">
+                        {{'Kadrolar' | translate}}
+                    </a>
+                </li>
+                <li class="pro-feature">
+                    <a [ngClass]="{'active-menu': selectedMenu == '/tactical-board'}">
                         {{'Taktik Tahtası' | translate}}
+                        <span class="pro-tag">PRO</span>
                     </a>
                 </li>
                 <!-- <li><a routerLink="about">{{'About' | translate}}</a></li>
