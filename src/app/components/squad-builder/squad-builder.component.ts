@@ -42,6 +42,7 @@ export class MgSquadBuilderComponent implements OnInit {
     isLoading = false;
     showComponent = true;
     isSquadFromUrl = false;
+    isMobileImageMode = false;
     squadFirebaseId: any;
     isShowBenchPlayers = false;
     isDragEnabled: boolean = false;
@@ -624,7 +625,13 @@ export class MgSquadBuilderComponent implements OnInit {
     }
 
     // Export As Image
-    async exportAsPng() {
+    async exportAsPng(fromSaveSquad?: any) {
+        // if (/iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+        //     this.isMobileImageMode = true;
+        // }
+        console.log('gelsm');
+
+        this.isMobileImageMode = true;
         const element = this.pitchBoundaryForExport.nativeElement;
         const now = new Date();
         const day = String(now.getDate()).padStart(2, '0');
@@ -638,7 +645,24 @@ export class MgSquadBuilderComponent implements OnInit {
                 const link = document.createElement('a');
                 link.href = dataUrl;
                 link.download = `${this.currentTeamName} - ${formattedDateTime}`;
-                link.click();
+                setTimeout(() => {
+                    link.click();
+                }, 2000);
+
+                if (!fromSaveSquad) {
+                    const img = document.createElement('img');
+                    img.src = dataUrl;
+                    img.style.maxWidth = '100%';
+                    img.style.marginTop = '16px';
+                    const hedefDiv = document.getElementById('iphone-image-area');
+                    console.log(hedefDiv);
+
+                    if (hedefDiv) {
+                        hedefDiv.innerHTML = '';
+                        hedefDiv.appendChild(img);
+                    }
+                }
+
             });
     }
 
@@ -662,6 +686,7 @@ export class MgSquadBuilderComponent implements OnInit {
             document.body.appendChild(link); // Linki DOM'a ekle (görünmez olabilir)
             link.click(); // Linke tıkla
             document.body.removeChild(link); // Linki DOM'dan kaldır
+
         } catch (error) {
             console.error('Dışa aktarılırken bir hata oluştu:', error);
             this.isLoading = false;

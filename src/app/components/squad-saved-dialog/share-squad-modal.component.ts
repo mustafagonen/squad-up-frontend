@@ -45,6 +45,12 @@ export class MgShareSquadModalComponent {
         } else {
           console.error('Link kopyalanamadı.');
         }
+
+        setTimeout(() => {
+          this.closeModal();
+        }, 2500);
+
+
       } catch (err) {
         console.error('Kopyalama işlemi desteklenmiyor veya başarısız:', err);
       }
@@ -59,7 +65,7 @@ export class MgShareSquadModalComponent {
         console.log('Link başarıyla kopyalandı (Modern API):', this.generatedShareLink);
         setTimeout(() => {
           this.copySuccess = false;
-        }, 2000);
+        }, 2500);
       } catch (err) {
         console.error('Link kopyalanamadı (Modern API):', err);
         this.copyLinkToClipboard();

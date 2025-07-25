@@ -16,6 +16,7 @@ export class MgNavbarComponent implements OnInit {
     selectedMenu = 'squad-builder';
 
     @ViewChild('mobileMenu') mobileMenu!: ElementRef;
+    isMenuOpen: boolean = false;
 
     constructor(
         private _router: Router,
@@ -30,6 +31,6 @@ export class MgNavbarComponent implements OnInit {
     ngOnInit(): void { }
 
     toggleMenuWrapper() {
-        this.mobileMenu.nativeElement.classList.toggle('active');
+        this.isMenuOpen = !this.isMenuOpen;
     }
 }

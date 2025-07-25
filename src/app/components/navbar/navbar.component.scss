@@ -31,9 +31,9 @@
 
 .soccer {
     background: url(http://upload.wikimedia.org/wikipedia/en/e/ec/Soccer_ball.svg);
-    background-size: 40px 40px;
-    height: 40px;
-    width: 40px;
+    background-size: 30px 30px;
+    height: 30px;
+    width: 30px;
     position: relative;
     -webkit-animation: roll 8s 1s;
     -moz-animation: roll 8s 1s;
@@ -107,7 +107,6 @@
 /* Genel Navbar Stilleri */
 .navbar {
     background-color: #0d1222;
-    padding: 20px 5rem;
     /* Açık gri, mevcut tasarımla uyumlu */
     color: #374151;
     height: 60px;
@@ -131,7 +130,7 @@
 }
 
 .navbar-logo {
-    font-size: 22px;
+    font-size: 18px;
     text-decoration: none;
     color: #10B981;
     font-family: "Michroma", sans-serif !important;
@@ -143,7 +142,7 @@
     align-items: center;
 
     span {
-        font-size: 22px;
+        font-size: 18px;
     }
 }
 
@@ -161,8 +160,8 @@
 .navbar-links a {
     text-decoration: none;
     color: #e0e0e0;
-    /* Koyu gri metin */
-    font-size: 14px;
+    font-size: 12px;
+    font-weight: 600;
     transition: color 0.3s ease;
 }
 
@@ -244,7 +243,8 @@
     line-height: 1;
     /* Satır yüksekliğini ayarlar */
     white-space: nowrap;
-    /* "PRO" kelimesinin tek satırda kalmasını sağlar */
+    position: absolute;
+    top: 18px;
 }
 
 /* İsteğe bağlı: Pro özelliğin üzerindeki linki tıklanmaz yapma (JS ile yönlendirme) */
@@ -279,7 +279,7 @@
     }
 
     .navbar-logo {
-        left: 0;
+        left: calc(50% - 85px);
 
         span {
             font-size: 18px;
@@ -287,13 +287,11 @@
     }
 
     .soccer {
-        transform: scale(.7) !important;
         margin-top: 4px;
         animation: unset !important
     }
 
     .navbar-links {
-        display: none;
         width: 100%;
         text-align: center;
         position: absolute;
@@ -302,6 +300,8 @@
         background-color: #0d1222;
         /* Gri arka plan */
         padding: 10px 0;
+        position: fixed;
+        display: none;
     }
 
     .navbar-links ul {
@@ -312,7 +312,8 @@
         margin: 10px 0;
     }
 
-    .navbar-links.active {
-        display: block;
+    .navbar-links.open {
+        display: block !important;
+        padding-top: 0;
     }
 }

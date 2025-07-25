@@ -1,4 +1,4 @@
-<div #contentToCapture *ngIf="showComponent && !isLoading" class="container">
+<div *ngIf="showComponent && !isLoading && !isMobileImageMode" class="container">
     <div class="main-content-area">
         <div class="left-content">
             <!-- <h1 class="title">Formasyonlar</h1> -->
@@ -32,7 +32,7 @@
                 <div class="operation-btn" (click)="isJerseyMode = !isJerseyMode">
                     <input type="checkbox" [(ngModel)]="isJerseyMode" (click)="$event.stopPropagation()" id="toggle" />
 
-                    <i *ngIf="isJerseyMode" class="fa fa-tshirt active-icon text-15px"></i>
+                    <i *ngIf="isJerseyMode" class="fa fa-tshirt active-icon text-15px negative-position-tshirt"></i>
                     <i *ngIf="!isJerseyMode" class="fa fa-circle passive-white-icon"></i>
 
                     <p class="operation-btn-on-text" style="margin-left: -.5px;" *ngIf="isJerseyMode">Forma</p>
@@ -174,7 +174,7 @@
         </div>
 
         <div class="center-content">
-            <h1 *ngIf="!isEditingTeamName" class="title editable-title " (click)="startEditingTeamName()">
+            <h1 *ngIf="!isEditingTeamName" class="title editable-title" (click)="startEditingTeamName()">
                 {{currentTeamName}}
             </h1>
             <input *ngIf="isEditingTeamName" [(ngModel)]="currentTeamName" (blur)="stopEditingTeamName()"
@@ -255,8 +255,17 @@
                             class="fas fa-plus"></i>
                         <i *ngIf="player.playerInfo && player.isNeedTransfer && !isJerseyMode" class="fas fa-question">
                         </i>
+
+                        <div *ngIf="player.playerInfo && !player.isNeedTransfer && !isJerseyMode"
+                            class="circle-player-img"
+                            [style.background-image]="'url(' + player.playerInfo?.imgSrc + ')'">
+
+                        </div>
+
+                        <!-- 
                         <img *ngIf="player.playerInfo && !player.isNeedTransfer && !isJerseyMode"
-                            class="circle-player-img" [src]="player.playerInfo?.imgSrc">
+                            class="circle-player-img" [src]="player.playerInfo?.imgSrc"> -->
+
                         <div *ngIf="player.playerInfo && !isJerseyMode" class="circle-player-info"
                             (mouseenter)="player.isHoveredToPlayerName = true"
                             (mouseleave)="player.isHoveredToPlayerName = false">
@@ -368,6 +377,8 @@
         </div>
     </div>
 </div>
+
+<div *ngIf="isMobileImageMode" class="p-l-16 p-t-24 p-r-16 p-b-24" id="iphone-image-area"></div>
 
 <div *ngIf="!showComponent && !isLoading" style="height: 742px; width: 100%;"></div>
 
