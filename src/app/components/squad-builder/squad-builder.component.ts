@@ -44,7 +44,6 @@ export class MgSquadBuilderComponent implements OnInit {
     showComponent = true;
     isSquadFromUrl = false;
     isMobileView = false;
-    // isMobileImageMode = false;
     squadFirebaseId: any;
     isShowBenchPlayers = false;
     isDragEnabled: boolean = false;

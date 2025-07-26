@@ -141,30 +141,18 @@ $subtle-red-glow: #FF6347; // Hafif, domates kırmızısı gibi bir parlama reng
     text-align: center;
     position: relative;
     z-index: 1;
-    // container'ın kendi background'u body'den gelen rengi devralır
-    // veya özel bir background-color tanımlanabilir
-    // background-color: rgba($dark-background, 0.5); // Hafif şeffaflık
 }
 
 .title {
-    // font-size: 3em;
-    // font-weight: 700;
-    // margin-bottom: 50px;
-    // letter-spacing: 3px;
-    // color: #f0f0f0; // Başlık beyaz
-    // text-shadow: 0 0 15px $title-red, 0 0 30px $title-red, 0 0 45px $title-red; // Kırmızı parlama
-
-    font-size: 24px;
+    font-size: 20px;
     font-weight: 700;
-    margin-top: 6px;
-    margin-bottom: 24px;
+    margin-top: 9px;
+    margin-bottom: 17px !important;
     letter-spacing: 3px;
     color: #f0f0f0; // Başlık rengi beyaz (mevcut)
-    // text-shadow: 0 0 15px $title-red, 0 0 30px $title-red, 0 0 45px $title-red; // Bu satırı kaldırıyoruz!
     text-shadow: none; // Gölgelendirmeyi tamamen kaldırıyoruz.
     height: 30px;
     cursor: pointer;
-
 }
 
 .editable-title {
@@ -179,10 +167,10 @@ $subtle-red-glow: #FF6347; // Hafif, domates kırmızısı gibi bir parlama reng
 }
 
 .title-input {
-    font-size: 24px;
+    font-size: 20px;
     font-weight: 700;
     margin-top: 6px;
-    margin-bottom: 24px;
+    margin-bottom: 3px !important;
     letter-spacing: 3px;
     color: #FFD700;
     text-shadow: 0 0 8px rgba(255, 255, 255, 0.6);
@@ -206,20 +194,12 @@ $subtle-red-glow: #FF6347; // Hafif, domates kırmızısı gibi bir parlama reng
 
 .operation-btns {
     width: 100%;
-    margin-top: 24px;
+    margin-top: 12px;
     display: flex;
-    /* Flexbox'ı etkinleştir */
     flex-wrap: wrap;
-    /* Öğelerin yeni satıra geçmesine izin ver */
     justify-content: flex-start;
-    /* Öğeleri baştan itibaren sırala (isteğe bağlı, center veya space-between de olabilir) */
     align-content: flex-start;
-    /* İçerik satırlarını baştan itibaren sırala (öğeler dolguyla sarılmadığında önemli) */
     gap: 12px;
-    /* Öğeler arasında boşluk bırak (isteğe bağlı, kendi istediğiniz değeri ayarlayın) */
-    /* Veya row-gap ve column-gap ayrı ayrı tanımlanabilir */
-    /* row-gap: 20px; */
-    /* column-gap: 20px; */
 }
 
 .toggle-box {
@@ -312,7 +292,7 @@ $subtle-red-glow: #FF6347; // Hafif, domates kırmızısı gibi bir parlama reng
     font-size: 18px;
     color: #FFA500;
     color: #FFC000;
-    margin-right: 7px;
+    margin-right: 12px;
 }
 
 .reset-text {
@@ -357,54 +337,38 @@ $subtle-red-glow: #FF6347; // Hafif, domates kırmızısı gibi bir parlama reng
     }
 }
 
-
 .main-content-area {
     display: flex;
-    flex-direction: column;
-    /* Flexbox ile içerikleri yan yana hizala */
     justify-content: flex-start;
-    /* İçerikleri sola hizala */
     align-items: flex-start;
-    /* İçerikleri üste hizala */
     gap: 20px;
-    /* Butonlar ve saha arasındaki boşluk */
     width: 100%;
-    /* Kapsayıcı genişliği */
-    max-width: 976px;
-    /* Maksimum genişliği koru */
+    max-width: 1200px;
     margin: 0 auto;
-    /* Eğer main-content-area'nın kendisi de merkezlenmek istenirse */
 }
 
 .left-content {
-    width: 100%;
+    width: 144px;
 }
 
 .center-content {
-    width: 100%;
+    width: max-content;
 }
 
 .right-content {
-    width: 100%;
+    width: 144px;
 }
 
 .formation-buttons {
     flex-shrink: 0;
-    /* Butonların sıkışmasını engelle */
     width: 200px;
-    /* Buton alanı için sabit genişlik */
     display: grid;
-    /* Butonları grid sistemiyle düzenle */
     grid-template-columns: 1fr 1fr;
-    /* İki eşit sütun */
     gap: 10px;
-    /* Butonlar arası boşluk */
     margin-bottom: 0;
-    /* Artık dikey boşluk kalmayacak */
     justify-content: start;
-    /* Butonları grid içinde sola hizala */
     align-content: start;
-    /* Butonları grid içinde yukarı hizala */
+    margin: 8px 16px;
 
     button {
         // Mevcut buton stilleri (aynı kalacak)
@@ -423,9 +387,12 @@ $subtle-red-glow: #FF6347; // Hafif, domates kırmızısı gibi bir parlama reng
         position: relative;
         overflow: hidden;
         z-index: 1;
-        box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.4),
-            0 4px 10px rgba(0, 0, 0, 0.5),
-            0 0 15px rgba($neon-green, 0.3);
+        // box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.4),
+        //     0 4px 10px rgba(0, 0, 0, 0.5),
+        //     0 0 15px rgba($neon-green, 0.3);
+        box-shadow: unset !important;
+        border: 1px solid rgba(255, 255, 255, 0.1) !important;
+        padding: 0;
 
         &::before {
             content: '';
@@ -476,16 +443,11 @@ $subtle-red-glow: #FF6347; // Hafif, domates kırmızısı gibi bir parlama reng
     flex-grow: 1;
     flex-shrink: 1;
     /* Genişlik ve yüksekliği ters çeviriyoruz */
-    width: 100%;
-    /* Eski yükseklik, yeni genişlik */
-    height: 516px;
-    /* Eski genişlik, yeni yükseklik */
+    width: 800px;
+    height: 500px;
     max-width: 100%;
-    /* Max genişliği de yeni genişliğe göre ayarla */
     max-height: 550px;
-    /* Max yüksekliği de yeni yüksekliğe göre ayarla */
     position: relative;
-    /* Gradyan yönünü yatay yapıyoruz */
     background-image: linear-gradient(to right, #2e7d32 0%, #2e7d32 12.5%, #399b3e 12.5%, #399b3e 25%, #2e7d32 25%, #2e7d32 37.5%, #399b3e 37.5%, #399b3e 50%, #2e7d32 50%, #2e7d32 62.5%, #399b3e 62.5%, #399b3e 75%, #2e7d32 75%, #2e7d32 87.5%, #399b3e 87.5%, #399b3e 100%);
     background-size: 100% 100%;
     border: 2px solid #fff;
@@ -660,40 +622,6 @@ $subtle-red-glow: #FF6347; // Hafif, domates kırmızısı gibi bir parlama reng
     /* Sol üst, sağ üst, sağ alt, sol alt */
 }
 
-// .player-slot {
-//     position: absolute;
-//     width: 65px;
-//     height: 65px;
-//     background-color: $player-icon-bg;
-//     // background: linear-gradient(145deg, rgba(30, 35, 50, 1), rgba(15, 20, 35, 1));
-//     border: 2px solid $player-icon-border;
-//     border-radius: 50%;
-//     @include flex-center;
-//     font-size: 2em;
-//     color: #f0f0f0;
-//     cursor: pointer;
-//     transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
-//     z-index: 3;
-//     @include soft-glow(lighten($player-icon-border, 10%), 5px, 0.5);
-//     z-index: 3; // Player slotları pitch üzerinde olmalı
-
-//     &.is-dragging {
-//         animation: none; // Çok önemli: Animasyonu tamamen durdurur
-//         // Ek olarak, sürükleme sırasında elemanın üzerinde başka beklenmedik transformasyonlar oluşuyorsa,
-//         // buraya ek bir transform resetleme denenebilir ama normalde 'animation: none' yeterli olmalı
-//         // transform: translate(-50%, -50%) !important; // Gerekirse ekle, dikkatli kullan
-//     }
-
-//     &:hover {
-//         transform: scale(1.1);
-//         box-shadow: 0 0 15px $neon-green, 0 0 30px $neon-green;
-//     }
-
-//     i {
-//         text-shadow: 0 0 5px rgba(#f0f0f0, 0.5);
-//     }
-// }
-
 /* --- PLAYER SLOT STYLES (Bu bölümdeki değişiklikler mevcut .player-slot stilini tamamen değiştirecek, eskiyi silip bunu ekleyin) --- */
 .player-slot {
     position: absolute;
@@ -760,23 +688,15 @@ $subtle-red-glow: #FF6347; // Hafif, domates kırmızısı gibi bir parlama reng
         transform: scale(1.1);
     }
 
-
     /* --- DAIRE GÖRÜNÜMÜ (Varsayılan veya is-jersey-mode yoksa - BU KISIMDA DEĞİŞİKLİK YOK) --- */
     &:not(.is-jersey-mode) {
         width: 50px;
-        /* Dairenin genişliği */
         height: 50px;
-        /* Dairenin yüksekliği */
         background-color: #222;
-        /* Dairenin arka plan rengi */
         border-radius: 50%;
-        /* Dairesel şekil */
-        border: 2px solid #444;
-        /* Dairenin kenarlığı */
+        // border: 2px solid #444;
         @include soft-glow(lighten(#444, 10%), 5px, 0.5);
-        /* Daire için parlama */
 
-        /* İçindeki ikon için stil */
         i {
             font-size: 20px !important;
             color: $neon-green;
@@ -784,8 +704,7 @@ $subtle-red-glow: #FF6347; // Hafif, domates kırmızısı gibi bir parlama reng
         }
 
         &:hover {
-            box-shadow: 0 0 15px $neon-green, 0 0 30px $neon-green;
-            /* Daire hover efekti */
+            box-shadow: 0 0 15px rgba(255, 255, 255, .2), 0 0 30px rgba(255, 255, 255, .2);
         }
     }
 
@@ -826,17 +745,10 @@ $subtle-red-glow: #FF6347; // Hafif, domates kırmızısı gibi bir parlama reng
         /* Forma Elementleri */
         .player-jersey {
             position: relative;
-            width: 60px;
-            /* Formanın gövde genişliği */
-            height: 65px;
-            /* Formanın gövde yüksekliği */
+            width: 45px;
+            height: 50px;
             background-color: $team-color-1;
-            /* Ana forma rengi */
-            // YENİ border-radius ile daha kompleks forma şekli
-            // Top-left | Top-right | Bottom-right | Bottom-left
-            // Yatay eğriler / Dikey eğriler
             border-radius: 35% 35% 15% 15% / 40% 40% 10px 10px;
-            /* Daha belirgin omuz ve daha düz alt */
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
             overflow: hidden;
             z-index: 4;
@@ -942,6 +854,15 @@ $subtle-red-glow: #FF6347; // Hafif, domates kırmızısı gibi bir parlama reng
     }
 }
 
+.team-B-player {
+    background-color: #FFC000 !important;
+}
+
+.small-jersey-for-icon {
+    transform: scale(.35);
+    margin-top: 0 !important;
+}
+
 .small-jersey-for-selection {
     transform: scale(.7);
 }
@@ -950,11 +871,16 @@ $subtle-red-glow: #FF6347; // Hafif, domates kırmızısı gibi bir parlama reng
     box-shadow: none !important;
 }
 
+.negative-position-jersey {
+    margin-left: -16px;
+}
+
 .jersey-kit-wrapper {
     display: flex;
     flex-wrap: wrap;
     gap: 0;
     width: 100%;
+    overflow: hidden;
 }
 
 .jersey-number {
@@ -962,7 +888,7 @@ $subtle-red-glow: #FF6347; // Hafif, domates kırmızısı gibi bir parlama reng
     position: absolute;
     right: 0;
     left: 0;
-    top: 4px;
+    top: 8px;
     bottom: 0;
     z-index: 5;
     text-shadow: 2px 2px 4px #1e2332e6;
@@ -971,146 +897,16 @@ $subtle-red-glow: #FF6347; // Hafif, domates kırmızısı gibi bir parlama reng
     display: flex;
     justify-content: center;
     align-items: center;
+
+    &.small {
+        top: 6px;
+    }
 }
 
 .active-jersey {
     box-shadow: 0 0 15px #fff, 0 0 30px #fff !important;
 }
 
-/* --- CDK Drag & Drop Animasyon Fix (BU KISIM KOMPLE YENİDEN YAZILDI) --- */
-// .cdk-drag-preview {
-//     box-sizing: border-box;
-//     // Ortak stiller
-//     box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2),
-//         0 8px 10px 1px rgba(0, 0, 0, 0.14),
-//         0 3px 14px 2px rgba(0, 0, 0, 0.12);
-//     z-index: 9999;
-//     cursor: grabbing;
-//     transform: translate(-50%, -50%) scale(1.1);
-//     opacity: 0.9;
-
-//     /* Daire görünümdeyken preview stili */
-//     &:not(.is-jersey-mode) {
-//         border-radius: 50%;
-//         background-color: lighten(#222, 10%); // Dairenin açık hali
-//         border: 2px solid $neon-green; // Dairenin kenarlığı
-
-//         .player-jersey {
-//             display: none;
-//         }
-
-//         // Forma gizle
-//         i {
-//             color: $neon-green;
-//         }
-//     }
-
-//     /* Forma görünümdeyken preview stili */
-//     &.is-jersey-mode {
-//         border-radius: 0;
-//         border: none;
-//         background-color: transparent; // Arka plan yok
-//         width: 70px; // Preview formanın toplam genişliği
-//         height: 80px; // Preview formanın toplam yüksekliği
-
-//         .player-jersey {
-//             display: block; // Forma göster
-//             background-color: $team-color-1;
-//             // Forma şekli preview'da da aynı olacak
-//             border-radius: 35% 35% 15% 15% / 40% 40% 10px 10px;
-//             width: 60px; // Normal forma boyutu
-//             height: 65px; // Normal forma boyutu
-//             border: 2px solid darken($team-color-1, 15%);
-//             box-shadow: none;
-//         }
-
-//         .neck,
-//         .sleeve,
-//         .stripes-container,
-//         .stripe {
-//             display: block; // Preview'da da bu elementlerin görünmesini sağla
-//         }
-
-//         // Preview içindeki ikonun pozisyonu ve rengi
-//         i.player-icon {
-//             position: absolute;
-//             font-size: 30px !important;
-//             color: rgba(#222, 0.5);
-//             z-index: 5;
-//             top: 50%;
-//             left: 50%;
-//             transform: translate(-50%, -35%);
-//         }
-
-//         // Preview içindeki forma detayları
-//         .neck {
-//             position: absolute;
-//             top: -2px;
-//             left: 50%;
-//             transform: translateX(-50%);
-//             width: 30%;
-//             height: 10px;
-//             background-color: $collar-color;
-//             border-radius: 0 0 5px 5px;
-//             border: 1px solid darken($collar-color, 15%);
-//             z-index: 6;
-//         }
-
-//         .sleeve {
-//             position: absolute;
-//             width: 25px;
-//             height: 20px;
-//             background-color: $sleeve-color;
-//             z-index: 3;
-//             border: 1px solid darken($sleeve-color, 15%);
-//         }
-
-//         .left-sleeve {
-//             top: 15%;
-//             left: -10px;
-//             transform: rotate(0deg);
-//             border-top-left-radius: 5px;
-//             border-bottom-left-radius: 20px;
-//             border-top-right-radius: 5px;
-//             border-bottom-right-radius: 5px;
-//         }
-
-//         .right-sleeve {
-//             top: 15%;
-//             right: -10px;
-//             transform: rotate(0deg);
-//             border-top-left-radius: 5px;
-//             border-bottom-left-radius: 5px;
-//             border-top-right-radius: 5px;
-//             border-bottom-right-radius: 20px;
-//         }
-
-//         .stripes-container {
-//             position: absolute;
-//             width: 100%;
-//             height: 100%;
-//             top: 0;
-//             left: 0;
-//             display: flex;
-//             justify-content: center;
-//             align-items: stretch;
-//             overflow: hidden;
-//         }
-
-//         .stripe {
-//             width: calc(100% / 9);
-//             height: 100%;
-
-//             &:nth-child(even) {
-//                 background-color: $team-color-1;
-//             }
-
-//             &:nth-child(odd) {
-//                 background-color: $team-color-2;
-//             }
-//         }
-//     }
-// }
 
 /* --- Responsive Ayarlamalar (Mevcut responsive ayarlarınızın içine ekleyin/değiştirin) --- */
 @media (max-width: 768px) {
@@ -1130,7 +926,7 @@ $subtle-red-glow: #FF6347; // Hafif, domates kırmızısı gibi bir parlama reng
 
             .player-jersey {
                 width: 45px; // Formanın gövde genişliği
-                height: 55px; // Formanın gövde yüksekliği
+                height: 50px; // Formanın gövde yüksekliği
                 border-radius: 30% 30% 10% 10% / 35% 35% 8px 8px;
                 /* Responsive için ayarlandı */
             }
@@ -1290,12 +1086,22 @@ $subtle-red-glow: #FF6347; // Hafif, domates kırmızısı gibi bir parlama reng
     z-index: 2; // Pitch üzerinde ama oyunculardan aşağıda
 }
 
+.wrapper-btn {
+    background: transparent !important;
+    width: max-content !important;
+    border: none !important;
+    outline: none !important;
+    padding: 0;
+    border-radius: 8px !important;
+}
+
+
 .formation-buttons {
     display: flex;
     // justify-content: center;
     flex-wrap: wrap;
     gap: 12px;
-    width: 100%;
+    width: 300px;
 
     button {
         background: linear-gradient(145deg, rgba(30, 35, 50, 0.9), rgba(15, 20, 35, 0.9));
