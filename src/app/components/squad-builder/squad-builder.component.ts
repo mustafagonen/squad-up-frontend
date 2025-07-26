@@ -17,6 +17,7 @@ import { toPng } from 'html-to-image';
 import domtoimage from 'dom-to-image';
 import { ToastrService } from 'ngx-toastr';
 import { MgShareSquadModalComponent } from '../squad-saved-dialog/share-squad-modal.component';
+import { UtilitiesService } from '../../utilities/utilities.service';
 
 @Component({
     selector: 'mg-squad-builder',
@@ -42,7 +43,8 @@ export class MgSquadBuilderComponent implements OnInit {
     isLoading = false;
     showComponent = true;
     isSquadFromUrl = false;
-    isMobileImageMode = false;
+    isMobileView = false;
+    // isMobileImageMode = false;
     squadFirebaseId: any;
     isShowBenchPlayers = false;
     isDragEnabled: boolean = false;
@@ -227,10 +229,16 @@ export class MgSquadBuilderComponent implements OnInit {
         private _playerService: PlayerService,
         private _toastrService: ToastrService,
         private _activatedRoute: ActivatedRoute,
+        private _utilitiesService: UtilitiesService,
     ) { }
 
     async ngOnInit() {
         this.isLoading = true;
+        this._utilitiesService.isMobile$.subscribe(value => {
+            this.isMobileView = value;
+        });
+        console.log(this.isMobileView);
+
         await this.checkSquadFromUrlOrNot()
         await this.setFormation(this.selectedFormation);
         this.isLoading = false;
@@ -629,9 +637,7 @@ export class MgSquadBuilderComponent implements OnInit {
         // if (/iPhone|iPad|iPod/i.test(navigator.userAgent)) {
         //     this.isMobileImageMode = true;
         // }
-        console.log('gelsm');
 
-        this.isMobileImageMode = true;
         const element = this.pitchBoundaryForExport.nativeElement;
         const now = new Date();
         const day = String(now.getDate()).padStart(2, '0');
@@ -645,24 +651,20 @@ export class MgSquadBuilderComponent implements OnInit {
                 const link = document.createElement('a');
                 link.href = dataUrl;
                 link.download = `${this.currentTeamName} - ${formattedDateTime}`;
-                setTimeout(() => {
-                    link.click();
-                }, 2000);
+                link.click();
+                // if (!fromSaveSquad) {
+                //     const img = document.createElement('img');
+                //     img.src = dataUrl;
+                //     img.style.maxWidth = '100%';
+                //     img.style.marginTop = '16px';
+                //     const hedefDiv = document.getElementById('iphone-image-area');
+                //     console.log(hedefDiv);
 
-                if (!fromSaveSquad) {
-                    const img = document.createElement('img');
-                    img.src = dataUrl;
-                    img.style.maxWidth = '100%';
-                    img.style.marginTop = '16px';
-                    const hedefDiv = document.getElementById('iphone-image-area');
-                    console.log(hedefDiv);
-
-                    if (hedefDiv) {
-                        hedefDiv.innerHTML = '';
-                        hedefDiv.appendChild(img);
-                    }
-                }
-
+                //     if (hedefDiv) {
+                //         hedefDiv.innerHTML = '';
+                //         hedefDiv.appendChild(img);
+                //     }
+                // }
             });
     }
 

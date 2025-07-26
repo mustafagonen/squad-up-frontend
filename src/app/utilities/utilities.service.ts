@@ -1,10 +1,28 @@
 import { Injectable } from '@angular/core';
 import { Validators } from '@angular/forms';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UtilitiesService {
+
+  private isMobileSubject = new BehaviorSubject<boolean>(this.checkIsMobile());
+  isMobile$ = this.isMobileSubject.asObservable();
+
+  constructor() {
+    window.addEventListener('resize', () => {
+      this.isMobileSubject.next(this.checkIsMobile());
+    });
+  }
+
+  private checkIsMobile(): boolean {
+    return window.innerWidth <= 768;
+  }
+
+  isMobile(): boolean {
+    return this.isMobileSubject.getValue();
+  }
 
   public generateGuid(): string {
     function s4() {

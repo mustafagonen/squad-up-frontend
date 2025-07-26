@@ -202,7 +202,7 @@ $subtle-red-glow: #FF6347; // Hafif, domates kırmızısı gibi bir parlama reng
 }
 
 .operation-btns {
-    width: 135px;
+    width: 144px;
     margin-top: 24px;
     display: flex;
     flex-wrap: wrap;
@@ -359,14 +359,14 @@ $subtle-red-glow: #FF6347; // Hafif, domates kırmızısı gibi bir parlama reng
     display: flex;
     justify-content: flex-start;
     align-items: flex-start;
-    gap: 20px;
+    gap: 12px;
     width: 100%;
     max-width: 860px;
     margin: 0 auto;
 }
 
 .left-content {
-    width: 135px;
+    width: 144px;
 }
 
 .center-content {
@@ -374,7 +374,7 @@ $subtle-red-glow: #FF6347; // Hafif, domates kırmızısı gibi bir parlama reng
 }
 
 .right-content {
-    width: 135px;
+    width: 144px;
     padding-top: 30px;
 }
 
@@ -461,9 +461,9 @@ $subtle-red-glow: #FF6347; // Hafif, domates kırmızısı gibi bir parlama reng
 .pitch {
     flex-grow: 1;
     flex-shrink: 1;
-    width: 550px;
+    width: 532px;
     height: 660px;
-    max-width: 550px;
+    max-width: 532px;
     position: relative;
     background-image: linear-gradient(to bottom,
             $pitch-green 0%,
@@ -1001,6 +1001,10 @@ $subtle-red-glow: #FF6347; // Hafif, domates kırmızısı gibi bir parlama reng
     display: flex;
     justify-content: center;
     align-items: center;
+
+    &.small {
+        top: 6px;
+    }
 }
 
 .active-jersey {
@@ -1183,6 +1187,15 @@ $subtle-red-glow: #FF6347; // Hafif, domates kırmızısı gibi bir parlama reng
     text-shadow: 0 0 2px rgba($dark-background, 0.3);
     animation: float 3s ease-in-out infinite alternate;
     z-index: 2; // Pitch üzerinde ama oyunculardan aşağıda
+}
+
+.wrapper-btn {
+    background: transparent !important;
+    width: max-content !important;
+    border: none !important;
+    outline: none !important;
+    padding: 0;
+    border-radius: 8px !important;
 }
 
 .formation-buttons {
