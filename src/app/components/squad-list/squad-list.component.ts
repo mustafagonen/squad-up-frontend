@@ -55,7 +55,7 @@ export class MgSquadListComponent implements OnInit {
     }
 
     viewSquadDetails(squadId: string): void {
-        this.router.navigate(['/squad-builder', squadId]);
+        this.router.navigate(['/kadro-kur', squadId]);
     }
 
     async getSquadList() {

@@ -729,7 +729,7 @@ export class MgSquadBuilderComponent implements OnInit {
                 maxHeight: '80vh',
                 panelClass: 'dark-dialog-panel'
             });
-            dialog.componentInstance.generatedShareLink = environment.appUrl + 'squad-builder/' + dbId;
+            dialog.componentInstance.generatedShareLink = environment.appUrl + 'kadro-kur/' + dbId;
 
         } catch (error) {
             console.error(error);
@@ -738,7 +738,7 @@ export class MgSquadBuilderComponent implements OnInit {
 
     // Continue New Team Without Saved Squad
     async onCreateNewTeam() {
-        window.location.href = '/squad-builder'
+        window.location.href = '/kadro-kur'
     }
 
     // Activate Alternative Player

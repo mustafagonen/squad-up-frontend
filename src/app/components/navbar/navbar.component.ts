@@ -13,7 +13,7 @@ import { NavigationEnd, Router } from '@angular/router';
 })
 export class MgNavbarComponent implements OnInit {
 
-    selectedMenu = 'squad-builder';
+    selectedMenu = 'kadro-kur';
 
     @ViewChild('mobileMenu') mobileMenu!: ElementRef;
     isMenuOpen: boolean = false;

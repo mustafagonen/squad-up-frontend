@@ -4,10 +4,7 @@ import { LoaderService } from './loader/loader.service';
 import { Router } from '@angular/router';
 import { AppService } from './services/app.service';
 import { MgNavbarComponent } from "./components/navbar/navbar.component";
-import { MgSliderComponent } from './components/slider/slider.component';
-import { MgFeaturesComponent } from "./components/features/features.component";
 import { MgFooterComponent } from "./components/footer/footer.component";
-import { MgSquadBuilderComponent } from "./components/squad-builder/squad-builder.component";
 
 @Component({
   selector: 'app-root',

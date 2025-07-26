@@ -5,11 +5,11 @@ import { MgSquadListComponent } from './components/squad-list/squad-list.compone
 
 export const routes: Routes = [
 
-  { path: 'squad-builder/:id', title: "Kadro Kur", component: MgSquadBuilderComponent },
-  { path: 'squad-builder', title: "Kadro Kur", component: MgSquadBuilderComponent },
+  { path: 'kadro-kur/:id', title: "Kadro Kur – Hayalindeki İlk 11’i Oluştur | Taktiksel", component: MgSquadBuilderComponent },
+  { path: 'kadro-kur', title: "Kadro Kur – Hayalindeki İlk 11’i Oluştur | Taktiksel", component: MgSquadBuilderComponent },
   { path: 'tactical-board', title: "Taktik Tahtası", component: MgTacticalBoardComponent },
-  { path: 'squad-list', title: "Kadrolar", component: MgSquadListComponent },
+  { path: 'kurulan-kadrolar', title: "Kurulan Kadrolar – Kullanıcıların Paylaştığı İlk 11’ler | Taktiksel", component: MgSquadListComponent },
 
-  { path: '', redirectTo: '/squad-builder', pathMatch: 'full' },
+  { path: '', redirectTo: '/kadro-kur', pathMatch: 'full' },
   { path: '**', component: MgSquadBuilderComponent },
 ];
