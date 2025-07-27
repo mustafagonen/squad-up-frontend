@@ -49,20 +49,13 @@ import { NgOtpInputModule } from 'ng-otp-input';
 import { ToastrModule } from 'ngx-toastr';
 import { AppErrorHandler } from './interceptors/error-handler';
 import { HtmlSanitizePipe } from './pipes/sanitizers.pipe';
-import { PhoneNumberPipe } from './pipes/phone-number.pipe';
-import { RemoveLeadZeroNumberPipe } from './pipes/remove-lead-zero.pipe';
 import { PdfViewerModule } from 'ng2-pdf-viewer';
 import { ApiUrlPipe } from './pipes/api-url.pipe';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
-import { AmountPipe } from './pipes/amount.pipe';
-import { Fixed2Pipe } from './pipes/fixed2.pipe';
-import { PhoneFormatDirective } from './pipes/phone-number.directive';
-import { LeadingZeroPipe } from './pipes/leading-zero.pipe';
 import { SafeUrlPipe } from './pipes/safe-url.pipe';
 import { TruncatePipe } from './pipes/truncater.pipe';
 import { RecaptchaModule, RecaptchaSettings, RECAPTCHA_SETTINGS, RECAPTCHA_V3_SITE_KEY } from 'ng-recaptcha';
 import { RouterModule } from '@angular/router';
-import { NoneSelectPipe } from './pipes/none-select.pipe';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 
 const RECAPTCHA_V2_KEY = '6LdaP7kqAAAAABc3t5UeeA0lVjm1Qk4_yXYauhuY';
@@ -72,15 +65,8 @@ const RECAPTCHA_V2_DUMMY_KEY = '6LckUKAjAAAAAHyDE15TITzk_VrQ-C0-4t6Kyk_l';
     declarations: [
         HtmlSanitizePipe,
         SafeUrlPipe,
-        LeadingZeroPipe,
-        PhoneNumberPipe,
-        RemoveLeadZeroNumberPipe,
         ApiUrlPipe,
-        AmountPipe,
         TruncatePipe,
-        NoneSelectPipe,
-        Fixed2Pipe,
-        PhoneFormatDirective,
     ],
     exports: [
         HttpClientModule,
@@ -125,15 +111,8 @@ const RECAPTCHA_V2_DUMMY_KEY = '6LckUKAjAAAAAHyDE15TITzk_VrQ-C0-4t6Kyk_l';
         ToastrModule,
         HtmlSanitizePipe,
         SafeUrlPipe,
-        LeadingZeroPipe,
-        PhoneNumberPipe,
-        RemoveLeadZeroNumberPipe,
         ApiUrlPipe,
-        AmountPipe,
         TruncatePipe,
-        NoneSelectPipe,
-        Fixed2Pipe,
-        PhoneFormatDirective,
         PdfViewerModule,
         NgxMatSelectSearchModule,
         MatDatepickerModule,

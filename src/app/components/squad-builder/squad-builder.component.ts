@@ -4,17 +4,15 @@ import { DragDropModule, CdkDragEnd, CdkDragStart } from '@angular/cdk/drag-drop
 import { PlayerService } from '../../services/player.service';
 import { MatDialog } from '@angular/material/dialog';
 import { MgPlayerSearchComponent } from '../player-search-dialog/player-search-dialog.component';
-import html2canvas from 'html2canvas';
 import { initializeApp } from 'firebase/app';
 import { collection, doc, getDocs, getFirestore, query, serverTimestamp, setDoc, where } from 'firebase/firestore';
 import { environment } from '../../../environments/environment';
 import { Firestore } from '@angular/fire/firestore';
-import * as uuid from 'uuid';
 import { nanoid } from 'nanoid';
 import { SquadModel } from '../../models/squad.model';
 import { ActivatedRoute } from '@angular/router';
 import { toPng } from 'html-to-image';
-import domtoimage from 'dom-to-image';
+import html2canvas from 'html2canvas';
 import { ToastrService } from 'ngx-toastr';
 import { MgShareSquadModalComponent } from '../squad-saved-dialog/share-squad-modal.component';
 import { UtilitiesService } from '../../utilities/utilities.service';

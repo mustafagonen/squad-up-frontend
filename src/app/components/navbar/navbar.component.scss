@@ -247,15 +247,11 @@
     top: 18px;
 }
 
-/* İsteğe bağlı: Pro özelliğin üzerindeki linki tıklanmaz yapma (JS ile yönlendirme) */
 .pro-feature a {
     cursor: not-allowed;
-    /* İmleci yasak işareti yapar */
     opacity: 0.7;
-    /* Hafif soluk gösterir */
 }
 
-/* JavaScript ile kullanıcı Pro üyeyse, bu sınıfları kaldırabilirsiniz */
 .pro-feature.is-pro a {
     cursor: pointer;
     opacity: 1;
