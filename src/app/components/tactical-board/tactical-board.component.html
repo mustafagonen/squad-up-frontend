@@ -49,8 +49,6 @@
                         [matMenuTriggerFor]="isJerseyMode ? jerseySelectMenu : null" class="operation-btn">
                         <input type="checkbox" [(ngModel)]="isJerseyMode" (click)="$event.stopPropagation()"
                             id="toggle" />
-
-                        <!-- <i class="fa fa-fill-drip reset-icon"></i> -->
                         <div
                             class="player-slot is-jersey-mode position-relative no-hover-transform negative-position-jersey">
                             <div class="player-jersey small-jersey-for-icon no-hover-shadow"
@@ -162,13 +160,13 @@
                     </div>
                 </button>
 
-                <!-- <button class="wrapper-btn" (click)="exportAsPng()">
+                <button *ngIf="!isMobileView" class="wrapper-btn" (click)="toggleTeamBVisibility()">
                     <div class="operation-btn">
-                        <i class="fa fa-image green-icon text-17px"></i>
-                        <p class="operation-btn-off-text m-l-1">Dışa Aktar</p>
+                        <i class="fa fa-circle"
+                            [ngClass]="{'active-icon': isTeamBVisible, 'passive-icon': !isTeamBVisible}"></i>
+                        <p class="reset-text">Rakip Göster</p>
                     </div>
-                </button> -->
-
+                </button>
             </div>
         </div>
 
@@ -189,11 +187,9 @@
 
                 @for (playerA of playersA; track playerA.id) { <div class="player-slot" [ngStyle]="playerA.style"
                     [ngClass]="{'has-player-in-slot': playerA.playerInfo && !isJerseyMode}" cdkDrag [id]="playerA.id"
-                    [attr.data-id]="playerA.id" [class.is-dragging]="playerA.isDragging"
+                    [attr.data-id]="playerA.id" (click)="onPlayerSearchClick(playerA,'A')"
+                    (cdkDragStarted)="onPlayerDragStarted(playerA)" (cdkDragEnded)="onPlayerDragEnded(playerA,$event)"
                     [cdkDragDisabled]="!isDragEnabledTeamA" [class.drag-disabled]="!isDragEnabledTeamA"
-                    (click)="onPlayerSearchClick(playerA,'A')" (cdkDragStarted)="onPlayerDragStarted(playerA)"
-                    (cdkDragMoved)="onPlayerDragMoved($event, playerA)"
-                    (cdkDragEnded)="onPlayerDragEnded(playerA,$event,'A')" [class.drag-disabled]="!isDragEnabledTeamA"
                     [class.is-jersey-mode]="isJerseyMode">
 
                     <!-- Jersey Mode -->
@@ -236,9 +232,7 @@
                                     [style.background-color]="selectedTeamJerseyTemplateA.primaryColor">
                                 </div>
                             </div>
-                            <!-- <div class="badge"></div> -->
                         </div>
-                        <!-- <i n class="fas fa-plus player-icon"></i> -->
                         <div class="jersey-number">{{playerA.id + 1}}</div>
                         <div *ngIf="playerA.playerInfo && isJerseyMode" class="circle-player-info with-jersey">
                             {{playerA.playerInfo.shortName}}
@@ -258,13 +252,12 @@
                 </div>
                 }
 
-                @for (playerB of playersB; track playerB.id) { <div class="player-slot" [ngStyle]="playerB.style"
+                @for (playerB of playersB; track playerB.id) { <div class="player-slot" *ngIf="isTeamBVisible"
+                    [ngStyle]="playerB.style"
                     [ngClass]="{'has-player-in-slot': playerB.playerInfo && !isJerseyMode, 'team-B-player':!isJerseyMode}"
-                    cdkDrag [id]="playerB.id" [attr.data-id]="playerB.id" [class.is-dragging]="playerB.isDragging"
+                    cdkDrag [id]="playerB.id" [attr.data-id]="playerB.id" (click)="onPlayerSearchClick(playerB,'B')"
+                    (cdkDragStarted)="onPlayerDragStarted(playerB)" (cdkDragEnded)="onPlayerDragEnded(playerB,$event)"
                     [cdkDragDisabled]="!isDragEnabledTeamB" [class.drag-disabled]="!isDragEnabledTeamB"
-                    (click)="onPlayerSearchClick(playerB,'B')" (cdkDragStarted)="onPlayerDragStarted(playerB)"
-                    (cdkDragMoved)="onPlayerDragMoved($event, playerB)"
-                    (cdkDragEnded)="onPlayerDragEnded(playerB,$event,'A')" [class.drag-disabled]="!isDragEnabledTeamB"
                     [class.is-jersey-mode]="isJerseyMode">
 
                     <!-- Jersey Mode -->
@@ -307,9 +300,7 @@
                                     [style.background-color]="selectedTeamJerseyTemplateB.primaryColor">
                                 </div>
                             </div>
-                            <!-- <div class="badge"></div> -->
                         </div>
-                        <!-- <i n class="fas fa-plus player-icon"></i> -->
                         <div class="jersey-number">{{playerB.id + 1}}</div>
                         <div *ngIf="playerB.playerInfo && isJerseyMode" class="circle-player-info with-jersey">
                             {{playerB.playerInfo.shortName}}
@@ -332,8 +323,7 @@
             </div>
         </div>
 
-        <div class="right-content">
-            <!-- <h1 class="title">Formasyonlar</h1> -->
+        <div *ngIf="isTeamBVisible" class="right-content">
             <h1 *ngIf="!isEditingTeamNameB" class="title editable-title" (click)="startEditingTeamNameB()">
                 {{currentTeamNameB}}
             </h1>
@@ -496,6 +486,10 @@
                     </div>
                 </button>
             </div>
+        </div>
+
+        <div class="bottom-content">
+
         </div>
     </div>
 </div>

@@ -38,7 +38,6 @@ export class MgShareSquadModalComponent {
         const successful = document.execCommand('copy');
         this.copySuccess = successful;
         if (successful) {
-          console.log('Link başarıyla kopyalandı:', this.generatedShareLink);
           setTimeout(() => {
             this.copySuccess = false;
           }, 2000);
@@ -62,7 +61,6 @@ export class MgShareSquadModalComponent {
       try {
         await navigator.clipboard.writeText(this.generatedShareLink);
         this.copySuccess = true;
-        console.log('Link başarıyla kopyalandı (Modern API):', this.generatedShareLink);
         setTimeout(() => {
           this.copySuccess = false;
         }, 2500);

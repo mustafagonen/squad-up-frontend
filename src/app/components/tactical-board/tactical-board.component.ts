@@ -1,10 +1,13 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { SharedModule } from '../../shared.module';
-import { DragDropModule, CdkDragEnd, CdkDragStart } from '@angular/cdk/drag-drop';
-import { PlayerService } from '../../services/player.service';
 import { MatDialog } from '@angular/material/dialog';
 import { MgPlayerSearchComponent } from '../player-search-dialog/player-search-dialog.component';
 import html2canvas from 'html2canvas';
+import { Player, PlayerA, PlayerB } from '../../models/player.model';
+import { FORMATION_LABELS } from '../../constants/formations-labels';
+import { FORMATION_POSITIONS } from '../../constants/formations';
+import { TEAM_JERSEY_TEMPLATES } from '../../constants/team-jersey-template';
+import { CdkDragEnd } from '@angular/cdk/drag-drop';
 
 @Component({
     selector: 'mg-tactical-board',
@@ -12,7 +15,6 @@ import html2canvas from 'html2canvas';
     styleUrls: ['./tactical-board.component.scss'],
     imports: [
         SharedModule,
-        DragDropModule,
     ],
     standalone: true
 })
@@ -30,249 +32,36 @@ export class MgTacticalBoardComponent implements OnInit {
     isShowBenchPlayers = false;
     hasDragging: boolean = false;
     isJerseyMode: boolean = false;
-    isEditingTeamNameA: boolean = false;
-    isEditingTeamNameB: boolean = false;
-    playerWidth = 70;
-    playerHeight = 70;
-    pitchWidth = 514; // 2px for borders
-    pitchHeight = 618; // 2px for borders
-
-    currentTeamNameA: any = 'Takımınız';
-    currentTeamNameB: any = 'Takımınız';
-    selectedFormationA: string = '5-3-2';
-    selectedFormationB: string = '5-3-2';
     isDragEnabledTeamA: boolean = false;
     isDragEnabledTeamB: boolean = false;
-    playersA: {
-        id: number,
-        type: string,
-        style: any,
-        position: { top: any, left: any, transform: string },
-        isDragging: boolean,
-        playerInfo?: any,
-        lastPosition?: any
-    }[] = [];
+    selectedFormationA: string = '4-4-2';
+    selectedFormationB: string = '4-4-2';
+    isEditingTeamNameA: boolean = false;
+    isEditingTeamNameB: boolean = false;
+    currentTeamNameA: any = 'Takımınız';
+    currentTeamNameB: any = 'Takımınız';
+    isTeamBVisible: boolean = true;
 
-    playersB: {
-        id: number,
-        type: string,
-        style: any,
-        position: { top: any, right: any, transform: string },
-        isDragging: boolean,
-        playerInfo?: any,
-        lastPosition?: any
-    }[] = [];
+    playersA: PlayerA[] = [];
+    playersB: PlayerB[] = [];
 
-
-    formationLabels = [
-        { label: "4-4-2", value: "4-4-2" },
-        { label: "4-3-3", value: "4-3-3" },
-        { label: "4-3-3 (2)", value: "4-3-3-(2)" },
-        { label: "4-2-3-1", value: "4-2-3-1" },
-        { label: "4-3-2-1", value: "4-3-2-1" },
-        { label: "4-5-1", value: "4-5-1" },
-        { label: "4-1-4-1", value: "4-1-4-1" },
-        { label: "4-2-2-2", value: "4-2-2-2" },
-        { label: "4-3-1-2", value: "4-3-1-2" },
-        { label: "3-5-2", value: "3-5-2" },
-        { label: "3-4-3", value: "3-4-3" },
-        { label: "3-6-1", value: "3-6-1" },
-        { label: "3-4-2-1", value: "3-4-2-1" },
-        { label: "3-2-4-1", value: "3-2-4-1" },
-        { label: "5-3-2", value: "5-3-2" },
-    ];
-
-    formations: { [key: string]: { type: string, order: number }[] } = {
-        '4-4-2': [
-            { type: 'gk', order: 1 },
-            { type: 'def', order: 1 }, { type: 'def', order: 2 }, { type: 'def', order: 3 }, { type: 'def', order: 4 },
-            { type: 'mid', order: 1 }, { type: 'mid', order: 2 }, { type: 'mid', order: 3 }, { type: 'mid', order: 4 },
-            { type: 'fw', order: 1 }, { type: 'fw', order: 2 }
-        ],
-        '4-3-3': [
-            { type: 'gk', order: 1 },
-            { type: 'def', order: 1 }, { type: 'def', order: 2 }, { type: 'def', order: 3 }, { type: 'def', order: 4 },
-            { type: 'mid-c', order: 1 }, { type: 'mid-c', order: 2 }, { type: 'mid-c', order: 3 },
-            { type: 'fw-w', order: 1 }, { type: 'fw-s', order: 1 }, { type: 'fw-w', order: 2 }
-        ],
-        '4-3-3-(2)': [
-            { type: 'gk', order: 1 },
-            { type: 'def', order: 1 }, { type: 'def', order: 2 }, { type: 'def', order: 3 }, { type: 'def', order: 4 },
-            { type: 'mid-c', order: 1 }, { type: 'mid-c', order: 2 }, { type: 'mid-c', order: 3 },
-            { type: 'fw-w', order: 1 }, { type: 'fw-s', order: 1 }, { type: 'fw-w', order: 2 }
-        ],
-        '3-5-2': [
-            { type: 'gk', order: 1 },
-            { type: 'def-cb', order: 1 }, { type: 'def-cb', order: 2 }, { type: 'def-cb', order: 3 },
-            { type: 'mid-wb', order: 1 }, { type: 'mid-wb', order: 2 },
-            { type: 'mid-c', order: 1 }, { type: 'mid-c', order: 2 }, { type: 'mid-c', order: 3 },
-            { type: 'fw', order: 1 }, { type: 'fw', order: 2 }
-        ],
-        '4-2-3-1': [
-            { type: 'gk', order: 1 },
-            { type: 'def', order: 1 }, { type: 'def', order: 2 }, { type: 'def', order: 3 }, { type: 'def', order: 4 },
-            { type: 'mid-c', order: 1 }, { type: 'mid-c', order: 2 },
-            { type: 'mid-ac', order: 1 }, { type: 'mid-ac', order: 2 }, { type: 'mid-ac', order: 3 },
-            { type: 'fw', order: 1 }
-        ],
-        '4-1-4-1': [
-            { type: 'gk', order: 1 },
-            { type: 'def', order: 1 }, { type: 'def', order: 2 }, { type: 'def', order: 3 }, { type: 'def', order: 4 },
-            { type: 'mid-dm', order: 1 },
-            { type: 'mid-w', order: 1 }, { type: 'mid-c', order: 1 }, { type: 'mid-c', order: 2 }, { type: 'mid-w', order: 2 },
-            { type: 'fw', order: 1 }
-        ],
-        '3-4-3': [
-            { type: 'gk', order: 1 },
-            { type: 'def-cb', order: 1 }, { type: 'def-cb', order: 2 }, { type: 'def-cb', order: 3 },
-            { type: 'mid-wb', order: 1 }, { type: 'mid-c', order: 1 }, { type: 'mid-c', order: 2 }, { type: 'mid-wb', order: 2 },
-            { type: 'fw-w', order: 1 }, { type: 'fw-s', order: 1 }, { type: 'fw-w', order: 2 }
-        ],
-        '5-3-2': [
-            { type: 'gk', order: 1 },
-            { type: 'def', order: 1 }, { type: 'def', order: 2 }, { type: 'def', order: 3 }, { type: 'def', order: 4 }, { type: 'def', order: 5 },
-            { type: 'mid-c', order: 1 }, { type: 'mid-c', order: 2 }, { type: 'mid-c', order: 3 },
-            { type: 'fw', order: 1 }, { type: 'fw', order: 2 }
-        ],
-        '4-5-1': [
-            { type: 'gk', order: 1 },
-            { type: 'def', order: 1 }, { type: 'def', order: 2 }, { type: 'def', order: 3 }, { type: 'def', order: 4 },
-            { type: 'mid-dm', order: 1 },
-            { type: 'mid-w', order: 1 }, { type: 'mid-c', order: 1 }, { type: 'mid-c', order: 2 }, { type: 'mid-w', order: 2 },
-            { type: 'fw', order: 1 }
-        ],
-        '4-3-2-1': [
-            { type: 'gk', order: 1 },
-            { type: 'def', order: 1 }, { type: 'def', order: 2 }, { type: 'def', order: 3 }, { type: 'def', order: 4 },
-            { type: 'mid-c', order: 1 }, { type: 'mid-c', order: 2 }, { type: 'mid-c', order: 3 },
-            { type: 'mid-am', order: 1 }, { type: 'mid-am', order: 2 },
-            { type: 'fw', order: 1 }
-        ],
-        '3-6-1': [
-            { type: 'gk', order: 1 },
-            { type: 'def-cb', order: 1 }, { type: 'def-cb', order: 2 }, { type: 'def-cb', order: 3 },
-            { type: 'mid-dm', order: 1 }, { type: 'mid-dm', order: 2 },
-            { type: 'mid-w', order: 1 }, { type: 'mid-c', order: 1 }, { type: 'mid-c', order: 2 }, { type: 'mid-w', order: 2 },
-            { type: 'fw', order: 1 }
-        ],
-        '4-2-2-2': [
-            { type: 'gk', order: 1 },
-            { type: 'def', order: 1 }, { type: 'def', order: 2 }, { type: 'def', order: 3 }, { type: 'def', order: 4 },
-            { type: 'mid-c', order: 1 }, { type: 'mid-c', order: 2 },
-            { type: 'mid-ac', order: 1 }, { type: 'mid-ac', order: 2 },
-            { type: 'fw', order: 1 }, { type: 'fw', order: 2 }
-        ],
-        '3-2-4-1': [
-            { type: 'gk', order: 1 },
-            { type: 'def-cb', order: 1 }, { type: 'def-cb', order: 2 }, { type: 'def-cb', order: 3 },
-            { type: 'mid-dm', order: 1 }, { type: 'mid-dm', order: 2 },
-            { type: 'mid-w', order: 1 }, { type: 'mid-c', order: 1 }, { type: 'mid-c', order: 2 }, { type: 'mid-w', order: 2 },
-            { type: 'fw', order: 1 }
-        ],
-        '4-4-1-1': [
-            { type: 'gk', order: 1 },
-            { type: 'def', order: 1 }, { type: 'def', order: 2 }, { type: 'def', order: 3 }, { type: 'def', order: 4 },
-            { type: 'mid-w', order: 1 }, { type: 'mid-c', order: 1 }, { type: 'mid-c', order: 2 }, { type: 'mid-w', order: 2 },
-            { type: 'mid-am', order: 1 },
-            { type: 'fw', order: 1 }
-        ],
-        '4-3-1-2': [
-            { type: 'gk', order: 1 },
-            { type: 'def', order: 1 }, { type: 'def', order: 2 }, { type: 'def', order: 3 }, { type: 'def', order: 4 },
-            { type: 'mid-dm', order: 1 },
-            { type: 'mid-c', order: 1 }, { type: 'mid-c', order: 2 },
-            { type: 'mid-am', order: 1 },
-            { type: 'fw', order: 1 }, { type: 'fw', order: 2 }
-        ],
-        '3-4-2-1': [
-            { type: 'gk', order: 1 },
-            { type: 'def-cb', order: 1 }, { type: 'def-cb', order: 2 }, { type: 'def-cb', order: 3 },
-            { type: 'mid-wb', order: 1 }, { type: 'mid-c', order: 1 }, { type: 'mid-c', order: 2 }, { type: 'mid-wb', order: 2 },
-            { type: 'mid-am', order: 1 }, { type: 'mid-am', order: 2 },
-            { type: 'fw', order: 1 }
-        ],
-    };
+    formationLabels = FORMATION_LABELS;
+    formations = FORMATION_POSITIONS;
 
     changedPlayerIdList: any = [];
-
-    teamJerseyTemplates = [
-        {
-            label: 'Fenerbahçe',
-            shortName: 'FB',
-            primaryColor: '#002749',
-            secondaryColor: '#ffed00',
-            border: '2px solid #ffed00',
-            sleeveBorder: '1px solid #002749'
-        },
-        {
-            label: 'Galatasaray',
-            shortName: 'GS',
-            primaryColor: '#a90432',
-            secondaryColor: '#fdb912',
-            border: '2px solid #fdb912',
-            sleeveBorder: '1px solid #a90432'
-        },
-        {
-            label: 'Beşiktaş',
-            shortName: 'BJK',
-            primaryColor: '#000',
-            secondaryColor: '#fff',
-            border: '2px solid #fff',
-            sleeveBorder: '1px solid #000'
-        },
-        {
-            label: 'Trabzonspor',
-            shortName: 'TS',
-            primaryColor: '#a41d34',
-            secondaryColor: '#14c0f1',
-            border: '2px solid #14c0f1',
-            sleeveBorder: '1px solid #a41d34'
-        },
-        {
-            label: 'Başakşehir',
-            shortName: 'İBFK',
-            primaryColor: '#163A52',
-            secondaryColor: '#FF5704',
-            border: '2px solid #FF5704',
-            sleeveBorder: '1px solid #163A52'
-        },
-        {
-            label: 'Kocaelispor',
-            shortName: 'KOC',
-            primaryColor: '#000000',
-            secondaryColor: '#006600',
-            border: '2px solid #006600',
-            sleeveBorder: '1px solid #000000'
-        },
-        {
-            label: 'Gençlerbirliği',
-            shortName: 'GB',
-            primaryColor: '#000000',
-            secondaryColor: '#e91b23',
-            border: '2px solid #e91b23',
-            sleeveBorder: '1px solid #000000'
-        },
-        {
-            label: 'Konyaspor',
-            shortName: 'KNY',
-            primaryColor: '#00804d',
-            secondaryColor: '#fff',
-            border: '2px solid #fff',
-            sleeveBorder: '1px solid #00804d'
-        },
-    ];
-
-    selectedTeamJerseyTemplateA = this.teamJerseyTemplates[0];
-    selectedTeamJerseyTemplateB = this.teamJerseyTemplates[1];
+    teamJerseyTemplates = TEAM_JERSEY_TEMPLATES;
+    selectedTeamJerseyTemplateA = TEAM_JERSEY_TEMPLATES[0];
+    selectedTeamJerseyTemplateB = TEAM_JERSEY_TEMPLATES[1];
 
     constructor(
         private _dialog: MatDialog,
     ) { }
 
-    ngOnInit() {
-        this.setFormationA(this.selectedFormationA);
-        this.setFormationB(this.selectedFormationB);
-
+    async ngOnInit() {
+        this.isLoading = true;
+        await this.setFormationA(this.selectedFormationA);
+        await this.setFormationB(this.selectedFormationB);
+        this.isLoading = false;
     }
 
     // Set Selected Formation
@@ -870,7 +659,7 @@ export class MgTacticalBoardComponent implements OnInit {
     }
 
     // To Reset Transform Style Coming With CDK Drag
-    onResetPlayersTransformA() {
+    async onResetPlayersTransformA() {
         this.showComponent = false;  // component yok olur
         setTimeout(() => {
             this.showComponent = true; // component yeniden oluşturulur
@@ -878,7 +667,8 @@ export class MgTacticalBoardComponent implements OnInit {
         });
     }
 
-    onResetPlayersTransformB() {
+    // To Reset Transform Style Coming With CDK Drag
+    async onResetPlayersTransformB() {
         this.showComponent = false;  // component yok olur
         setTimeout(() => {
             this.showComponent = true; // component yeniden oluşturulur
@@ -887,7 +677,7 @@ export class MgTacticalBoardComponent implements OnInit {
     }
 
     // To set or change Selected Team Jersey
-    setTeamJerseyTemplate(teamJerseyTemplate: any, type: any) {
+    async setTeamJerseyTemplate(teamJerseyTemplate: any, type: any) {
         if (type == 'A') {
             this.selectedTeamJerseyTemplateA = teamJerseyTemplate;
         }
@@ -897,6 +687,7 @@ export class MgTacticalBoardComponent implements OnInit {
         }
     }
 
+    // Search Player API
     async onPlayerSearchClick(player: any, type: any) {
         if (this.hasDragging) return; // Avoid click and dragging at the same time
         const dialog = this._dialog.open(MgPlayerSearchComponent, {
@@ -921,8 +712,23 @@ export class MgTacticalBoardComponent implements OnInit {
         });
     }
 
+    // Drag starts
+    async onPlayerDragStarted(player: any) {
+        player.isDragging = true;
+        this.hasDragging = true;
+        player.lastPosition = { top: player.position.top, left: player.position.left };
+    }
+    // Drag ends
+    async onPlayerDragEnded(player: any, event: CdkDragEnd) {
+        setTimeout(() => {
+            player.isDragging = false;
+            this.hasDragging = false;
+            this.changedPlayerIdList.push(player.id);
+        });
+    }
+
     // Start Editing Title A
-    startEditingTeamNameA() {
+    async startEditingTeamNameA() {
         this.isEditingTeamNameA = true;
         setTimeout(() => {
             this.teamNameInputA.nativeElement.focus();
@@ -930,7 +736,7 @@ export class MgTacticalBoardComponent implements OnInit {
     }
 
     // Stop Editing Title A
-    stopEditingTeamNameA() {
+    async stopEditingTeamNameA() {
         this.isEditingTeamNameA = false;
         // Eğer kullanıcı boş bir isim bıraktıysa varsayılanı geri yükle
         if (this.currentTeamNameA.trim() === '') {
@@ -939,7 +745,7 @@ export class MgTacticalBoardComponent implements OnInit {
     }
 
     // Start Editing Title B
-    startEditingTeamNameB() {
+    async startEditingTeamNameB() {
         this.isEditingTeamNameB = true;
         setTimeout(() => {
             this.teamNameInputB.nativeElement.focus();
@@ -947,7 +753,7 @@ export class MgTacticalBoardComponent implements OnInit {
     }
 
     // Stop Editing Title B
-    stopEditingTeamNameB() {
+    async stopEditingTeamNameB() {
         this.isEditingTeamNameB = false;
         // Eğer kullanıcı boş bir isim bıraktıysa varsayılanı geri yükle
         if (this.currentTeamNameB.trim() === '') {
@@ -978,196 +784,14 @@ export class MgTacticalBoardComponent implements OnInit {
     }
 
     // Toggle Bench Players
-    toggleBenchPlayers() {
+    async toggleBenchPlayers() {
         this.isShowBenchPlayers = !this.isShowBenchPlayers;
     }
 
-    onPlayerDragStarted(player: any) {
-        player.isDragging = true;
-        this.hasDragging = true;
-        player.lastPosition = { top: player.position.top, left: player.position.left };
+    // Toggle Team B Visibility
+    async toggleTeamBVisibility() {
+        this.isTeamBVisible = !this.isTeamBVisible;
     }
-
-    onPlayerDragMoved(event: any, player: any) {
-        const el = event.source.getRootElement();
-
-        const left = parseFloat(el.style.left || '0');
-        const top = parseFloat(el.style.top || '0');
-
-        // player.position = {
-        //     top,
-        //     left,
-        //     transform: '' // kaldırıldı
-        // };
-    }
-
-    onPlayerDragEnded(player: any, event: CdkDragEnd, type: any) {
-
-        const pitch = document.getElementById('pitchBoundary');
-        const playerElement = document.getElementById(player.id);
-
-        if (pitch && playerElement) {
-            const pitchRect = pitch.getBoundingClientRect();
-            const playerRect = playerElement.getBoundingClientRect();
-
-            const offsetLeft = playerRect.left - pitchRect.left - 2;
-            const offsetTop = playerRect.top - pitchRect.top - 2;
-            const roundedLeft = parseFloat(offsetLeft.toFixed(3)) + (this.playerWidth / 2);
-            const roundedTop = parseFloat(offsetTop.toFixed(3)) + (this.playerHeight / 2);
-            const leftPercentage = Math.round((roundedLeft / this.pitchWidth) * 100);
-            const topPercentage = Math.round((roundedTop / this.pitchHeight) * 100);
-
-            this.playersA[player.id].position = {
-                top: `${topPercentage}%`,
-                left: `${leftPercentage}%`,
-                transform: `translate(-50%, -50%)`
-            };
-            setTimeout(() => {
-                player.isDragging = false;
-                this.hasDragging = false;
-                this.changedPlayerIdList.push(player.id)
-            });
-        }
-
-        return;
-        const el = event.source.element.nativeElement as HTMLElement;
-        const style = window.getComputedStyle(el);
-        const transform = style.transform || style.webkitTransform || '';
-
-        // transform örn: matrix(1, 0, 0, 1, 30, -15)
-        // Veya translate3d(30px, -15px, 0px) olabilir
-        // matrix ile çalışmak daha genel, çünkü bazı browserlar matrix kullanır
-
-        let x = 0;
-        let y = 0;
-
-        // if (transform.startsWith('matrix3d(')) {
-        //     // matrix3d(a1, a2, ..., tx, ty, tz, ...)
-        //     // tx = 13. değer, ty = 14. değer (indeks 12, 13)
-        //     const values = transform
-        //         .replace('matrix3d(', '')
-        //         .replace(')', '')
-        //         .split(',')
-        //         .map(v => parseFloat(v));
-        //     x = values[12];
-        //     y = values[13];
-        // } else if (transform.startsWith('matrix(')) {
-        //     // matrix(a, b, c, d, tx, ty)
-        //     const values = transform
-        //         .replace('matrix(', '')
-        //         .replace(')', '')
-        //         .split(',')
-        //         .map(v => parseFloat(v));
-        //     x = values[4];
-        //     y = values[5];
-        // } else {
-        //     // Eğer kesin translate3d var ise regex ile ayıkla
-        //     const regex = /translate3d\((-?\d+)px,\s*(-?\d+)px,\s*(-?\d+)px\)/;
-        //     const match = transform.match(regex);
-        //     if (match) {
-        //         x = parseInt(match[1], 10);
-        //         y = parseInt(match[2], 10);
-        //     }
-        // }
-
-        // const width = 514; // 2px for borders
-        // const height = 618; // 2px for borders
-
-        // const xPercent = (x / width) * 100;
-        // const yPercent = (y / height) * 100;
-
-
-        // const newLeft = parseFloat(player.style.left.replace('%', '')) + parseFloat(xPercent.toFixed(2));
-
-
-        // const newTop = parseFloat(player.style.top.replace('%', '')) + yPercent.toFixed(2);
-
-        // player.style = {
-        //     left: `${newLeft}%`,
-        //     top: `${newTop}%`,
-        //     transform: `translate(-50%, -50%)`,
-        // };
-
-        // return;
-        // const draggedElement = event.source.element.nativeElement;
-        // const parent = draggedElement.parentElement;
-
-        // const elRect = draggedElement.getBoundingClientRect();
-        // const parentRect = parent!.getBoundingClientRect();
-        // const pitchWidth = 514;
-        // const pitchHeight = 618;
-        // const absoluteX = elRect.left - parentRect.left;
-        // const absoluteY = elRect.top - parentRect.top;
-        // const percentLeft = (absoluteX / pitchWidth) * 100;
-        // const percentTop = (absoluteY / pitchHeight) * 100;
-        // player.position.left = percentLeft;
-        // player.position.top = percentTop;
-        // // player.style = {
-        // //     left: `${percentLeft}%`,
-        // //     top: `${percentTop}%`,
-        // //     transform: `translate(-50%, -50%)`,
-        // // };
-        // player.isDragging = false;
-
-
-        // player.isDragging = false;
-
-        // // if (this.checkCollision(player)) {
-
-        // //     // Geri dönüş için yeni obje ata ki Angular algılasın
-        // //     if (player.lastPosition) {
-        // //         player.position = {
-        // //             top: player.lastPosition.top,
-        // //             left: player.lastPosition.left,
-        // //             transform: '' // artık kullanmıyoruz
-        // //         };
-        // //     }
-        // // }
-
-
-    }
-
-    checkCollision(current: any, type: any): boolean {
-        // const playerSize = 70; // px cinsinden
-        const pitchWidth = 514;
-        const pitchHeight = 618;
-
-        const currentLeft = (current.position.left / 100) * pitchWidth;
-        const currentTop = (current.position.top / 100) * pitchHeight;
-        // const currentRight = currentLeft + playerSize;
-        // const currentBottom = currentTop + playerSize;
-        const players = this.playersA;
-        return players.some(other => {
-            if (other.id === current.id) return false;
-
-
-            const otherLeft = (other.position.left / 100) * pitchWidth;
-            const otherTop = (other.position.top / 100) * pitchHeight;
-            const isOverlapping = false;
-            return false;
-
-            if (Math.abs(currentLeft - otherLeft))
-
-                // const otherRight = otherLeft + playerSize;
-                // const otherBottom = otherTop + playerSize;
-
-                // const isOverlapping = !(
-                //     currentRight < otherLeft ||
-                //     currentLeft > otherRight ||
-                //     currentBottom < otherTop ||
-                //     currentTop > otherBottom
-                // );
-
-                // if (isOverlapping) {
-                //         `Çakışma: Oyuncu ${current.id} → Oyuncu ${other.id} (sol: ${currentLeft.toFixed(1)}px / ${otherLeft.toFixed(1)}px)`
-                //     );
-                // }
-
-                return false;
-        });
-
-    }
-
 
 
 }

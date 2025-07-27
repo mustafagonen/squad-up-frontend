@@ -7,7 +7,7 @@ export const routes: Routes = [
 
   { path: 'kadro-kur/:id', title: "Kadro Kur – Hayalindeki İlk 11’i Oluştur | Taktiksel", component: MgSquadBuilderComponent },
   { path: 'kadro-kur', title: "Kadro Kur – Hayalindeki İlk 11’i Oluştur | Taktiksel", component: MgSquadBuilderComponent },
-  { path: 'tactical-board', title: "Taktik Tahtası", component: MgTacticalBoardComponent },
+  { path: 'taktik-tahtasi', title: "Taktik Tahtası", component: MgTacticalBoardComponent },
   { path: 'kurulan-kadrolar', title: "Kadrolar", component: MgSquadListComponent },
 
   { path: '', redirectTo: '/kadro-kur', pathMatch: 'full' },

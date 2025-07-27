@@ -167,13 +167,6 @@
                     </div>
                 </button>
 
-                <!-- <button class="wrapper-btn" (click)="exportAsPng()">
-                    <div class="operation-btn">
-                        <i class="fa fa-image green-icon text-17px"></i>
-                        <p class="operation-btn-off-text m-l-1">Dışa Aktar</p>
-                    </div>
-                </button> -->
-
                 <button class="wrapper-btn" (click)="onSaveSquadClick()">
                     <div class="operation-btn">
                         <i class="fa fa-save green-icon"></i>
@@ -206,14 +199,12 @@
                 <div class="goal-top"></div>
                 <div class="goal-bottom"></div>
 
-
                 @for (player of players; track player.id) { <div class="player-slot" [ngStyle]="player.style" [ngClass]="{
                     'has-player-in-slot': player.playerInfo && !player.isNeedTransfer && !isJerseyMode,
                     'need-transfer-in-slot': player.isNeedTransfer && !isJerseyMode
-                    }" cdkDrag [id]="player.id" [attr.data-id]="player.id" [class.is-dragging]="player.isDragging"
-                    [cdkDragDisabled]="!isDragEnabled" [class.drag-disabled]="!isDragEnabled"
+                    }" cdkDrag [id]="player.id" [attr.data-id]="player.id"
                     (click)="onPlayerSearchClick(player,'player')" (cdkDragStarted)="onPlayerDragStarted(player)"
-                    (cdkDragMoved)="onPlayerDragMoved($event, player)" (cdkDragEnded)="onPlayerDragEnded(player,$event)"
+                    (cdkDragEnded)="onPlayerDragEnded(player,$event)" [cdkDragDisabled]="!isDragEnabled"
                     [class.drag-disabled]="!isDragEnabled" [class.is-jersey-mode]="isJerseyMode">
 
                     <!-- Jersey Mode -->
