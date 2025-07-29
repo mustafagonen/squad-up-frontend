@@ -13,6 +13,8 @@ import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { getStorage, provideStorage } from '@angular/fire/storage';
 import { environment } from '../environments/environment';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+import { provideAuth } from '@angular/fire/auth';
+import { getAuth } from 'firebase/auth';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -22,6 +24,7 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(withInterceptorsFromDi()),
     importProvidersFrom([
       provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
+      provideAuth(() => getAuth()),
       provideFirestore(() => getFirestore()),
       provideStorage(() => getStorage())
     ]), provideAnimationsAsync(),

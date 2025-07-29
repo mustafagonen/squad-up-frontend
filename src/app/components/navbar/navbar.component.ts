@@ -1,6 +1,7 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { SharedModule } from '../../shared.module';
 import { NavigationEnd, Router } from '@angular/router';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
     selector: 'mg-navbar',
@@ -20,6 +21,7 @@ export class MgNavbarComponent implements OnInit {
 
     constructor(
         private _router: Router,
+        public authService: AuthService
     ) {
         this._router.events.subscribe(async (e) => {
             if (e instanceof NavigationEnd) {
@@ -32,5 +34,15 @@ export class MgNavbarComponent implements OnInit {
 
     toggleMenuWrapper() {
         this.isMenuOpen = !this.isMenuOpen;
+    }
+
+    async logout(): Promise<void> {
+        try {
+            await this.authService.signOut();
+            this._router.navigate(['/kadro-kur']);
+        } catch (error) {
+            console.error("Oturum kapatma hatası:", error);
+            alert("Oturum kapatılırken bir sorun oluştu.");
+        }
     }
 }

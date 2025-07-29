@@ -177,6 +177,10 @@
             </h1>
 
             <div #pitchBoundaryForExport class="pitch-horizontal" id="pitchBoundary">
+
+                <!-- Soccer Ball -->
+                <div cdkDrag class=" soccer soccer-ball"></div>
+
                 <div class="field-lines"></div>
                 <div class="goal-area-left"></div>
                 <div class="goal-area-right"></div>
@@ -489,7 +493,7 @@
         </div>
 
         <div class="bottom-content">
-
+            <div (click)="showBallInField()" class="soccer"></div>
         </div>
     </div>
 </div>

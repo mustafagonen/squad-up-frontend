@@ -41,6 +41,7 @@ export class MgTacticalBoardComponent implements OnInit {
     currentTeamNameA: any = 'Takımınız';
     currentTeamNameB: any = 'Takımınız';
     isTeamBVisible: boolean = true;
+    isBallVisible: boolean = false;
 
     playersA: PlayerA[] = [];
     playersB: PlayerB[] = [];
@@ -793,5 +794,9 @@ export class MgTacticalBoardComponent implements OnInit {
         this.isTeamBVisible = !this.isTeamBVisible;
     }
 
+    // Show ball in field
+    async showBallInField() {
+        this.isBallVisible = !this.isBallVisible;
+    }
 
 }

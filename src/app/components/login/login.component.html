@@ -1,0 +1,27 @@
+<div class="login-container">
+    <div class="login-box">
+        <div class="pro-feature">
+            <h1 class="logo-text">TAKTİKSEL</h1>
+            <span class="pro-tag">PRO</span>
+        </div>
+
+        <h2 class="welcome-text">Hoş Geldiniz</h2>
+
+        <button class="google-signin-button" (click)="signInWithGoogle()" [disabled]="isLoading">
+            <img src="https://img.icons8.com/color/48/000000/google-logo.png" alt="Google Logo" />
+            <span>Google ile Giriş Yap</span>
+        </button>
+
+        <div *ngIf="isLoading" class="loading-indicator">
+            <div class="spinner"></div> <span>Giriş yapılıyor...</span>
+        </div>
+
+        <div *ngIf="errorMessage" class="error-message">
+            <p>{{ errorMessage }}</p>
+        </div>
+
+        <p class="info-text">
+            Devam etmek için Google hesabınızla oturum açmanız gerekmektedir.
+        </p>
+    </div>
+</div>

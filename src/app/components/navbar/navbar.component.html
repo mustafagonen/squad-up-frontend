@@ -1,6 +1,5 @@
 <header class="navbar container">
     <div class="navbar-container">
-        <!-- <div class="soccer-ball m-r-auto"></div> -->
         <a routerLink="/" class="navbar-logo">
             <div class="soccer"></div>
             <span class="m-l-6">TAKTİKSEL</span>
@@ -20,7 +19,7 @@
                     </a>
                 </li>
                 <li class="pro-feature">
-                    <a [ngClass]="{'active-menu': selectedMenu == '/tactical-board'}">
+                    <a routerLink="/taktik-tahtasi" [ngClass]="{'active-menu': selectedMenu == '/taktik-tahtasi'}">
                         {{'Taktik Tahtası' | translate}}
                         <span class="pro-tag">PRO</span>
                     </a>
@@ -28,6 +27,20 @@
                 <!-- <li><a routerLink="about">{{'About' | translate}}</a></li>
                 <li><a href="assets/documents/Mustafa Gönen CV.pdf" target="_blank">{{'CV' | translate}}</a></li>
                 <li><a routerLink="contact">{{'Contact' | translate}}</a></li> -->
+
+                <div class="navbar-right">
+                    <ng-container *ngIf="authService.user$ | async as user">
+                        <span class="user-display">Hoş geldin, {{ user.displayName || user.email }}</span>
+                        <button class="logout-button" (click)="logout()">
+                            <i class="fas fa-sign-out-alt"></i> <span>Çıkış Yap</span>
+                        </button>
+                    </ng-container>
+                    <ng-template #elseBlock>
+                        asd
+                        <a routerLink="/login" class="nav-link">Giriş Yap</a>
+                        <a routerLink="/register" class="nav-link">Kayıt Ol</a>
+                    </ng-template>
+                </div>
             </ul>
         </nav>
 
