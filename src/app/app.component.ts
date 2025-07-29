@@ -1,10 +1,13 @@
 import { Component } from '@angular/core';
 import { SharedModule } from './shared.module';
 import { LoaderService } from './loader/loader.service';
-import { Router } from '@angular/router';
+import { NavigationEnd, Router } from '@angular/router';
 import { AppService } from './services/app.service';
 import { MgNavbarComponent } from "./components/navbar/navbar.component";
 import { MgFooterComponent } from "./components/footer/footer.component";
+import { filter } from 'rxjs';
+
+declare let gtag: Function;
 
 @Component({
   selector: 'app-root',
@@ -13,8 +16,6 @@ import { MgFooterComponent } from "./components/footer/footer.component";
   imports: [
     SharedModule,
     MgNavbarComponent,
-    // MgSliderComponent,
-    // MgFeaturesComponent,
     MgFooterComponent,
   ],
   standalone: true
@@ -27,9 +28,15 @@ export class AppComponent {
 
   constructor(
     private _router: Router,
-    private _appService: AppService,
     private _loaderService: LoaderService
   ) {
+    this._router.events.pipe(
+      filter(event => event instanceof NavigationEnd)
+    ).subscribe((event: any) => {
+      gtag('event', 'page_view', {
+        page_path: event.urlAfterRedirects,
+      });
+    });
   }
 
   public get isLoading(): boolean {
