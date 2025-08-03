@@ -341,7 +341,7 @@ $subtle-red-glow: #FF6347; // Hafif, domates kırmızısı gibi bir parlama reng
     display: flex;
     justify-content: flex-start;
     align-items: flex-start;
-    gap: 20px;
+    gap: 10px;
     width: 100%;
     max-width: 1200px;
     margin: 0 auto;
@@ -353,7 +353,8 @@ $subtle-red-glow: #FF6347; // Hafif, domates kırmızısı gibi bir parlama reng
 }
 
 .center-content {
-    width: max-content;
+
+    width: calc(100% - 320px);
 }
 
 .right-content {
@@ -462,9 +463,8 @@ $subtle-red-glow: #FF6347; // Hafif, domates kırmızısı gibi bir parlama reng
 .pitch-horizontal {
     flex-grow: 1;
     flex-shrink: 1;
-    /* Genişlik ve yüksekliği ters çeviriyoruz */
-    width: 800px;
-    height: 500px;
+    width: 100%;
+    aspect-ratio: 3 / 2;
     max-width: 100%;
     max-height: 550px;
     position: relative;

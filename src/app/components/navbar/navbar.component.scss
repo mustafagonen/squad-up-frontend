@@ -229,6 +229,30 @@
     display: none;
 }
 
+.logout-button {
+    background-color: #CD5C5C;
+    color: #fff;
+    font-size: 12px;
+    width: 30px;
+    border-radius: 4px;
+    position: absolute;
+    right: 16px;
+    top: 18px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    padding-top: 2px;
+}
+
+.user-display {
+    font-size: 11px;
+    position: absolute;
+    right: 60px;
+    cursor: pointer;
+}
+
 /* Responsive Tasarım */
 @media (max-width: 768px) {
 

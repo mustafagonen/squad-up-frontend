@@ -30,13 +30,10 @@
 
                 <div class="navbar-right">
                     <ng-container *ngIf="authService.user$ | async as user">
-                        <span class="user-display">Hoş geldin, {{ user.displayName || user.email }}</span>
-                        <button class="logout-button" (click)="logout()">
-                            <i class="fas fa-sign-out-alt"></i> <span>Çıkış Yap</span>
-                        </button>
+                        <span class="user-display">{{ user.displayName || user.email }}</span>
+                        <i class="fa-solid fa-power-off logout-button" title="Çıkış Yap" (click)="logout()"></i>
                     </ng-container>
                     <ng-template #elseBlock>
-                        asd
                         <a routerLink="/login" class="nav-link">Giriş Yap</a>
                         <a routerLink="/register" class="nav-link">Kayıt Ol</a>
                     </ng-template>

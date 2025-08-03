@@ -1,35 +1,99 @@
 import { Injectable } from '@angular/core';
-import { Auth, GoogleAuthProvider, signInWithPopup, signOut, User } from '@angular/fire/auth';
-import { Observable, from } from 'rxjs';
+import { Auth, GoogleAuthProvider, signInWithPopup, signOut, user, User } from '@angular/fire/auth';
+import { doc, getDoc, setDoc } from 'firebase/firestore';
+import { Observable, from, switchMap } from 'rxjs';
+import { FirebaseService } from './firebase.service';
+
+export interface AppUser {
+    uid: string;
+    email: string | null;
+    displayName: string | null;
+    photoURL: string | null;
+    createdAt: Date | any;
+    roles: string[];
+}
 
 @Injectable({
     providedIn: 'root'
 })
 export class AuthService {
 
-    user$: Observable<User | null>;
+    user$: Observable<User | any>;
 
-    constructor(private auth: Auth) {
-        this.user$ = new Observable<User | null>(observer => {
-            this.auth.onAuthStateChanged(user => {
-                observer.next(user);
-            });
-        });
+    constructor(
+        private _auth: Auth,
+        private _firebaseService: FirebaseService,
+    ) {
+        this.user$ = user(this._auth).pipe(
+            switchMap(async firebaseUser => {
+                if (firebaseUser) {
+                    const userDocRef = doc(this._firebaseService.firestore, "users", firebaseUser.uid);
+                    const userDoc = await getDoc(userDocRef);
+
+                    if (userDoc.exists()) {
+                        return {
+                            uid: firebaseUser.uid,
+                            email: firebaseUser.email,
+                            displayName: firebaseUser.displayName,
+                            photoURL: firebaseUser.photoURL,
+                            ...userDoc.data()
+                        } as AppUser;
+                    } else {
+                        console.warn(`Firestore'da ${firebaseUser.uid} için belge bulunamadı.`);
+                        return {
+                            uid: firebaseUser.uid,
+                            email: firebaseUser.email,
+                            displayName: firebaseUser.displayName,
+                            photoURL: firebaseUser.photoURL,
+                            createdAt: new Date(),
+                            roles: ['user']
+                        } as AppUser;
+                    }
+                } else {
+                    return null;
+                }
+            })
+        );
     }
 
     async googleSignIn(): Promise<void> {
         const provider = new GoogleAuthProvider();
         try {
-            await signInWithPopup(this.auth, provider);
+            const result = await signInWithPopup(this._auth, provider);
+            const user = result.user;
+
+            // Kullanıcının Firestore'a kaydedilmesi veya güncellenmesi
+            await this.saveUserToFirestore(user);
+
         } catch (error) {
-            console.error("Google oturum açma hatası:", error);
-            // Hata yönetimi (kullanıcıya bildirim vb.)
+            console.error("Google signIn hatası (AuthService):", error);
+            throw error; // Hatayı çağıran fonksiyona ilet
+        }
+    }
+
+    private async saveUserToFirestore(user: any): Promise<void> {
+        const userRef = doc(this._firebaseService.firestore, "users", user.uid);
+        const userData = {
+            email: user.email,
+            displayName: user.displayName,
+            photoURL: user.photoURL,
+            createdAt: new Date(),
+            roles: user.roles
+        };
+
+        try {
+            // merge: true ile mevcut belgeleri bozmadan yeni alanları ekle/güncelle
+            await setDoc(userRef, userData, { merge: true });
+            console.log("Kullanıcı bilgileri Firestore'a kaydedildi/güncellendi:", user.uid);
+        } catch (error) {
+            console.error("Firestore'a kullanıcı kaydedilirken hata:", error);
+            throw error; // Hatayı yukarıya ilet
         }
     }
 
     async signOut(): Promise<void> {
         try {
-            await signOut(this.auth);
+            await signOut(this._auth);
         } catch (error) {
             console.error("Oturum kapatma hatası:", error);
             // Hata yönetimi
@@ -37,6 +101,6 @@ export class AuthService {
     }
 
     getCurrentUser(): User | null {
-        return this.auth.currentUser;
+        return this._auth.currentUser;
     }
 }

@@ -8,6 +8,8 @@ import { FORMATION_LABELS } from '../../constants/formations-labels';
 import { FORMATION_POSITIONS } from '../../constants/formations';
 import { TEAM_JERSEY_TEMPLATES } from '../../constants/team-jersey-template';
 import { CdkDragEnd } from '@angular/cdk/drag-drop';
+import { AppUser, AuthService } from '../../services/auth.service';
+import { Subscription } from 'rxjs';
 
 @Component({
     selector: 'mg-tactical-board',
@@ -54,15 +56,28 @@ export class MgTacticalBoardComponent implements OnInit {
     selectedTeamJerseyTemplateA = TEAM_JERSEY_TEMPLATES[0];
     selectedTeamJerseyTemplateB = TEAM_JERSEY_TEMPLATES[1];
 
+    loggedInUser: AppUser | null = null;
+    userSubscription: Subscription | undefined
+
     constructor(
         private _dialog: MatDialog,
+        public authService: AuthService
     ) { }
 
     async ngOnInit() {
         this.isLoading = true;
+        await this.userSubsrciptionMethod();
         await this.setFormationA(this.selectedFormationA);
         await this.setFormationB(this.selectedFormationB);
         this.isLoading = false;
+    }
+
+    async userSubsrciptionMethod() {
+        this.userSubscription = this.authService.user$.subscribe(user => {
+            this.loggedInUser = user;
+            console.log(this.loggedInUser);
+
+        });
     }
 
     // Set Selected Formation
