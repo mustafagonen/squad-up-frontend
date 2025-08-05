@@ -10,6 +10,7 @@ import { TEAM_JERSEY_TEMPLATES } from '../../constants/team-jersey-template';
 import { CdkDragEnd } from '@angular/cdk/drag-drop';
 import { AppUser, AuthService } from '../../services/auth.service';
 import { Subscription } from 'rxjs';
+import { MgCanvaBoardComponent } from '../canva-board/canva-board.component';
 
 @Component({
     selector: 'mg-tactical-board',
@@ -17,6 +18,7 @@ import { Subscription } from 'rxjs';
     styleUrls: ['./tactical-board.component.scss'],
     imports: [
         SharedModule,
+        MgCanvaBoardComponent
     ],
     standalone: true
 })
@@ -26,6 +28,7 @@ export class MgTacticalBoardComponent implements OnInit {
     @ViewChild('teamNameInputA') teamNameInputA!: ElementRef;
     @ViewChild('teamNameInputB') teamNameInputB!: ElementRef;
     @ViewChild('pitchBoundaryForExport') pitchBoundaryForExport!: ElementRef;
+    @ViewChild(MgCanvaBoardComponent) mgCanvaBoardComponent!: MgCanvaBoardComponent;
 
     // States Variables
     isLoading = false;
@@ -40,10 +43,11 @@ export class MgTacticalBoardComponent implements OnInit {
     selectedFormationB: string = '4-4-2';
     isEditingTeamNameA: boolean = false;
     isEditingTeamNameB: boolean = false;
-    currentTeamNameA: any = 'Takımınız';
-    currentTeamNameB: any = 'Takımınız';
+    currentTeamNameA: any = 'TeamA';
+    currentTeamNameB: any = 'TeamB';
     isTeamBVisible: boolean = true;
     isBallVisible: boolean = false;
+    isDrawModeActive: boolean = false;
 
     playersA: PlayerA[] = [];
     playersB: PlayerB[] = [];
@@ -57,7 +61,9 @@ export class MgTacticalBoardComponent implements OnInit {
     selectedTeamJerseyTemplateB = TEAM_JERSEY_TEMPLATES[1];
 
     loggedInUser: AppUser | null = null;
-    userSubscription: Subscription | undefined
+    userSubscription: Subscription | undefined;
+
+    selectedShape: any = 'Ok';
 
     constructor(
         private _dialog: MatDialog,
@@ -756,7 +762,7 @@ export class MgTacticalBoardComponent implements OnInit {
         this.isEditingTeamNameA = false;
         // Eğer kullanıcı boş bir isim bıraktıysa varsayılanı geri yükle
         if (this.currentTeamNameA.trim() === '') {
-            this.currentTeamNameA = 'Takımınız';
+            this.currentTeamNameA = 'TeamA';
         }
     }
 
@@ -773,7 +779,7 @@ export class MgTacticalBoardComponent implements OnInit {
         this.isEditingTeamNameB = false;
         // Eğer kullanıcı boş bir isim bıraktıysa varsayılanı geri yükle
         if (this.currentTeamNameB.trim() === '') {
-            this.currentTeamNameB = 'Takımınız';
+            this.currentTeamNameB = 'TeamB';
         }
     }
 
@@ -812,6 +818,31 @@ export class MgTacticalBoardComponent implements OnInit {
     // Show ball in field
     async showBallInField() {
         this.isBallVisible = !this.isBallVisible;
+    }
+
+    // Toggle Team B Visibility
+    async toggleDrawMode() {
+        this.isDrawModeActive = !this.isDrawModeActive;
+    }
+
+    // Shape Selection
+    async selectShapeForDraw(shape: any) {
+        if (shape == 'rectangle') {
+            this.selectedShape = 'Dikdörtgen';
+        }
+        else if (shape == 'circle') {
+            this.selectedShape = 'Yuvarlak';
+        }
+        else if (shape == 'arrow') {
+            this.selectedShape = 'Ok';
+        }
+        this.mgCanvaBoardComponent.setTool(shape);
+    }
+
+    // Undo
+    async undoDrawClick() {
+        if (!this.isDrawModeActive) { return; }
+        this.mgCanvaBoardComponent.undo();
     }
 
 }

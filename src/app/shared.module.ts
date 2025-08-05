@@ -57,6 +57,7 @@ import { TruncatePipe } from './pipes/truncater.pipe';
 import { RecaptchaModule, RecaptchaSettings, RECAPTCHA_SETTINGS, RECAPTCHA_V3_SITE_KEY } from 'ng-recaptcha';
 import { RouterModule } from '@angular/router';
 import { DragDropModule } from '@angular/cdk/drag-drop';
+import { NgxKonvaModule } from 'ngx-konva';
 
 const RECAPTCHA_V2_KEY = '6LdaP7kqAAAAABc3t5UeeA0lVjm1Qk4_yXYauhuY';
 const RECAPTCHA_V2_DUMMY_KEY = '6LckUKAjAAAAAHyDE15TITzk_VrQ-C0-4t6Kyk_l';
@@ -118,7 +119,8 @@ const RECAPTCHA_V2_DUMMY_KEY = '6LckUKAjAAAAAHyDE15TITzk_VrQ-C0-4t6Kyk_l';
         MatDatepickerModule,
         MatNativeDateModule,
         RouterModule,
-        DragDropModule
+        DragDropModule,
+        NgxKonvaModule
 
     ],
     providers: [
@@ -185,7 +187,8 @@ const RECAPTCHA_V2_DUMMY_KEY = '6LckUKAjAAAAAHyDE15TITzk_VrQ-C0-4t6Kyk_l';
             }
         }),
         RecaptchaModule,
-        DragDropModule
+        DragDropModule,
+        NgxKonvaModule
     ],
 })
 export class SharedModule { }

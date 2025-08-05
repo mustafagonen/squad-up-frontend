@@ -4,6 +4,7 @@ import { MgSquadListComponent } from './components/squad-list/squad-list.compone
 import { MgTacticalBoardComponent } from './components/tactical-board/tactical-board.component';
 import { AuthGuard } from './guards/auth.guard';
 import { MgLoginComponent } from './components/login/login.component';
+import { MgCanvaBoardComponent } from './components/canva-board/canva-board.component';
 
 export const routes: Routes = [
 
@@ -12,8 +13,12 @@ export const routes: Routes = [
   { path: 'kurulan-kadrolar', title: "Kadrolar", component: MgSquadListComponent },
   { path: 'taktik-tahtasi', title: "Taktik Tahtası", component: MgTacticalBoardComponent, canActivate: [AuthGuard] },
 
+  { path: 'test', title: "Kadrolar", component: MgCanvaBoardComponent },
+
   { path: 'login', component: MgLoginComponent },
 
   { path: '', redirectTo: '/kadro-kur', pathMatch: 'full' },
   { path: '**', component: MgSquadBuilderComponent },
+
+
 ];

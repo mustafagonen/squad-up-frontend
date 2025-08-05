@@ -202,57 +202,6 @@ $subtle-red-glow: #FF6347; // Hafif, domates kırmızısı gibi bir parlama reng
     gap: 12px;
 }
 
-.toggle-box {
-    width: 144px;
-    height: 44px;
-    position: relative;
-    background: linear-gradient(145deg, rgba(30, 35, 50, 0.9), rgba(15, 20, 35, 0.9));
-    color: #e0e0e0;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 1.05em;
-    font-weight: 600;
-    letter-spacing: 0.5px;
-    transition: all 0.3s ease-in-out;
-    position: relative;
-    overflow: hidden;
-    z-index: 1;
-    box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.4),
-        0 4px 10px rgba(0, 0, 0, 0.5),
-        0 0 15px rgba($neon-green, 0.3);
-    display: flex;
-    align-items: center;
-    padding-left: 12px;
-}
-
-#label-toggle {
-    width: 28px;
-    height: 28px;
-    border-radius: 50%;
-    background-color: #ffffff;
-    background-color: #ffffff91;
-    background-color: #e0e0e0;
-    position: absolute;
-    left: 0;
-    margin-left: 14px;
-    margin-top: 9px;
-    cursor: pointer;
-    transition: left 0.3s;
-}
-
-#toggle {
-    display: none;
-}
-
-// #toggle:checked+#label-toggle {
-//     left: 166px;
-//     background-color: rgb(255, 255, 255);
-// }
-
-.toggle-active {
-    background-color: #399B3E !important;
-}
-
 .operation-btn-off-text {
     color: #e0e0e0;
     font-size: 11px;
@@ -264,35 +213,35 @@ $subtle-red-glow: #FF6347; // Hafif, domates kırmızısı gibi bir parlama reng
 }
 
 .active-icon {
-    font-size: 18px;
+    font-size: 14px;
     color: #399B3E;
-    margin-right: 12px;
+    margin-right: 9px;
 }
 
 .blue-icon {
-    font-size: 18px;
+    font-size: 14px;
     color: #4A90E2;
     margin-right: 8px;
 }
 
 .passive-white-icon {
-    font-size: 18px;
+    font-size: 14px;
     color: #e0e0e0;
-    margin-right: 12px;
+    margin-right: 9px;
 }
 
 .passive-icon {
-    font-size: 18px;
+    font-size: 14px;
     color: #CD5C5C;
-    margin-right: 12px;
+    margin-right: 9px;
 }
 
 
 .reset-icon {
-    font-size: 18px;
+    font-size: 14px;
     color: #FFA500;
     color: #FFC000;
-    margin-right: 12px;
+    margin-right: 9px;
 }
 
 .reset-text {
@@ -301,8 +250,8 @@ $subtle-red-glow: #FF6347; // Hafif, domates kırmızısı gibi bir parlama reng
 }
 
 .operation-btn {
-    width: 144px;
-    height: 44px;
+    width: 110px;
+    height: 34px;
     position: relative;
     background: linear-gradient(145deg, rgba(30, 35, 50, 0.9), rgba(15, 20, 35, 0.9));
     border-radius: 8px;
@@ -349,21 +298,27 @@ $subtle-red-glow: #FF6347; // Hafif, domates kırmızısı gibi bir parlama reng
 }
 
 .left-content {
-    width: 144px;
+    width: 110px;
 }
 
 .center-content {
 
-    width: calc(100% - 320px);
+    width: calc(100% - 240px);
 }
 
 .right-content {
-    width: 144px;
+    width: 110px;
 }
 
 .bottom-content {
-    width: 100%;
+    width: calc(100% - 300px);
     height: 100px;
+    margin-left: auto;
+    margin-right: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: -20px;
 }
 
 .soccer {
@@ -378,6 +333,7 @@ $subtle-red-glow: #FF6347; // Hafif, domates kırmızısı gibi bir parlama reng
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+    z-index: 2;
 }
 
 .formation-buttons {
@@ -892,7 +848,7 @@ $subtle-red-glow: #FF6347; // Hafif, domates kırmızısı gibi bir parlama reng
 }
 
 .negative-position-jersey {
-    margin-left: -16px;
+    margin-left: -19px;
 }
 
 .jersey-kit-wrapper {
@@ -926,7 +882,6 @@ $subtle-red-glow: #FF6347; // Hafif, domates kırmızısı gibi bir parlama reng
 .active-jersey {
     box-shadow: 0 0 15px #fff, 0 0 30px #fff !important;
 }
-
 
 /* --- Responsive Ayarlamalar (Mevcut responsive ayarlarınızın içine ekleyin/değiştirin) --- */
 @media (max-width: 768px) {
@@ -1115,7 +1070,6 @@ $subtle-red-glow: #FF6347; // Hafif, domates kırmızısı gibi bir parlama reng
     border-radius: 8px !important;
 }
 
-
 .formation-buttons {
     display: flex;
     // justify-content: center;
@@ -1139,7 +1093,7 @@ $subtle-red-glow: #FF6347; // Hafif, domates kırmızısı gibi bir parlama reng
         overflow: hidden;
         z-index: 1;
         width: 92px;
-        height: 44px;
+        height: 34px;
         // İç gölge ve dış hafif parlama
         box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.4),
             0 4px 10px rgba(0, 0, 0, 0.5),
@@ -1207,6 +1161,23 @@ $subtle-red-glow: #FF6347; // Hafif, domates kırmızısı gibi bir parlama reng
     }
 }
 
+.canva-board {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    z-index: 4;
+    display: none;
+}
+
+#toggle {
+    display: none;
+}
+
+.w-120 {
+    width: 120px !important;
+}
 
 // Responsive Ayarlamalar
 @media (max-width: 768px) {

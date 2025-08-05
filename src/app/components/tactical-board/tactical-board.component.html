@@ -28,8 +28,8 @@
                         <i *ngIf="!isDragEnabledTeamA" class="fa fa-lock passive-icon"></i>
 
                         <!-- Serbest -->
-                        <p class="operation-btn-on-text" *ngIf="isDragEnabledTeamA">Sürüklenebilir</p>
-                        <p class="operation-btn-off-text" *ngIf="!isDragEnabledTeamA">Taktiksel (Kilitli)</p>
+                        <p class="operation-btn-on-text" *ngIf="isDragEnabledTeamA">Hareketli</p>
+                        <p class="operation-btn-off-text" *ngIf="!isDragEnabledTeamA">Sabit</p>
                     </div>
 
                     <button class="wrapper-btn" (click)="isJerseyMode = !isJerseyMode">
@@ -96,7 +96,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <p class="operation-btn-on-text" style="margin-left: -6px;">Forma Seçimi</p>
+                            <p class="operation-btn-on-text" style="margin-left: -6px;">Forma</p>
                         </div>
                     </button>
 
@@ -161,20 +161,12 @@
                         </div>
                     </button>
 
-                    <button *ngIf="!isMobileView" class="wrapper-btn" (click)="toggleBenchPlayers()">
+                    <!-- <button *ngIf="!isMobileView" class="wrapper-btn" (click)="toggleBenchPlayers()">
                         <div class="operation-btn">
                             <i class="fa fa-right-left reset-icon"></i>
                             <p class="reset-text">Yedekleri Göster</p>
                         </div>
-                    </button>
-
-                    <button *ngIf="!isMobileView" class="wrapper-btn" (click)="toggleTeamBVisibility()">
-                        <div class="operation-btn">
-                            <i class="fa fa-circle"
-                                [ngClass]="{'active-icon': isTeamBVisible, 'passive-icon': !isTeamBVisible}"></i>
-                            <p class="reset-text">Rakip Göster</p>
-                        </div>
-                    </button>
+                    </button> -->
                 </div>
             </div>
 
@@ -186,8 +178,14 @@
 
                 <div #pitchBoundaryForExport class="pitch-horizontal" id="pitchBoundary">
 
+                    <!-- Smart Canva Board -->
+                    <mg-canva-board [ngClass]="{'d-block': isDrawModeActive}" class="canva-board">
+                    </mg-canva-board>
+
                     <!-- Soccer Ball -->
-                    <div cdkDrag class=" soccer soccer-ball"></div>
+                    <div [ngClass]="{'d-block': isBallVisible, 'd-none': !isBallVisible}" cdkDrag
+                        class="soccer soccer-ball">
+                    </div>
 
                     <div class="field-lines"></div>
                     <div class="goal-area-left"></div>
@@ -337,7 +335,7 @@
                 </div>
             </div>
 
-            <div *ngIf="isTeamBVisible" class="right-content">
+            <div [ngClass]="{'opacity-5': !isTeamBVisible}" class="right-content">
                 <h1 *ngIf="!isEditingTeamNameB" class="title editable-title" (click)="startEditingTeamNameB()">
                     {{currentTeamNameB}}
                 </h1>
@@ -365,8 +363,8 @@
                         <i *ngIf="!isDragEnabledTeamB" class="fa fa-lock passive-icon"></i>
 
                         <!-- Serbest -->
-                        <p class="operation-btn-on-text" *ngIf="isDragEnabledTeamB">Sürüklenebilir</p>
-                        <p class="operation-btn-off-text" *ngIf="!isDragEnabledTeamB">Taktiksel (Kilitli)</p>
+                        <p class="operation-btn-on-text" *ngIf="isDragEnabledTeamB">Hareketli</p>
+                        <p class="operation-btn-off-text" *ngIf="!isDragEnabledTeamB">Sabit</p>
                     </div>
 
                     <button class="wrapper-btn" (click)="isJerseyMode = !isJerseyMode">
@@ -435,7 +433,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <p class="operation-btn-on-text" style="margin-left: -6px;">Forma Seçimi</p>
+                            <p class="operation-btn-on-text" style="margin-left: -6px;">Forma</p>
                         </div>
                     </button>
 
@@ -500,17 +498,76 @@
                         </div>
                     </button>
 
-                    <button *ngIf="!isMobileView" class="wrapper-btn" (click)="toggleBenchPlayers()">
+                    <!-- <button *ngIf="!isMobileView" class="wrapper-btn" (click)="toggleBenchPlayers()">
                         <div class="operation-btn">
                             <i class="fa fa-right-left reset-icon"></i>
                             <p class="reset-text">Yedekleri Göster</p>
                         </div>
-                    </button>
+                    </button> -->
                 </div>
             </div>
 
             <div class="bottom-content">
-                <div (click)="showBallInField()" class="soccer"></div>
+
+                <button *ngIf="!isMobileView" class="wrapper-btn m-r-8" (click)="toggleTeamBVisibility()">
+                    <div class="operation-btn w-120">
+                        <i class="fa fa-circle"
+                            [ngClass]="{'active-icon': isTeamBVisible, 'passive-icon': !isTeamBVisible}"></i>
+                        <p class="reset-text">Rakip Göster</p>
+                    </div>
+                </button>
+
+                <div class="operation-btn w-max-c m-r-8" (click)="showBallInField()">
+                    <i class="fa fa-futbol reset-icon m-r-11"></i>
+                </div>
+
+                <button class="wrapper-btn m-r-8" (click)="toggleDrawMode()">
+                    <div class="operation-btn w-120">
+                        <i class="fa fa-circle"
+                            [ngClass]="{'active-icon': isDrawModeActive, 'passive-icon': !isDrawModeActive}"></i>
+                        <p class="reset-text">Çizim Modu</p>
+                    </div>
+                </button>
+
+                <div class="operation-btn m-r-8" [ngClass]="{'opacity-5': !isDrawModeActive}"
+                    [matMenuTriggerFor]="shapeSelectionForCanva">
+                    <i class="fa fa-shapes reset-icon"></i>
+                    <p class="operation-btn-off-text">{{selectedShape}}</p>
+                </div>
+
+                <div class="operation-btn w-max-c m-r-8" [ngClass]="{'opacity-5': !isDrawModeActive}"
+                    (click)="undoDrawClick()">
+                    <i class="fa fa-undo reset-icon m-r-11"></i>
+                </div>
+
+                <div class="operation-btn w-max-c m-r-8" [ngClass]="{'opacity-5': !isDrawModeActive}"
+                    (click)="selectShapeForDraw('no-canva')">
+                    <i class="fa fa-times reset-icon m-r-11"></i>
+                </div>
+
+                <mat-menu #shapeSelectionForCanva="matMenu" class="small-mat-menu">
+                    <div class="formation-buttons" style="width: 122px; margin: 4px 12px; gap: 8px;">
+                        <button class="wrapper-btn" (click)="selectShapeForDraw('arrow')">
+                            <div class="operation-btn w-120">
+                                <i class="fa fa-long-arrow-alt-right reset-icon"></i>
+                                <p class="reset-text">Ok</p>
+                            </div>
+                        </button>
+                        <button class="wrapper-btn" (click)="selectShapeForDraw('rectangle')">
+                            <div class="operation-btn w-120">
+                                <i class="fa fa-square reset-icon"></i>
+                                <p class="reset-text">Dikdörtgen</p>
+                            </div>
+                        </button>
+                        <button class="wrapper-btn" (click)="selectShapeForDraw('circle')">
+                            <div class="operation-btn w-120">
+                                <i class="fa fa-circle reset-icon"></i>
+                                <p class="reset-text">Yuvarlak</p>
+                            </div>
+                        </button>
+                    </div>
+                </mat-menu>
+
             </div>
         </div>
     </div>
