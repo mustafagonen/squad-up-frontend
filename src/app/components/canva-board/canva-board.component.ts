@@ -48,6 +48,8 @@ export class MgCanvaBoardComponent implements AfterViewInit {
             // if (target.setAttrs) {
             //     target.setAttrs({ stroke: 'red' });
             // }
+
+
         });
 
         this.stage.container().addEventListener('contextmenu', (e) => {
