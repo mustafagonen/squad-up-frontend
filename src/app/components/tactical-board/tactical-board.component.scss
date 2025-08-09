@@ -31,6 +31,7 @@ $subtle-red-glow: #FF6347; // Hafif, domates kırmızısı gibi bir parlama reng
     display: block;
     margin-top: 60px;
     max-width: 100%;
+    min-height: calc(100% - 140px);
     margin-left: auto;
     margin-right: auto;
     // background: radial-gradient(black, transparent); eski koyu
@@ -42,81 +43,6 @@ $subtle-red-glow: #FF6347; // Hafif, domates kırmızısı gibi bir parlama reng
     display: flex;
     justify-content: center;
     align-items: center;
-}
-
-// Altın Buton Stili
-.gold-button {
-    @include flex-center; // Buton içeriğini ortala
-    // Arka plan degrade: Daha belirgin bir ışıktan karanlığa geçiş
-    background: linear-gradient(145deg, $gold-highlight 0%, $gold-base 40%, $gold-shadow 80%, $gold-darkest 100%);
-    color: $gold-text; // Koyu metin rengi
-    border: 1px solid $gold-darkest; // Koyu altın kenarlık
-    padding: 12px 25px; // Daha dolgun bir buton
-    border-radius: 8px; // Yuvarlak köşeler
-    cursor: pointer;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    font-size: 1.1em;
-    font-weight: 700; // Kalın font
-    letter-spacing: 0.8px; // Hafif harf aralığı
-    transition: all 0.3s ease-in-out;
-    position: relative;
-    overflow: hidden;
-    z-index: 1;
-
-    // Metalik gölge ve parlama (görseldeki topa daha yakın)
-    box-shadow: inset 0 0 15px rgba($gold-highlight, 0.8), // İçten gelen güçlü parlama
-        inset 0 0 30px rgba($gold-base, 0.4), // Orta yoğunlukta iç parlama
-        0 4px 20px rgba(0, 0, 0, 0.6), // Daha belirgin dış gölge
-        0 0 40px rgba($gold-base, 0.4); // Dıştan yayılan soft parlama
-
-    // Üzerine gelindiğinde parlama efekti (neon butonlardaki gibi)
-    &::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: -100%;
-        width: 100%;
-        height: 100%;
-        background: linear-gradient(90deg, transparent, rgba($gold-highlight, 0.4), transparent); // Altın rengi parlama
-        transition: all 0.5s ease-in-out;
-        z-index: -1;
-        transform: skewX(-20deg); // Eğik parlama efekti
-    }
-
-    &:hover {
-        // Hover'da arka plan degradeyi hafifçe değiştir
-        background: linear-gradient(145deg, lighten($gold-highlight, 5%) 0%, lighten($gold-base, 5%) 40%, lighten($gold-shadow, 5%) 80%, lighten($gold-darkest, 5%) 100%);
-        color: $gold-text;
-        border-color: lighten($gold-darkest, 10%); // Kenarlık biraz açılır
-        box-shadow: inset 0 0 20px rgba($gold-highlight, 1), // Hover'da daha güçlü iç parlama
-            inset 0 0 40px rgba($gold-base, 0.6),
-            0 6px 25px rgba(0, 0, 0, 0.8), // Daha belirgin dış gölge
-            0 0 60px rgba($gold-base, 0.6); // Daha geniş ve yoğun dış parlama
-        transform: translateY(-2px); // Hafif yukarı kalkma
-
-        &::before {
-            left: 100%; // Parlama efekti sağa kaysın
-        }
-    }
-
-    // Aktif/Seçili durum (isteğe bağlı, eğer bu buton da aktif olabiliyorsa)
-    &.active {
-        background: $gold-base; // Düz altın arka plan
-        color: $gold-text;
-        border: 2px solid $gold-light; // Daha belirgin açık altın kenarlık
-        box-shadow: inset 0 0 10px rgba($gold-darkest, 0.8), // İç gölge
-            0 0 20px $gold-base, // Yoğun dış parlama
-            0 0 40px $gold-light; // Yaygın parlama
-        transform: translateY(0);
-        font-weight: 800; // Daha kalın font
-        text-shadow: 0 0 5px rgba($gold-text, 0.5); // Metin gölgesi
-        cursor: default;
-
-        &::before {
-            left: -100%;
-            transition: none;
-        }
-    }
 }
 
 // Mixinler

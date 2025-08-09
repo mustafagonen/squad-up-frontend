@@ -531,7 +531,10 @@
 
                 <div class="operation-btn m-r-8" [ngClass]="{'opacity-5': !isDrawModeActive}"
                     [matMenuTriggerFor]="shapeSelectionForCanva">
-                    <i class="fa fa-shapes reset-icon"></i>
+                    <i *ngIf="selectedShape == 'Ok'" class="fa fa-long-arrow-alt-right reset-icon"></i>
+                    <i *ngIf="selectedShape == 'Yuvarlak'" class="fa fa-circle reset-icon"></i>
+                    <i *ngIf="selectedShape == 'Dikdörtgen'" class="fa fa-square reset-icon"></i>
+                    <!-- <i class="fa fa-shapes reset-icon"></i> -->
                     <p class="operation-btn-off-text">{{selectedShape}}</p>
                 </div>
 
@@ -587,5 +590,11 @@
             <div class="ball-piece piece-9"></div>
             <div class="ball-piece piece-10"></div>
         </div>
+    </div>
+</div>
+
+<div *ngIf="loggedInUser && !loggedInUser.roles.includes('tactical-board')">
+    <div class="container">
+        Yetkiniz Yoktur
     </div>
 </div>

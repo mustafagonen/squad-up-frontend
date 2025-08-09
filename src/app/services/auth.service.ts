@@ -72,14 +72,28 @@ export class AuthService {
     }
 
     private async saveUserToFirestore(user: any): Promise<void> {
+        console.log(user, '1');
+
         const userRef = doc(this._firebaseService.firestore, "users", user.uid);
+        const userSnap = await getDoc(userRef);
+        const firebaseUserData = userSnap.data();
+
+        if (userSnap.exists()) {
+            console.log("Firestore verileri:", userSnap.data());
+        } else {
+            console.log("Firestore'da kullanıcı bulunamadı");
+        }
+        console.log(user, '2');
+
         const userData = {
             email: user.email,
             displayName: user.displayName,
             photoURL: user.photoURL,
             createdAt: new Date(),
-            roles: user.roles
+            roles: firebaseUserData?.['roles']
         };
+        console.log(userData, 'asıl');
+
 
         try {
             // merge: true ile mevcut belgeleri bozmadan yeni alanları ekle/güncelle

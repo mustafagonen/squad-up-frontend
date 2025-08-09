@@ -670,9 +670,9 @@ $subtle-red-glow: #FF6347; // Hafif, domates kırmızısı gibi bir parlama reng
 
     /* --- DAIRE GÖRÜNÜMÜ (Varsayılan veya is-jersey-mode yoksa - BU KISIMDA DEĞİŞİKLİK YOK) --- */
     &:not(.is-jersey-mode) {
-        width: 70px;
+        width: 60px;
         /* Dairenin genişliği */
-        height: 70px;
+        height: 60px;
         /* Dairenin yüksekliği */
         background-color: #222;
         /* Dairenin arka plan rengi */
@@ -685,7 +685,7 @@ $subtle-red-glow: #FF6347; // Hafif, domates kırmızısı gibi bir parlama reng
 
         /* İçindeki ikon için stil */
         i {
-            font-size: 32px !important;
+            font-size: 22px !important;
             color: $neon-green;
             text-shadow: 0 0 5px rgba($neon-green, 0.6);
         }

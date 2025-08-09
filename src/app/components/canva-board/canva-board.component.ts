@@ -95,7 +95,6 @@ export class MgCanvaBoardComponent implements AfterViewInit {
             } else if (this.selectedShape instanceof Konva.Circle) {
                 const scaleX = this.selectedShape.scaleX();
                 this.selectedShape.radius(this.selectedShape.radius() * scaleX);
-
                 this.selectedShape.scaleX(1);
                 this.selectedShape.scaleY(1);
             }

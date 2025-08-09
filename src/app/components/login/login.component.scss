@@ -48,10 +48,10 @@ $error-red: #e74c3c;
     justify-content: center;
     width: 100%;
     padding: 14px 25px;
-    border: none; // Kenarlık yok
+    border: none;
     border-radius: 6px;
-    background-color: $accent-blue; // Mavi vurgu rengi
-    color: #ffffff; // Beyaz metin
+    background-color: $accent-blue;
+    color: #ffffff;
     font-size: 1.15em;
     font-weight: 600;
     cursor: pointer;
@@ -60,13 +60,11 @@ $error-red: #e74c3c;
 
     &:hover {
         background-color: darken($accent-blue, 10%); // Hover'da biraz koyulaşsın
-        transform: translateY(-2px); // Hafif yukarı kalkma efekti
         box-shadow: 0 6px 15px rgba($accent-blue, 0.3); // Mavi tonlarda gölge
     }
 
     &:active {
         background-color: darken($accent-blue, 15%);
-        transform: translateY(0);
         box-shadow: none;
     }
 
