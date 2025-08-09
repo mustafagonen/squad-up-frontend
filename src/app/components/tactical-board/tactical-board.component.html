@@ -538,16 +538,6 @@
                     <p class="operation-btn-off-text">{{selectedShape}}</p>
                 </div>
 
-                <div class="operation-btn w-max-c m-r-8" [ngClass]="{'opacity-5': !isDrawModeActive}"
-                    (click)="undoDrawClick()">
-                    <i class="fa fa-undo reset-icon m-r-11"></i>
-                </div>
-
-                <div class="operation-btn w-max-c m-r-8" [ngClass]="{'opacity-5': !isDrawModeActive}"
-                    (click)="selectShapeForDraw('no-canva')">
-                    <i class="fa fa-times reset-icon m-r-11"></i>
-                </div>
-
                 <mat-menu #shapeSelectionForCanva="matMenu" class="small-mat-menu">
                     <div class="formation-buttons" style="width: 122px; margin: 4px 12px; gap: 8px;">
                         <button class="wrapper-btn" (click)="selectShapeForDraw('arrow')">
@@ -568,8 +558,24 @@
                                 <p class="reset-text">Yuvarlak</p>
                             </div>
                         </button>
+
+                        <mat-form-field appearance="fill">
+                            <mat-label>Renk Seç</mat-label>
+                            <input matInput [matColorPicker]="picker" [(ngModel)]="selectedColor">
+                            <mat-color-picker #picker></mat-color-picker>
+                        </mat-form-field>
                     </div>
                 </mat-menu>
+
+                <div class="operation-btn w-max-c m-r-8" [ngClass]="{'opacity-5': !isDrawModeActive}"
+                    (click)="undoDrawClick()">
+                    <i class="fa fa-undo reset-icon m-r-11"></i>
+                </div>
+
+                <div class="operation-btn w-max-c m-r-8" [ngClass]="{'opacity-5': !isDrawModeActive}"
+                    (click)="selectShapeForDraw('no-canva')">
+                    <i class="fa fa-times reset-icon m-r-11"></i>
+                </div>
 
             </div>
         </div>
