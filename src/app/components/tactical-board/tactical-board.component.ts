@@ -845,4 +845,10 @@ export class MgTacticalBoardComponent implements OnInit {
         this.mgCanvaBoardComponent.undo();
     }
 
+    // Delete
+    async deleteShapeClick() {
+        if (!this.isDrawModeActive) { return; }
+        this.mgCanvaBoardComponent.deleteSelectedShapes();
+    }
+
 }

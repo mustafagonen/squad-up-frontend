@@ -18,6 +18,7 @@ import { TEAM_JERSEY_TEMPLATES } from '../../constants/team-jersey-template';
 import { Player } from '../../models/player.model';
 import { FirebaseService } from '../../services/firebase.service';
 import { CdkDragEnd } from '@angular/cdk/drag-drop';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
     selector: 'mg-squad-builder',
@@ -59,6 +60,7 @@ export class MgSquadBuilderComponent implements OnInit {
 
     constructor(
         private _dialog: MatDialog,
+        public authService: AuthService,
         private _toastrService: ToastrService,
         private _activatedRoute: ActivatedRoute,
         private _firebaseService: FirebaseService,

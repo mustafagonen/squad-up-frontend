@@ -162,7 +162,6 @@ $subtle-red-glow: #FF6347; // Hafif, domates kırmızısı gibi bir parlama reng
     margin-right: 9px;
 }
 
-
 .reset-icon {
     font-size: 14px;
     color: #FFA500;
@@ -260,6 +259,23 @@ $subtle-red-glow: #FF6347; // Hafif, domates kırmızısı gibi bir parlama reng
     left: 50%;
     transform: translate(-50%, -50%);
     z-index: 2;
+}
+
+.company-logo {
+    width: auto;
+    height: 40px;
+    position: absolute;
+    right: 12px;
+    bottom: 12px;
+    opacity: .6;
+}
+
+.user-label {
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.6);
+    position: absolute;
+    left: 12px;
+    bottom: 12px;
 }
 
 .formation-buttons {
@@ -425,36 +441,26 @@ $subtle-red-glow: #FF6347; // Hafif, domates kırmızısı gibi bir parlama reng
 }
 
 .goal-area-left,
-/* Yeni sınıf adları önerilir */
 .goal-area-right {
-    /* Yeni sınıf adları önerilir */
     position: absolute;
-    /* Dikeyde ortalamak için */
     top: 50%;
     transform: translateY(-50%);
-    /* Yeni genişlik ve yükseklik oranları */
-    width: 20%;
-    /* Sahanın eski yükseklik yüzdesi (daha kısa) */
+    width: 12.5%;
     height: 50%;
-    /* Sahanın eski genişlik yüzdesi (daha uzun) */
     border: 2px solid $neon-green;
     @include soft-glow($neon-green, 5px, 0.9);
-    /* Üst ve alt kenarlıklar yerine sol ve sağ kenarlıkları kaldırıyoruz */
     border-left: none;
     border-right: none;
 }
 
 .goal-area-left {
     left: 0;
-    /* Sol kenara yasla */
-    /* Bu sefer sağ kenarı ekliyoruz */
     border-right: 2px solid $neon-green;
 }
 
+
 .goal-area-right {
     right: 0;
-    /* Sağ kenara yasla */
-    /* Bu sefer sol kenarı ekliyoruz */
     border-left: 2px solid $neon-green;
 }
 
@@ -463,8 +469,8 @@ $subtle-red-glow: #FF6347; // Hafif, domates kırmızısı gibi bir parlama reng
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 25%;
-    padding-bottom: 25%;
+    width: 15%;
+    padding-bottom: 15%;
     border: 2px solid $neon-green;
     border-radius: 50%;
     @include soft-glow($neon-green, 5px, 0.9);

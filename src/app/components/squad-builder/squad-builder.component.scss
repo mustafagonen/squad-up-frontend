@@ -1086,6 +1086,15 @@ $subtle-red-glow: #FF6347; // Hafif, domates kırmızısı gibi bir parlama reng
     border-radius: 8px !important;
 }
 
+.company-logo {
+    width: auto;
+    height: 40px;
+    position: absolute;
+    right: 12px;
+    bottom: 12px;
+    opacity: .6;
+}
+
 .formation-buttons {
     display: flex;
     // justify-content: center;

@@ -256,4 +256,13 @@ export class MgCanvaBoardComponent implements AfterViewInit {
         this.layer = newLayer;
         this.layer.draw();
     }
+
+    deleteSelectedShapes() {
+        const selectedNodes = this.transformer.nodes();
+        selectedNodes.forEach(node => {
+            node.destroy();
+        });
+        this.transformer.nodes([]);
+        this.layer.draw();
+    }
 }

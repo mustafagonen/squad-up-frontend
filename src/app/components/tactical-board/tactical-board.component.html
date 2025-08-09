@@ -178,6 +178,12 @@
 
                 <div #pitchBoundaryForExport class="pitch-horizontal" id="pitchBoundary">
 
+                    <ng-container *ngIf="authService.user$ | async as user">
+                        <img [src]="user.companyUrl ? user.companyUrl : 'https://im.haberturk.com/assets/laravel/images/common/sport/logo/ht-spor-white.svg'"
+                            class="company-logo">
+                        <span class="user-label">{{user.displayName}}</span>
+                    </ng-container>
+
                     <!-- Smart Canva Board -->
                     <mg-canva-board [ngClass]="{'d-block': isDrawModeActive}" class="canva-board">
                     </mg-canva-board>
@@ -558,18 +564,17 @@
                                 <p class="reset-text">Yuvarlak</p>
                             </div>
                         </button>
-
-                        <mat-form-field appearance="fill">
-                            <mat-label>Renk Seç</mat-label>
-                            <input matInput [matColorPicker]="picker" [(ngModel)]="selectedColor">
-                            <mat-color-picker #picker></mat-color-picker>
-                        </mat-form-field>
                     </div>
                 </mat-menu>
 
                 <div class="operation-btn w-max-c m-r-8" [ngClass]="{'opacity-5': !isDrawModeActive}"
                     (click)="undoDrawClick()">
                     <i class="fa fa-undo reset-icon m-r-11"></i>
+                </div>
+
+                <div class="operation-btn w-max-c m-r-8" [ngClass]="{'opacity-5': !isDrawModeActive}"
+                    (click)="deleteShapeClick()">
+                    <i class="fa fa-trash passive-icon m-r-11"></i>
                 </div>
 
                 <div class="operation-btn w-max-c m-r-8" [ngClass]="{'opacity-5': !isDrawModeActive}"
