@@ -500,7 +500,7 @@ $subtle-red-glow: #FF6347; // Hafif, domates kırmızısı gibi bir parlama reng
     left: 50%;
     transform: translateX(-50%);
     width: 50%;
-    height: 20%;
+    height: 12.5%;
     border: 2px solid $neon-green;
     @include soft-glow($neon-green, 5px, 0.9);
     border-top: none;

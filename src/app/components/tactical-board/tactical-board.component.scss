@@ -414,7 +414,7 @@ $subtle-red-glow: #FF6347; // Hafif, domates kırmızısı gibi bir parlama reng
     text-overflow: ellipsis;
 
     &.with-jersey {
-        bottom: -15px;
+        bottom: -18px;
     }
 }
 
@@ -815,6 +815,45 @@ $subtle-red-glow: #FF6347; // Hafif, domates kırmızısı gibi bir parlama reng
     box-shadow: 0 0 15px #fff, 0 0 30px #fff !important;
 }
 
+@media (max-width: 1068px) {
+    .player-slot {
+        &:not(.is-jersey-mode) {
+            width: 40px;
+            height: 40px;
+
+            i {
+                font-size: 16px !important;
+            }
+        }
+
+        &.is-jersey-mode {
+            width: 40px; // Formanın toplam genişliği
+            height: 50px; // Formanın toplam yüksekliği
+
+            .player-jersey {
+                width: 45px; // Formanın gövde genişliği
+                height: 50px; // Formanın gövde yüksekliği
+                border-radius: 30% 30% 10% 10% / 35% 35% 8px 8px;
+                /* Responsive için ayarlandı */
+            }
+
+            .neck {
+                height: 9px;
+            }
+
+            .sleeve {
+                width: 22px;
+                height: 18px;
+                top: 15%;
+            }
+
+            i.player-icon {
+                font-size: 26px !important;
+            }
+        }
+    }
+}
+
 /* --- Responsive Ayarlamalar (Mevcut responsive ayarlarınızın içine ekleyin/değiştirin) --- */
 @media (max-width: 768px) {
     .player-slot {
@@ -823,7 +862,7 @@ $subtle-red-glow: #FF6347; // Hafif, domates kırmızısı gibi bir parlama reng
             height: 30px;
 
             i {
-                font-size: 28px !important;
+                font-size: 16px !important;
             }
         }
 
@@ -1159,7 +1198,6 @@ $subtle-red-glow: #FF6347; // Hafif, domates kırmızısı gibi bir parlama reng
     }
 
     .pitch-horizontal {
-        max-width: 400px;
         height: 310px;
     }
 }
