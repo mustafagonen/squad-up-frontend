@@ -58,6 +58,7 @@ import { RecaptchaModule, RecaptchaSettings, RECAPTCHA_SETTINGS, RECAPTCHA_V3_SI
 import { RouterModule } from '@angular/router';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { NgxKonvaModule } from 'ngx-konva';
+import { CapitalizePipe } from './pipes/manuel-player.pipe';
 
 const RECAPTCHA_V2_KEY = '6LdaP7kqAAAAABc3t5UeeA0lVjm1Qk4_yXYauhuY';
 const RECAPTCHA_V2_DUMMY_KEY = '6LckUKAjAAAAAHyDE15TITzk_VrQ-C0-4t6Kyk_l';
@@ -68,6 +69,7 @@ const RECAPTCHA_V2_DUMMY_KEY = '6LckUKAjAAAAAHyDE15TITzk_VrQ-C0-4t6Kyk_l';
         SafeUrlPipe,
         ApiUrlPipe,
         TruncatePipe,
+        CapitalizePipe,
     ],
     exports: [
         HttpClientModule,
@@ -114,6 +116,7 @@ const RECAPTCHA_V2_DUMMY_KEY = '6LckUKAjAAAAAHyDE15TITzk_VrQ-C0-4t6Kyk_l';
         SafeUrlPipe,
         ApiUrlPipe,
         TruncatePipe,
+        CapitalizePipe,
         PdfViewerModule,
         NgxMatSelectSearchModule,
         MatDatepickerModule,

@@ -378,15 +378,43 @@ $subtle-red-glow: #FF6347; // Hafif, domates kırmızısı gibi bir parlama reng
 }
 
 .has-player-in-slot {
-    // border: none !important;
-    // box-shadow: none !important;
-    // background: linear-gradient(to bottom, #1F8E3D, #145A32);
-
-    // background-color: #4CAF50 !important;
-
     border: 2px solid rgba(255, 255, 255, 0.8) !important;
     background: linear-gradient(135deg, #2E8B57, #4CAF50, #66BB6A) !important;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3) !important;
+}
+
+.has-player-in-slot:hover,
+.need-transfer-in-slot-a:hover,
+.need-transfer-in-slot-b:hover {
+    box-shadow: 0 0 15px rgba(255, 255, 255, .2), 0 0 30px rgba(255, 255, 255, .2) !important;
+}
+
+.need-transfer-in-slot-a {
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3) !important;
+    background: linear-gradient(145deg, rgba(30, 35, 50, 1), rgba(15, 20, 35, 1));
+
+    i {
+        color: #FFC000 !important;
+        text-shadow: unset !important
+    }
+
+    .circle-player-info {
+        color: #FFC000 !important;
+    }
+}
+
+.need-transfer-in-slot-b {
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3) !important;
+    background: #FFC000 !important;
+
+    i {
+        color: #fff !important;
+        text-shadow: unset !important
+    }
+
+    .circle-player-info {
+        color: #fff !important;
+    }
 }
 
 .circle-player-img {
@@ -416,6 +444,11 @@ $subtle-red-glow: #FF6347; // Hafif, domates kırmızısı gibi bir parlama reng
     &.with-jersey {
         bottom: -18px;
     }
+
+    // &.team-b {
+    //     background: #FFC000 !important;
+    //     color: #fff !important;
+    // }
 }
 
 @keyframes pulse-border {

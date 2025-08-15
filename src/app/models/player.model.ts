@@ -12,7 +12,7 @@ export interface Player {
     isHoveredToPlayerName?: any;
     alternativePlayerMode?: any;
     alternativePlayerName?: any;
-    isNeedTransfer?: any;
+    playerType?: any;
     lastPosition?: any;
 }
 
@@ -30,7 +30,7 @@ export interface PlayerA {
     isHoveredToPlayerName?: any;
     alternativePlayerMode?: any;
     alternativePlayerName?: any;
-    isNeedTransfer?: any;
+    playerType?: any;
     lastPosition?: any;
 }
 
@@ -48,7 +48,7 @@ export interface PlayerB {
     isHoveredToPlayerName?: any;
     alternativePlayerMode?: any;
     alternativePlayerName?: any;
-    isNeedTransfer?: any;
+    playerType?: any;
     lastPosition?: any;
 }
 

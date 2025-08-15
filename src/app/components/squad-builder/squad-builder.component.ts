@@ -363,6 +363,7 @@ export class MgSquadBuilderComponent implements OnInit {
                         left: `${pos.left}%`,
                         transform: `translate(-50%, -50%)`
                     },
+                    playerType: 'defaultPlayer',
                     isDragging: false
                 });
                 if (playerId < 7) {
@@ -375,6 +376,7 @@ export class MgSquadBuilderComponent implements OnInit {
                             left: `${pos.left}%`,
                             transform: `translate(-50%, -50%)`
                         },
+                        playerType: 'defaultPlayer',
                         isDragging: false
                     });
                 }
@@ -389,7 +391,7 @@ export class MgSquadBuilderComponent implements OnInit {
             beforeChangeFormation.forEach(player => {
                 if (player.playerInfo) {
                     this.players[player.id].playerInfo = player.playerInfo;
-                    this.players[player.id].isNeedTransfer = player.isNeedTransfer;
+                    this.players[player.id].playerType = player.playerType;
                 }
             });
         }
@@ -431,21 +433,20 @@ export class MgSquadBuilderComponent implements OnInit {
             if (selectedPlayer) {
                 if (type == 'player') {
                     this.players[player.id].playerInfo = selectedPlayer;
-                    if (selectedPlayer.shortName !== 'Transfer') {
-                        this.players[player.id].isNeedTransfer = false;
+                    if (!selectedPlayer.playerType) {
+                        this.players[player.id].playerType = 'defaultPlayer';
                     }
                     else {
-                        this.players[player.id].isNeedTransfer = true;
+                        this.players[player.id].playerType = selectedPlayer.playerType;
                     }
                 }
-
                 else if (type == 'benchPlayer') {
                     this.benchPlayers[player.id - 1].playerInfo = selectedPlayer;
-                    if (selectedPlayer.shortName !== 'Transfer') {
-                        this.benchPlayers[player.id - 1].isNeedTransfer = false;
+                    if (!selectedPlayer.playerType) {
+                        this.benchPlayers[player.id].playerType = 'defaultPlayer';
                     }
                     else {
-                        this.benchPlayers[player.id - 1].isNeedTransfer = true;
+                        this.benchPlayers[player.id].playerType = selectedPlayer.playerType;
                     }
                 }
 

@@ -31,13 +31,23 @@ export class MgPlayerSearchComponent implements OnInit {
         this.playerSearchResult = await this._playerService.getPlayers(this.playerSearchText, 10);
     }
 
-    selectPlayerFromResultList(player: any, isNeedTransfer: any) {
-        if (!isNeedTransfer) {
+    selectPlayerFromResultList(player: any, playerType: any) {
+        if (!playerType) {
             this._dialogRef.close(player);
         }
-        else {
+
+        else if (playerType == 'transfer') {
             const transferObj = {
                 shortName: 'Transfer',
+                playerType: playerType
+            }
+            this._dialogRef.close(transferObj);
+        }
+
+        else if (playerType == 'manuelPlayer') {
+            const transferObj = {
+                shortName: this.playerSearchText,
+                playerType: playerType
             }
             this._dialogRef.close(transferObj);
         }

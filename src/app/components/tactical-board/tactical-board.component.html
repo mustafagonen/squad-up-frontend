@@ -202,9 +202,10 @@
                     <div class="goal-right"></div>
 
                     @for (playerA of playersA; track playerA.id) { <div class="player-slot" [ngStyle]="playerA.style"
-                        [ngClass]="{'has-player-in-slot': playerA.playerInfo && !isJerseyMode}" cdkDrag
-                        [id]="playerA.id" [attr.data-id]="playerA.id" (click)="onPlayerSearchClick(playerA,'A')"
-                        (cdkDragStarted)="onPlayerDragStarted(playerA)"
+                        [ngClass]="{'has-player-in-slot': playerA.playerInfo && playerA.playerType == 'defaultPlayer' && !isJerseyMode,
+                        'need-transfer-in-slot-a': playerA.playerType != 'defaultPlayer' && !isJerseyMode
+                        }" cdkDrag [id]="playerA.id" [attr.data-id]="playerA.id"
+                        (click)="onPlayerSearchClick(playerA,'A')" (cdkDragStarted)="onPlayerDragStarted(playerA)"
                         (cdkDragEnded)="onPlayerDragEnded(playerA,$event)" [cdkDragDisabled]="!isDragEnabledTeamA"
                         [class.drag-disabled]="!isDragEnabledTeamA" [class.is-jersey-mode]="isJerseyMode">
 
@@ -258,9 +259,16 @@
 
                         <!-- Circle Mode -->
                         <ng-template #circleMode>
-                            <i *ngIf="!playerA.playerInfo && !isJerseyMode" class="fas fa-plus"></i>
-                            <img *ngIf="playerA.playerInfo && !isJerseyMode" class="circle-player-img"
-                                [src]="playerA.playerInfo?.imgSrc">
+                            <i *ngIf="!playerA.playerInfo && playerA.playerType == 'defaultPlayer' && !isJerseyMode"
+                                class="fas fa-plus"></i>
+                            <i *ngIf="playerA.playerInfo && playerA.playerType == 'transfer' && !isJerseyMode"
+                                class="fas fa-question">
+                            </i>
+                            <i *ngIf="playerA.playerInfo && playerA.playerType == 'manuelPlayer' && !isJerseyMode"
+                                class="fas fa-user">
+                            </i>
+                            <img *ngIf="playerA.playerInfo && playerA.playerType == 'defaultPlayer' && !isJerseyMode"
+                                class="circle-player-img" [src]="playerA.playerInfo?.imgSrc">
                             <div *ngIf="playerA.playerInfo && !isJerseyMode" class="circle-player-info">
                                 {{playerA.playerInfo.shortName}}
                             </div>
@@ -270,10 +278,10 @@
                     }
 
                     @for (playerB of playersB; track playerB.id) { <div class="player-slot" *ngIf="isTeamBVisible"
-                        [ngStyle]="playerB.style"
-                        [ngClass]="{'has-player-in-slot': playerB.playerInfo && !isJerseyMode, 'team-B-player':!isJerseyMode}"
-                        cdkDrag [id]="playerB.id" [attr.data-id]="playerB.id" (click)="onPlayerSearchClick(playerB,'B')"
-                        (cdkDragStarted)="onPlayerDragStarted(playerB)"
+                        [ngStyle]="playerB.style" [ngClass]="{'has-player-in-slot': playerB.playerInfo && playerB.playerType == 'defaultPlayer' && !isJerseyMode,
+                        'need-transfer-in-slot-b': playerB.playerType != 'defaultPlayer' && !isJerseyMode,
+                        'team-B-player':!isJerseyMode}" cdkDrag [id]="playerB.id" [attr.data-id]="playerB.id"
+                        (click)="onPlayerSearchClick(playerB,'B')" (cdkDragStarted)="onPlayerDragStarted(playerB)"
                         (cdkDragEnded)="onPlayerDragEnded(playerB,$event)" [cdkDragDisabled]="!isDragEnabledTeamB"
                         [class.drag-disabled]="!isDragEnabledTeamB" [class.is-jersey-mode]="isJerseyMode">
 
@@ -320,17 +328,25 @@
                                 </div>
                             </div>
                             <div class="jersey-number">{{playerB.id + 1}}</div>
-                            <div *ngIf="playerB.playerInfo && isJerseyMode" class="circle-player-info with-jersey">
+                            <div *ngIf="playerB.playerInfo && isJerseyMode"
+                                class="circle-player-info with-jersey team-b">
                                 {{playerB.playerInfo.shortName}}
                             </div>
                         </ng-container>
 
                         <!-- Circle Mode -->
                         <ng-template #circleMode>
-                            <i *ngIf="!playerB.playerInfo && !isJerseyMode" class="fas fa-plus"></i>
-                            <img *ngIf="playerB.playerInfo && !isJerseyMode" class="circle-player-img"
-                                [src]="playerB.playerInfo?.imgSrc">
-                            <div *ngIf="playerB.playerInfo && !isJerseyMode" class="circle-player-info">
+                            <i *ngIf="!playerB.playerInfo && playerB.playerType == 'defaultPlayer' && !isJerseyMode"
+                                class="fas fa-plus"></i>
+                            <i *ngIf="playerB.playerInfo && playerB.playerType == 'transfer' && !isJerseyMode"
+                                class="fas fa-question">
+                            </i>
+                            <i *ngIf="playerB.playerInfo && playerB.playerType == 'manuelPlayer' && !isJerseyMode"
+                                class="fas fa-user">
+                            </i>
+                            <img *ngIf="playerB.playerInfo && playerB.playerType == 'defaultPlayer' && !isJerseyMode"
+                                class="circle-player-img" [src]="playerB.playerInfo?.imgSrc">
+                            <div *ngIf="playerB.playerInfo && !isJerseyMode" class="circle-player-info team-b">
                                 {{playerB.playerInfo.shortName}}
                             </div>
                         </ng-template>

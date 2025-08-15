@@ -5,7 +5,7 @@
     <div class="player-result-wrapper">
 
         <!-- Previous Selected Player Info -->
-        <div *ngIf="previousSearchPlayer && previousSearchPlayer.shortName != 'Transfer' && !playerSearchResult"
+        <div *ngIf="previousSearchPlayer && previousSearchPlayer.id && !playerSearchResult"
             class="player-result-item selected">
             <div class="img-wrapper">
                 <img [src]="previousSearchPlayer.imgSrc">
@@ -26,11 +26,20 @@
 
         <!-- Need Transfer -->
         <div *ngIf="!playerSearchResult" class="player-result-item"
-            (click)="selectPlayerFromResultList(undefined, true)">
+            (click)="selectPlayerFromResultList(undefined, 'transfer')">
             <div class="img-wrapper">
                 <i class="fas fa-question"></i>
             </div>
             <div class="player-name m-r-auto">Transfer Gerekli</div>
+        </div>
+
+        <!-- Manuel Player -->
+        <div *ngIf="playerSearchResult && playerSearchResult.players.length == 0" class="player-result-item"
+            (click)="selectPlayerFromResultList(undefined, 'manuelPlayer')">
+            <div class="img-wrapper">
+                <i class="fas fa-user-plus"></i>
+            </div>
+            <div class="player-name m-r-auto">{{playerSearchText}} - Manuel Ekle</div>
         </div>
 
         <div class="player-result-item" *ngFor="let player of playerSearchResult?.players"

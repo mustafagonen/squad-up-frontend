@@ -206,8 +206,8 @@
                 <div class="goal-bottom"></div>
 
                 @for (player of players; track player.id) { <div class="player-slot" [ngStyle]="player.style" [ngClass]="{
-                    'has-player-in-slot': player.playerInfo && !player.isNeedTransfer && !isJerseyMode,
-                    'need-transfer-in-slot': player.isNeedTransfer && !isJerseyMode
+                    'has-player-in-slot': player.playerInfo && player.playerType == 'defaultPlayer' && !isJerseyMode,
+                    'need-transfer-in-slot': player.playerType != 'defaultPlayer' && !isJerseyMode
                     }" cdkDrag [id]="player.id" [attr.data-id]="player.id"
                     (click)="onPlayerSearchClick(player,'player')" (cdkDragStarted)="onPlayerDragStarted(player)"
                     (cdkDragEnded)="onPlayerDragEnded(player,$event)" [cdkDragDisabled]="!isDragEnabled"
@@ -258,33 +258,31 @@
                         <!-- <i n class="fas fa-plus player-icon"></i> -->
                         <div class="jersey-number">{{player.id + 1}}</div>
                         <div *ngIf="player.playerInfo && isJerseyMode" class="circle-player-info with-jersey">
-                            <span>{{player.playerInfo.shortName}}</span>
+                            <span>{{player.playerInfo.shortName | capitalize}}</span>
                         </div>
                     </ng-container>
 
                     <!-- Circle Mode -->
                     <ng-template #circleMode>
                         <span style="color: white; position: absolute;"></span>
-                        <i *ngIf="!player.playerInfo && !player.isNeedTransfer && !isJerseyMode"
+                        <i *ngIf="!player.playerInfo && player.playerType == 'defaultPlayer' && !isJerseyMode"
                             class="fas fa-plus"></i>
-                        <i *ngIf="player.playerInfo && player.isNeedTransfer && !isJerseyMode" class="fas fa-question">
+                        <i *ngIf="player.playerInfo && player.playerType == 'transfer' && !isJerseyMode"
+                            class="fas fa-question">
                         </i>
-
-                        <div *ngIf="player.playerInfo && !player.isNeedTransfer && !isJerseyMode"
+                        <i *ngIf="player.playerInfo && player.playerType == 'manuelPlayer' && !isJerseyMode"
+                            class="fas fa-user">
+                        </i>
+                        <div *ngIf="player.playerInfo && player.playerType == 'defaultPlayer' && !isJerseyMode"
                             class="circle-player-img"
                             [style.background-image]="'url(' + player.playerInfo?.imgSrc + ')'">
-
                         </div>
-
-                        <!-- 
-                        <img *ngIf="player.playerInfo && !player.isNeedTransfer && !isJerseyMode"
-                            class="circle-player-img" [src]="player.playerInfo?.imgSrc"> -->
 
                         <div *ngIf="player.playerInfo && !isJerseyMode" class="circle-player-info"
                             (mouseenter)="player.isHoveredToPlayerName = true"
                             (mouseleave)="player.isHoveredToPlayerName = false">
                             <span>
-                                {{player.playerInfo.shortName}}
+                                {{player.playerInfo.shortName | capitalize}}
                                 <!-- <span class="d-none"
                                     [ngClass]="{'add-alternative-player-hovered': player.isHoveredToPlayerName}">+</span> -->
                             </span>
@@ -306,7 +304,7 @@
             <div *ngIf="isShowBenchPlayers">
                 @for (benchPlayer of benchPlayers; track benchPlayer.id) { <div class="player-slot position-relative"
                     [ngClass]="{
-                'has-player-in-slot': benchPlayer.playerInfo && !benchPlayer.isNeedTransfer && !isJerseyMode, 'm-t-30':!isJerseyMode, 'm-t-10':isJerseyMode}"
+                'has-player-in-slot': benchPlayer.playerInfo && benchPlayer.playerType == 'defaultPlayer' && !isJerseyMode, 'm-t-30':!isJerseyMode, 'm-t-10':isJerseyMode}"
                     [id]="benchPlayer.id" [attr.data-id]="benchPlayer.id"
                     (click)="onPlayerSearchClick(benchPlayer,'benchPlayer')" [class.is-jersey-mode]="isJerseyMode">
                     <!-- Jersey Mode -->
@@ -354,25 +352,31 @@
                         <!-- <i n class="fas fa-plus player-icon"></i> -->
                         <div class="jersey-number">{{benchPlayer.id + 11}}</div>
                         <div *ngIf="benchPlayer.playerInfo && isJerseyMode" class="circle-player-info with-jersey">
-                            <span>{{benchPlayer.playerInfo.shortName}}</span>
+                            <span>{{benchPlayer.playerInfo.shortName | capitalize}}</span>
                         </div>
                     </ng-container>
 
                     <!-- Circle Mode -->
                     <ng-template #circleMode>
                         <span style="color: white; position: absolute;"></span>
-                        <i *ngIf="!benchPlayer.playerInfo && !benchPlayer.isNeedTransfer && !isJerseyMode"
+                        <i *ngIf="!benchPlayer.playerInfo && benchPlayer.playerType == 'defaultPlayer' && !isJerseyMode"
                             class="fas fa-plus"></i>
-                        <i *ngIf="benchPlayer.playerInfo && benchPlayer.isNeedTransfer && !isJerseyMode"
+                        <i *ngIf="benchPlayer.playerInfo && benchPlayer.playerType == 'transfer' && !isJerseyMode"
                             class="fas fa-question">
                         </i>
-                        <img *ngIf="benchPlayer.playerInfo && !benchPlayer.isNeedTransfer && !isJerseyMode"
+                        <i *ngIf="benchPlayer.playerInfo && benchPlayer.playerType == 'transfer' && !isJerseyMode"
+                            class="fas fa-question">
+                        </i>
+                        <i *ngIf="benchPlayer.playerInfo && benchPlayer.playerType == 'manuelPlayer' && !isJerseyMode"
+                            class="fas fa-user">
+                        </i>
+                        <img *ngIf="benchPlayer.playerInfo && benchPlayer.playerType == 'defaultPlayer' && !isJerseyMode"
                             class="circle-player-img" [src]="benchPlayer.playerInfo?.imgSrc">
                         <div *ngIf="benchPlayer.playerInfo && !isJerseyMode" class="circle-player-info"
                             (mouseenter)="benchPlayer.isHoveredToPlayerName = true"
                             (mouseleave)="benchPlayer.isHoveredToPlayerName = false">
                             <span>
-                                {{benchPlayer.playerInfo.shortName}}
+                                {{benchPlayer.playerInfo.shortName | capitalize}}
                                 <!-- <span class="d-none"
                                     [ngClass]="{'add-alternative-player-hovered': player.isHoveredToPlayerName}">+</span> -->
                             </span>

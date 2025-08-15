@@ -18,8 +18,6 @@ export class AuthGuard implements CanActivate {
             take(1),
             map(user => {
                 if (user) {
-                    console.log(user);
-
                     return true; // Kullanıcı giriş yapmışsa erişime izin ver
                 } else {
                     // Kullanıcı giriş yapmamışsa login sayfasına yönlendir

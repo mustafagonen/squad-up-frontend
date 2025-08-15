@@ -28,7 +28,6 @@ export class MgLoginComponent {
             await this.authService.googleSignIn();
             this.authService.user$.subscribe(user => {
                 if (user) {
-                    console.log(user);
                     this.router.navigate(['/taktik-tahtasi']);
                 }
                 this.isLoading = false;

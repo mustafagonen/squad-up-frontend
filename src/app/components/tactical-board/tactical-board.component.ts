@@ -81,8 +81,6 @@ export class MgTacticalBoardComponent implements OnInit {
     async userSubsrciptionMethod() {
         this.userSubscription = this.authService.user$.subscribe(user => {
             this.loggedInUser = user;
-            console.log(this.loggedInUser);
-
         });
     }
 
@@ -372,6 +370,7 @@ export class MgTacticalBoardComponent implements OnInit {
                         left: `${pos.left}%`,
                         transform: `translate(-50%, -50%)`
                     },
+                    playerType: 'defaultPlayer',
                     isDragging: false
                 });
             } else {
@@ -651,14 +650,13 @@ export class MgTacticalBoardComponent implements OnInit {
                 this.playersB.push({
                     id: playerId++,
                     type: playerDef.type,
-                    // Changed 'left' to 'right' here
                     position: { top: pos.top, right: pos.right, transform: `translate(-50%, -50%)` },
                     style: {
                         top: `${pos.top}%`,
-                        // Changed 'left' to 'right' here
                         right: `${pos.right}%`,
                         transform: `translate(-50%, -50%)`
                     },
+                    playerType: 'defaultPlayer',
                     isDragging: false
                 });
             } else {
@@ -725,10 +723,21 @@ export class MgTacticalBoardComponent implements OnInit {
             if (selectedPlayer) {
                 if (type == 'A') {
                     this.playersA[player.id].playerInfo = selectedPlayer;
+                    if (!selectedPlayer.playerType) {
+                        this.playersA[player.id].playerType = 'defaultPlayer';
+                    }
+                    else {
+                        this.playersA[player.id].playerType = selectedPlayer.playerType;
+                    }
                 }
                 else if (type == 'B') {
                     this.playersB[player.id].playerInfo = selectedPlayer;
-
+                    if (!selectedPlayer.playerType) {
+                        this.playersB[player.id].playerType = 'defaultPlayer';
+                    }
+                    else {
+                        this.playersB[player.id].playerType = selectedPlayer.playerType;
+                    }
                 }
             }
         });
